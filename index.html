@@ -203,8 +203,10 @@ const T = {
     runBlockMonster: '🔥 小火怪挡路啦！挥手把它冻住！', runBlockRiver: '🌊 前面有河！挥手把河冻成冰桥！',
     runBlockObstacle: '🦘 有障碍！跳起来跳过去！', runBlockObstaclePtr: '🦘 有障碍！点一下屏幕跳过去！',
     runBlockBoss: '👑🔥 火焰大王挡路啦！一直挥手冻住它，小火球也要冻住哦！',
-    rescueHint: '🐧 小动物被火圈困住了！朝它那边挥手救它！', rescueHintPtr: '🐧 小动物被火圈困住了！点它救出来！',
-    sledT: '🛷 滑雪橇下坡！', sledSay: '坐上雪橇啦！身体往左歪、往右歪，躲开石头！', sledHint: '🛷 身体往左 / 往右歪 = 转弯 · 躲开石头，吃星星', sledHintPtr: '🛷 ⬅️ ➡️ 或移动手指 / 鼠标 = 转弯 · 躲开石头',
+    rescueHint: '🐧 小动物被火圈困住了！朝它那边挥手救它 → 它会跟着你帮你捡星星', rescueHintPtr: '🐧 小动物被火圈困住了！点它救出来！',
+    sledT: '🛷 滑雪橇下坡！', sledSay: '坐上雪橇啦！原地跑，雪橇就往前滑；身体往左歪、往右歪，躲开石头！', sledHint: '🛷 原地跑 = 往前滑 · 身体往左 / 往右歪 = 转弯',
+    twoSay: '两个人一起跑！举起手，看看哪个小公主是你！', twoHint: '👫 举起手看看哪个是你 · 头上的爱心颜色 = 摄像头里你头上的颜色',
+    rescueSay: '小动物被火困住了！朝它挥挥手救它，它会跟着你，帮你捡星星！', rescueSayPtr: '小动物被火困住了！点它救它，它会跟着你，帮你捡星星！', sledHintPtr: '🛷 ⬅️ ➡️ 或移动手指 / 鼠标 = 转弯 · 躲开石头',
     meters: n => `${n} 米！`, biomes: { village: '🏘️ 冰雪村庄', forest: '🌲 魔法森林', harbor: '⛵ 海边小镇' }, bigImp: '大火怪来啦！要多冻一会儿哦！', bossAngry: '火焰大王生气啦！加油，快冻住它！', photoReady: '准备拍照！看这里，三，二，一！', winPhoto: '通关啦！来拍一张冠军照吧！三，二，一！', wardT: '👗 我的衣橱', wDone: '✨ 好了', pSave: '💾 保存照片', pClose: '▶️ 继续', galT: '📷 相册', galClose: '关闭', total: n => `⭐ 累计 ${n} 颗星星`, clap: '冰冻冲击波！', golden: '金色小火怪！快冻住它！', dressT: '👑 变身',
     freeze: ['冻住啦！', '冰冻魔法！', '变成冰块啦！'],
     count: n => `你有${n}颗星星啦！`,
@@ -243,8 +245,10 @@ const T = {
     runBlockMonster: '🔥 A fire imp blocks the way! Wave to freeze it!', runBlockRiver: '🌊 A river! Wave to make an ice bridge!',
     runBlockObstacle: '🦘 Obstacle! Jump over it!', runBlockObstaclePtr: '🦘 Obstacle! Tap to jump!',
     runBlockBoss: '👑🔥 The Fire King blocks the road! Keep waving to freeze him — and the little fireballs!',
-    rescueHint: '🐧 A little animal is trapped! Wave toward it to help!', rescueHintPtr: '🐧 A little animal is trapped! Tap it to help!',
-    sledT: '🛷 Sled ride!', sledSay: 'Sled time! Lean left and right to dodge the rocks!', sledHint: '🛷 Lean left / right = steer · dodge rocks, grab stars', sledHintPtr: '🛷 ⬅️ ➡️ or move finger / mouse = steer · dodge rocks',
+    rescueHint: '🐧 A little animal is trapped! Wave toward it → it will follow you and catch stars', rescueHintPtr: '🐧 A little animal is trapped! Tap it to help!',
+    sledT: '🛷 Sled ride!', sledSay: 'Sled time! Run in place to slide, and lean left and right to dodge the rocks!', sledHint: '🛷 Run in place = slide · lean left / right = steer',
+    twoSay: 'Two runners! Raise your hand to see which princess is you!', twoHint: '👫 Raise a hand to find yourself · the heart colour matches the one over you in the camera',
+    rescueSay: 'A little animal is trapped! Wave at it to set it free, and it will follow you and help catch stars!', rescueSayPtr: 'A little animal is trapped! Tap it to set it free, and it will follow you and help catch stars!', sledHintPtr: '🛷 ⬅️ ➡️ or move finger / mouse = steer · dodge rocks',
     meters: n => `${n} m!`, biomes: { village: '🏘️ Snowy Village', forest: '🌲 Magic Forest', harbor: '⛵ Seaside Town' }, bigImp: 'A big fire imp! Keep freezing it!', bossAngry: 'The Fire King is angry! Keep going!', photoReady: 'Photo time! Look here, three, two, one!', winPhoto: 'You won! Champion photo! Three, two, one!', wardT: '👗 My Wardrobe', wDone: '✨ Done', pSave: '💾 Save photo', pClose: '▶️ Continue', galT: '📷 Photos', galClose: 'Close', total: n => `⭐ ${n} stars in total`, clap: 'Ice shockwave!', golden: 'A golden fire imp! Freeze it!', dressT: '👑 Dress-up',
     freeze: ['Frozen!', 'Ice magic!', 'An ice cube!'],
     count: n => `You have ${n} stars!`,
@@ -2135,9 +2139,9 @@ function bossNear(z) { const k = Math.round(z / 500); if (k >= 1 && Math.abs(z -
 function inSledZ(z) { const r = sledRange(z); return r && z >= r.start - 4 && z <= r.end + 4; }
 function themeAt(z) { if (inSledZ(z)) return 'sledwood'; return RUN_BIOMES[Math.floor(Math.max(0, z) / RUN_BIOME_LEN) % RUN_BIOMES.length]; }
 function baseTheme(z) { return RUN_BIOMES[Math.floor(Math.max(0, z) / RUN_BIOME_LEN) % RUN_BIOMES.length]; }
-function newPlayer(i) { return { i, x: 0, tx: 0, dz: 0, jumpH: 0, jumpV: 0, air: false, jumpCd: 0, landT: 0, wave: null, waveT: 0, cd: 0, phase: rand(0, 3), energy: 0, runSpeed: 0, hist: [], baseSy: null, tripT: 0, m: 0, steer: 0 }; }
+function newPlayer(i) { return { i, armA: [null, null], armT: [-9, -9], look: null, hue: null, x: 0, tx: 0, dz: 0, jumpH: 0, jumpV: 0, air: false, jumpCd: 0, landT: 0, wave: null, waveT: 0, cd: 0, phase: rand(0, 3), energy: 0, runSpeed: 0, hist: [], baseSy: null, tripT: 0, m: 0, steer: 0 }; }
 function startRunner() {
-  Object.assign(RUN, { d: 0, v: 0, players: [newPlayer(0)], objs: [], houses: [], nextHouseZ: [rand(1, 3), rand(2, 5)], nextEvent: 16, biome: 0, lastMilestone: 0, bolts: [], blocked: null, hintFor: null, stepT: 0, made: {}, sledSaid: false, rescueHints: 0, boostT: 0, magnetT: 0, followers: [], sled: null, weather: 'clear', weatherAt: 0, nP: 1, twoT: 0, oneT: 0, rank: [0, 1], snow2: [] });
+  Object.assign(RUN, { d: 0, v: 0, players: [newPlayer(0)], objs: [], houses: [], nextHouseZ: [rand(1, 3), rand(2, 5)], nextEvent: 16, biome: 0, lastMilestone: 0, bolts: [], blocked: null, hintFor: null, stepT: 0, made: {}, sledSaid: false, rescueHints: 0, twoSaid: false, rescueSaid: false, clothT: 0, boostT: 0, magnetT: 0, followers: [], sled: null, weather: 'clear', weatherAt: 0, nP: 1, twoT: 0, oneT: 0, rank: [0, 1], snow2: [] });
   RUN.auto = S.input !== 'camera';
   RUN.mtn = Array.from({ length: 9 }, (_, i) => [(i + rand(0.1, 0.9)) / 9, rand(0.5, 1)]);
   fillRunner();
@@ -2250,7 +2254,7 @@ function runBoltHit(bo) {
   } else if (tg.kind === 'river') { if (!tg.freezing) { tg.freezing = true; sfx.freeze(); } }
   else if (tg.kind === 'boss') { runBossHit(tg, 0.07); }
   else if (tg.kind === 'fireball') { if (tg.state === 'alive') { tg.state = 'frozen'; tg.t = 0; const p = rproj(tg.x, dz, 0.6); burst(p.x, p.y, 12, { power: 0.6 }); sfx.freeze(); } }
-  else if (tg.kind === 'rescue') { if (!tg.freed) { tg.freed = true; tg.t = 0; const p = rproj(tg.x, dz, 0.6); sfx.freeze(); burst(p.x, p.y, 20, { power: 0.9 }); floatText(p.x, p.y - 8 * U * p.s, '❤️', '#ffffff', 6 * U); } }
+  else if (tg.kind === 'rescue') { if (!tg.freed) { tg.freed = true; tg.t = 0; const p = rproj(tg.x, dz, 0.6); sfx.freeze(); burst(p.x, p.y, 20, { power: 0.9 }); addFollower(tg, bo.p); } }
 }
 function runBossHit(o, amt) {
   if (o.state !== 'alive') return;
@@ -2260,26 +2264,54 @@ function runBossHit(o, amt) {
   if (o.frost >= 1) { o.state = 'frozen'; o.t = 0; sfx.freeze(); setTimeout(() => sfx.freeze(), 180); addShake(3 * U); flash = 0.5; burst(p.x, p.y, 60, { power: 1.8 }); celebrate(tr('stDone')[2]); RUN.objs.forEach(f => { if (f.kind === 'fireball' && f.state === 'alive') { f.state = 'frozen'; f.t = 0; } }); }
 }
 // pose → running speed / jump for one player (called from detectPose)
+// zig-zag swing counter: how many up/down reversals bigger than `step`, plus the overall range
+function runSwings(hist, key, step) {
+  let dir = 0, ext = hist[0][key], n = 0, mn = ext, mx = ext;
+  for (let i = 1; i < hist.length; i++) {
+    const v = hist[i][key]; if (v == null) continue;
+    if (v < mn) mn = v; if (v > mx) mx = v;
+    if (dir === 0) { if (v > ext + step) { dir = 1; ext = v; } else if (v < ext - step) { dir = -1; ext = v; } }
+    else if (dir === 1) { if (v > ext) ext = v; else if (v < ext - step) { n++; dir = -1; ext = v; } }
+    else { if (v < ext) ext = v; else if (v > ext + step) { n++; dir = 1; ext = v; } }
+  }
+  return { amp: mx - mn, n };
+}
+// pose → running speed / jump for one player (called from detectPose)
+// Positions stay in camera units and only the *movement* is divided by a smoothed shoulder width:
+// dividing raw positions by a jittery shoulder width made a child who stands still look like she runs.
 function runnerPose(lm, fdt, pi) {
   const P = RUN.players[pi]; if (!P) return;
   const ls = lm[11], rs = lm[12];
   const sw = Math.max(0.02, Math.hypot(ls.x - rs.x, ls.y - rs.y));
-  const sy = (ls.y + rs.y) / 2 / sw;
-  const kOk = vis(lm[25]) > 0.5 && vis(lm[26]) > 0.5;
-  const kd = kOk ? (lm[25].y - lm[26].y) / sw : 0;
-  P.hist.push({ t: now, sy, kd, kOk });
-  while (P.hist.length && now - P.hist[0].t > 0.9) P.hist.shift();
-  if (P.hist.length >= 6) {
-    let mn = 1e9, mx = -1e9, kmn = 1e9, kmx = -1e9, kc = 0;
-    for (const h of P.hist) { mn = Math.min(mn, h.sy); mx = Math.max(mx, h.sy); if (h.kOk) { kc++; kmn = Math.min(kmn, h.kd); kmx = Math.max(kmx, h.kd); } }
-    const e = Math.max((mx - mn) / 0.26, kc > 4 ? (kmx - kmn) / 0.6 : 0);
-    P.energy += (e - P.energy) * Math.min(1, fdt * 5);
+  P.swSm = P.swSm == null ? sw : P.swSm + (sw - P.swSm) * Math.min(1, fdt * 2);
+  const S0 = P.swSm;
+  P.raw = lm; P.rawT = now;
+  // whole-body bob: average several landmarks so the jitter of a small, far-away kid cancels out
+  let by = 0, bn = 0;
+  for (const k of [0, 11, 12, 23, 24]) if (vis(lm[k]) > 0.5) { by += lm[k].y; bn++; }
+  const body = bn ? by / bn : (ls.y + rs.y) / 2;
+  const kOk = vis(lm[25]) > 0.75 && vis(lm[26]) > 0.75;
+  const kd = kOk ? lm[25].y - lm[26].y : null;
+  const a = Math.min(1, fdt * 10);
+  P.bSm = P.bSm == null ? body : P.bSm + (body - P.bSm) * a;
+  P.kSm = kd == null ? null : (P.kSm == null ? kd : P.kSm + (kd - P.kSm) * a);
+  P.hist.push({ t: now, b: P.bSm, k: P.kSm });
+  while (P.hist.length && now - P.hist[0].t > 1.2) P.hist.shift();
+  let e = 0;
+  if (P.hist.length >= 8 && now - P.hist[0].t > 0.6) {
+    const bs = runSwings(P.hist, 'b', 0.05 * S0);
+    if (bs.amp > 0.12 * S0 && bs.n >= 3) e = bs.amp / S0 / 0.22;          // bouncing up and down, with rhythm
+    const kh = P.hist.filter(h => h.k != null);
+    if (kh.length > 8) { const ks = runSwings(kh, 'k', 0.2 * S0); if (ks.amp > 0.5 * S0 && ks.n >= 2) e = Math.max(e, ks.amp / S0 / 0.6); }   // knees taking turns
   }
-  P.runSpeed = P.energy > 0.5 ? clamp(P.energy, 0.6, 1.4) * 5 : 0;
+  P.energy += (Math.min(e, 2) - P.energy) * Math.min(1, fdt * 5);
+  P.running = P.running ? P.energy > 0.35 : P.energy > 0.55;
+  P.runSpeed = P.running ? clamp(P.energy, 0.6, 1.4) * 5 : 0;
   P.lastPose = now;
+  const sy = (ls.y + rs.y) / 2;
   if (P.baseSy == null) P.baseSy = sy;
   if (!P.air) P.baseSy += (sy - P.baseSy) * Math.min(1, fdt * 1.2);
-  if (!P.air && P.baseSy - sy > 0.5) runJump(pi);
+  if (!P.air && (P.baseSy - sy) / S0 > 0.5) runJump(pi);
 }
 function runnerTap(x, y) {
   const P = RUN.players[0];
@@ -2307,7 +2339,7 @@ function runnerFreezeAll() {
     if (o.kind === 'monster' && o.sp.state === 'alive') { o.sp.frost = 1; o.sp.state = 'frozen'; o.sp.t = 0; }
     if (o.kind === 'river') o.freezing = true;
     if (o.kind === 'fireball' && o.state === 'alive') { o.state = 'frozen'; o.t = 0; }
-    if (o.kind === 'rescue' && !o.freed) { o.freed = true; o.t = 0; }
+    if (o.kind === 'rescue' && !o.freed) { o.freed = true; o.t = 0; addFollower(o, 0); }
     if (o.kind === 'boss') runBossHit(o, 0.3);
   });
 }
@@ -2329,11 +2361,17 @@ function updateRunPlayers(dt) {
   // one or two players (camera only)
   const posesNow = (!RUN.auto && camState === 'on' && now - poseT < 0.5) ? poseScr.length : 0;
   if (posesNow >= 2) { RUN.twoT += dt; RUN.oneT = 0; } else { RUN.oneT += dt; RUN.twoT = 0; }
-  if (RUN.nP === 1 && RUN.twoT > 1.2) { RUN.nP = 2; if (!RUN.players[1]) { const P = newPlayer(1); P.m = RUN.players[0].m; RUN.players.push(P); } floatText(W / 2, H * 0.32, '👫', '#ffffff', 10 * U); }
-  if (RUN.nP === 2 && RUN.oneT > 3) { RUN.nP = 1; RUN.players.length = 1; }
+  if (RUN.nP === 1 && RUN.twoT > 1.2) {
+    RUN.nP = 2; if (!RUN.players[1]) RUN.players.push(newPlayer(1));
+    floatText(W / 2, H * 0.32, '👫', '#ffffff', 10 * U); showHint(tr('twoHint'), 6);
+    if (!RUN.twoSaid) { RUN.twoSaid = true; say(tr('twoSay'), true); }
+    relayoutFollowers();
+  }
+  if (RUN.nP === 2 && RUN.oneT > 3) { RUN.nP = 1; RUN.players.length = 1; relayoutFollowers(); }
+  if (RUN.nP === 2 && now - RUN.clothT > 0.4) { RUN.clothT = now; sampleClothes(); }
   for (const P of RUN.players) {
     P.cd -= dt; P.jumpCd -= dt; P.waveT -= dt; P.tripT -= dt; P.landT -= dt;
-    if (!RUN.auto && (camState !== 'on' || now - (P.lastPose || -9) > 1.2)) { P.runSpeed = Math.max(0, P.runSpeed - dt * 6); P.energy = Math.max(0, P.energy - dt * 2); }
+    if (!RUN.auto && (camState !== 'on' || now - (P.lastPose || -9) > 1.2)) { P.runSpeed = Math.max(0, P.runSpeed - dt * 6); P.energy = Math.max(0, P.energy - dt * 2); if (P.energy < 0.35) P.running = false; }
     if (P.air) { P.jumpV -= 15 * dt; P.jumpH += P.jumpV * dt; if (P.jumpH <= 0) { P.jumpH = 0; P.air = false; P.landT = 0.25; const q = rproj(P.x, P.dz, 0); burst(q.x, q.y, 8, { power: 0.5 }); } }
   }
   // gestures & sled steering from the camera
@@ -2341,6 +2379,14 @@ function updateRunPlayers(dt) {
     poseScr.forEach((PS, i) => {
       const P = RUN.players[runPoseRank(i)]; if (!P || !PS.ls.v || !PS.rs.v) return;
       const bx = (PS.ls.x + PS.rs.x) / 2, sw = Math.max(dist(PS.ls.x, PS.ls.y, PS.rs.x, PS.rs.y), 4 * U);
+      // the princess copies the child's arms (screen-left arm ↔ her left arm, as seen from behind)
+      const pairs = PS.ls.x < PS.rs.x ? [[PS.ls, PS.lw], [PS.rs, PS.rw]] : [[PS.rs, PS.rw], [PS.ls, PS.lw]];
+      pairs.forEach(([sh, wr], k) => {
+        if (!wr.v) return;
+        const a = Math.atan2(wr.x - sh.x, wr.y - sh.y), cur = P.armA[k];
+        if (cur == null) P.armA[k] = a; else { let d = a - cur; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; P.armA[k] = cur + d * Math.min(1, dt * 14); }
+        P.armT[k] = now;
+      });
       if (RUN.sled) {
         let A = PS.ls, B = PS.rs; if (A.x > B.x) { const t = A; A = B; B = t; }
         const tilt = (B.y - A.y) / sw, head = PS.nose.v ? (PS.nose.x - bx) / sw : 0;
@@ -2363,10 +2409,58 @@ function updateRunPlayers(dt) {
     const A = RUN.players[0], B = RUN.players[1], gap = B.x - A.x;
     if (Math.abs(gap) < 1.3) { const push = (1.3 - Math.abs(gap)) / 2, sd = gap >= 0 ? 1 : -1; A.x = clamp(A.x - sd * push, -2.9, 2.9); B.x = clamp(B.x + sd * push, -2.9, 2.9); }
   }
-  // race depth offset
-  if (RUN.nP === 2) { const off = clamp((RUN.players[0].m - RUN.players[1].m) * 0.4, -3, 3); RUN.players[0].dz = off / 2; RUN.players[1].dz = -off / 2; }
-  else RUN.players[0].dz = 0;
+  for (const P of RUN.players) P.dz = 0;   // always side by side
 }
+function runMoving(P) { return RUN.v > 0.4 && (RUN.auto || P.runSpeed > 0); }
+// ---- two players: each princess wears the colour of that child's clothes ----
+const clothCv = document.createElement('canvas'); clothCv.width = 160; clothCv.height = 90;
+const clothCx = clothCv.getContext('2d', { willReadFrequently: true });
+const P_FALLBACK = [205, 330, 50, 140];
+function hslHex(h, s, l) {
+  s /= 100; l /= 100; const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+  const f = n => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1)))).toString(16).padStart(2, '0');
+  return '#' + f(0) + f(8) + f(4);
+}
+function sampleClothes() {
+  if (!video.videoWidth || camState !== 'on') return;
+  let data;
+  try { clothCx.drawImage(video, 0, 0, 160, 90); data = clothCx.getImageData(0, 0, 160, 90).data; } catch (e) { return; }
+  for (const P of RUN.players) {
+    const lm = P.raw; if (!lm || now - P.rawT > 0.6) continue;
+    const ls = lm[11], rs = lm[12], lh = lm[23], rh = lm[24];
+    const x0 = Math.min(ls.x, rs.x), x1 = Math.max(ls.x, rs.x), sw = x1 - x0; if (sw < 0.02) continue;
+    const shY = (ls.y + rs.y) / 2, hipY = vis(lh) > 0.5 && vis(rh) > 0.5 ? (lh.y + rh.y) / 2 : shY + sw * 1.2;
+    const ya = shY + (hipY - shY) * 0.15, yb = shY + (hipY - shY) * 0.8, xa = x0 + sw * 0.15, xb = x1 - sw * 0.15;
+    const bins = []; for (let b = 0; b < 12; b++) bins.push([0, 0, 0]);
+    let tot = 0;
+    for (let py = Math.max(0, Math.floor(ya * 90)); py <= Math.min(89, Math.floor(yb * 90)); py++)
+      for (let px = Math.max(0, Math.floor(xa * 160)); px <= Math.min(159, Math.floor(xb * 160)); px++) {
+        const q = (py * 160 + px) * 4, r = data[q] / 255, g = data[q + 1] / 255, b = data[q + 2] / 255;
+        const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; tot++;
+        if (mx < 0.2 || d / mx < 0.3) continue;            // too dark or too grey to call a colour
+        let h = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60;
+        const w = d / mx, bin = bins[Math.floor(h / 30) % 12];
+        bin[0] += w; bin[1] += Math.cos(h * Math.PI / 180) * w; bin[2] += Math.sin(h * Math.PI / 180) * w;
+      }
+    if (tot < 6) continue;
+    let best = -1, bw = 0;
+    for (let b = 0; b < 12; b++) { const w = bins[b][0] + 0.5 * (bins[(b + 11) % 12][0] + bins[(b + 1) % 12][0]); if (w > bw) { bw = w; best = b; } }
+    if (best < 0 || bw < tot * 0.22) { P.hueOk = Math.max(0, (P.hueOk || 0) - 1); continue; }
+    let cx = 0, cy = 0; for (const b of [best - 1, best, best + 1]) { const B = bins[(b + 12) % 12]; cx += B[1]; cy += B[2]; }
+    const len = Math.hypot(cx, cy) || 1;
+    if (P.hx == null) { P.hx = cx / len; P.hy = cy / len; } else { P.hx += (cx / len - P.hx) * 0.35; P.hy += (cy / len - P.hy) * 0.35; }
+    P.hueOk = Math.min(6, (P.hueOk || 0) + 1);
+  }
+  const hues = RUN.players.map(P => (P.hueOk >= 3 ? (Math.atan2(P.hy, P.hx) * 180 / Math.PI + 360) % 360 : null));
+  const hd = (a, b) => { const d = Math.abs(a - b) % 360; return Math.min(d, 360 - d); };
+  if (hues.length === 2 && hues[0] != null && hues[1] != null && hd(hues[0], hues[1]) < 40) { hues[0] = null; hues[1] = null; }
+  RUN.players.forEach((P, i) => {
+    let h = hues[i];
+    if (h == null) { const other = hues[1 - i]; const opts = P_FALLBACK.filter(f => other == null || hd(f, other) > 60); h = other == null ? P_FALLBACK[i] : opts[0]; }
+    if (P.hue !== h) { P.hue = h; P.look = null; }
+  });
+}
+function playerHue(P) { return P.hue != null ? P.hue : P_FALLBACK[P.i]; }
 function updateRunner(dt) {
   updateRunPlayers(dt);
   RUN.boostT -= dt; RUN.magnetT -= dt;
@@ -2377,12 +2471,13 @@ function updateRunner(dt) {
   if (RUN.sled && (RUN.d >= RUN.sled.end || RUN.d < RUN.sled.start - 1)) { RUN.sled = null; floatText(W / 2, H * 0.32, '🏁', '#ffffff', 9 * U); }
   // world speed
   let want;
-  if (RUN.sled) want = 8.5;
+  const anyRun = RUN.auto || RUN.players.some(P => P.runSpeed > 0);
+  if (RUN.sled) want = anyRun ? 8.5 : 0;
   else if (RUN.auto) want = 4.4;
   else want = Math.max(...RUN.players.map(P => P.runSpeed));
   want *= boost;
   if (RUN.players.some(P => P.tripT > 0)) want = Math.min(want, RUN.sled ? 3 : 1.5);
-  RUN.v += (want - RUN.v) * Math.min(1, dt * (want > RUN.v ? 2.2 : 3.5));
+  RUN.v += (want - RUN.v) * Math.min(1, dt * (want > RUN.v ? 2.2 : RUN.sled ? 0.9 : 3.5));
   const anyAir = RUN.players.some(P => P.air && P.jumpH > 0.35);
   if (RUN.players.some(P => P.air) && RUN.v < 3.4 * boost) RUN.v = 3.4 * boost;
   let nd = RUN.d + RUN.v * dt;
@@ -2403,11 +2498,7 @@ function updateRunner(dt) {
   }
   const moved = nd - RUN.d;
   RUN.d = nd;
-  for (const P of RUN.players) {
-    P.phase += moved * 2.4;
-    const own = RUN.auto ? RUN.v : Math.min(RUN.v, Math.max(P.runSpeed * boost, RUN.sled ? RUN.v : 0));
-    P.m += RUN.nP === 2 ? own * dt : moved;
-  }
+  for (const P of RUN.players) if (runMoving(P)) P.phase += moved * 2.4;
   if (moved > 0.0001 && !RUN.sled) { RUN.stepT -= moved; if (RUN.stepT <= 0) { RUN.stepT = 1.3; if (AC && !LITE) noise(AC.currentTime, 0.06, 0.03, 'lowpass', 900, 400, 1); } }
   // houses
   for (const h of RUN.houses) {
@@ -2457,13 +2548,11 @@ function updateRunner(dt) {
       if (o.frost >= 1) { o.done = true; const p = rproj(0, dz + 1.3, 0); burst(p.x, p.y, 30, { power: 1.2 }); addFlyStar(p.x, p.y); setTimeout(() => addFlyStar(p.x, p.y), 150); registerFreeze(p.x, p.y); }
     } else if (o.kind === 'rescue') {
       o.t += dt;
-      if (!o.hinted && !o.freed && dz < 20 && !RUN.blocked && (RUN.rescueHints || 0) < 2) { o.hinted = true; RUN.rescueHints = (RUN.rescueHints || 0) + 1; showHint(tr(RUN.auto ? 'rescueHintPtr' : 'rescueHint'), 4); }
-      if (o.freed && !o.joined && o.t > 0.9) {
-        o.joined = true; o.gone = true;
-        RUN.followers.push({ animal: o.animal, ph: rand(0, 6) });
-        RUN.rescuedTotal++; try { localStorage.setItem('iceMagicRescued', String(RUN.rescuedTotal)); } catch (e) {}
-        const p = rproj(o.x, dz, 0.6); addFlyStar(p.x, p.y);
+      if (!o.hinted && !o.freed && dz < 20 && !RUN.blocked && (RUN.rescueHints || 0) < 2) {
+        o.hinted = true; RUN.rescueHints = (RUN.rescueHints || 0) + 1; showHint(tr(RUN.auto ? 'rescueHintPtr' : 'rescueHint'), 5);
+        if (!RUN.rescueSaid) { RUN.rescueSaid = true; say(tr(RUN.auto ? 'rescueSayPtr' : 'rescueSay'), true); }
       }
+      if (o.freed && o.t > 0.7) o.gone = true;
     } else if ((o.kind === 'star' || o.kind === 'power') && !o.got) {
       if (o.kind === 'star' && RUN.magnetT > 0 && dz > 0 && dz < 12) { o.x += (RUN.players[0].x - o.x) * Math.min(1, dt * 4); o.z -= dt * 6; o.y3 += ((RUN.players[0].jumpH + 0.9) - o.y3) * Math.min(1, dt * 4); }
       if (Math.abs(dz) < 0.6) {
@@ -2476,10 +2565,12 @@ function updateRunner(dt) {
           }
         }
       }
+      if (o.kind === 'star' && !o.got) followersCatch(o, dz, dt);
     } else if (o.kind === 'rock' && !o.hit && dz < 0.5 && dz > -0.3) {
       for (const P of RUN.players) if (Math.abs(o.x - P.x) < 1.0) { o.hit = true; P.tripT = 0.9; const p = rproj(o.x, dz, 0.4); burst(p.x, p.y, 16, { power: 0.9 }); if (AC) noise(AC.currentTime, 0.2, 0.12, 'lowpass', 600, 200, 1); }
     }
   }
+  updateFollowers(dt);
   // ice bolts
   for (const bo of RUN.bolts) { bo.t += dt / bo.dur; if (bo.t >= 1 && !bo.hit) { bo.hit = true; runBoltHit(bo); } }
   RUN.bolts = RUN.bolts.filter(b => !b.hit);
@@ -2495,9 +2586,7 @@ function updateRunner(dt) {
   RUN.objs = RUN.objs.filter(o => !o.gone && o.z - RUN.d > -3);
   fillRunner();
   // HUD text
-  let txt;
-  if (RUN.nP === 2) txt = `🩵 ${Math.floor(RUN.players[0].m)}  ·  ${P2_STYLE.dot} ${Math.floor(RUN.players[1].m)} ${S.lang === 'zh' ? '米' : 'm'}   🏆 ${Math.floor(RUN.best)}`;
-  else txt = `🏃 ${Math.floor(RUN.d)} ${S.lang === 'zh' ? '米' : 'm'}   🏆 ${Math.floor(RUN.best)}`;
+  let txt = `${RUN.nP === 2 ? '👫' : '🏃'} ${Math.floor(RUN.d)} ${S.lang === 'zh' ? '米' : 'm'}   🏆 ${Math.floor(RUN.best)}`;
   if (RUN.rescuedTotal) txt += `   🐧 ${RUN.rescuedTotal}`;
   if (RUN.boostT > 0) txt += `   👢 ${Math.ceil(RUN.boostT)}`;
   if (RUN.magnetT > 0) txt += `   🧲 ${Math.ceil(RUN.magnetT)}`;
@@ -2752,9 +2841,9 @@ function drawAnimal(type, x, y, s, t, happy) {
   ctx.restore();
 }
 function drawRescue(o, dz) {
-  const p = rproj(o.x + (o.freed ? -o.side * Math.min(1, o.t) * 1.2 : 0), dz, 0), s = 1.3 * p.s * p.PX;
+  const p = rproj(o.x, dz, 0), s = 1.3 * p.s * p.PX;
   ctx.save(); ctx.globalAlpha = clamp((60 - dz) / 10, 0, 1);
-  drawAnimal(o.animal, p.x, p.y, s, now + o.z, o.freed);
+  if (!o.freed) drawAnimal(o.animal, p.x, p.y, s, now + o.z, false);
   if (!o.freed) {
     for (let k = 0; k < 9; k++) {
       const a = k / 9 * Math.PI * 2, fx = p.x + Math.cos(a) * s * 0.55, fy = p.y + Math.sin(a) * s * 0.12 - s * 0.05;
@@ -2763,18 +2852,77 @@ function drawRescue(o, dz) {
       ctx.fillStyle = 'rgba(255,220,120,0.9)'; ctx.beginPath(); ctx.moveTo(fx - s * 0.03, fy); ctx.quadraticCurveTo(fx, fy - fh * 0.7, fx + s * 0.03, fy); ctx.closePath(); ctx.fill();
     }
     if (dz < 22) drawBounceIcon(p.x, p.y - s * 1.0, '👋', p.s * p.PX * 0.8);
-  } else if (o.t < 0.9) {
-    ctx.strokeStyle = 'rgba(230,248,255,0.9)'; ctx.lineWidth = Math.max(1, s * 0.05); ctx.beginPath(); ctx.ellipse(p.x, p.y - s * 0.05, s * 0.55 * (1 + o.t), s * 0.12 * (1 + o.t), 0, 0, Math.PI * 2); ctx.stroke();
+  } else if (o.t < 0.7) {
+    ctx.globalAlpha *= 1 - o.t / 0.7; ctx.strokeStyle = 'rgba(230,248,255,0.9)'; ctx.lineWidth = Math.max(1, s * 0.05); ctx.beginPath(); ctx.ellipse(p.x, p.y - s * 0.05, s * 0.55 * (1 + o.t * 1.5), s * 0.12 * (1 + o.t * 1.5), 0, 0, Math.PI * 2); ctx.stroke();
   }
   ctx.restore();
 }
-function drawFollowers() {
-  const slots = [[-2.3, 0.7], [2.3, 0.7], [-3.0, 1.6], [3.0, 1.6]];
-  RUN.followers.slice(-4).forEach((f, i) => {
-    const [sx, sz] = slots[i];
-    const p = rproj(sx, sz, 0), s = 1.1 * p.s * p.PX;
-    drawAnimal(f.animal, p.x, p.y, s, now + f.ph, RUN.v > 0.5);
-  });
+// ---- rescued animals: they run over to the princess who saved them and help her catch stars ----
+function followerSlots(owner) {
+  if (RUN.nP === 2) return owner ? [[1.3, 0.6], [1.95, 1.5]] : [[-1.3, 0.6], [-1.95, 1.5]];
+  return [[-2.3, 0.7], [2.3, 0.7], [-3.0, 1.6], [3.0, 1.6]];
+}
+function addFollower(o, owner) {
+  owner = RUN.nP === 2 ? (owner || 0) : 0;
+  const slots = followerSlots(owner), mine = RUN.followers.filter(f => f.owner === owner && !f.leaving);
+  const side = o.x < 0 ? -1 : 1, order = slots.map((s, k) => k).sort((a, b) => ((slots[a][0] < 0 ? -1 : 1) === side ? 0 : 10) + a - ((slots[b][0] < 0 ? -1 : 1) === side ? 0 : 10) - b);   // nearest spot on the side it came from
+  let slot = -1;
+  for (const k of order) if (!mine.some(f => f.slot === k)) { slot = k; break; }
+  if (slot < 0) { const old = mine[0]; slot = old.slot; old.leaving = true; old.lt = 0; old.slot = -1; }   // the oldest friend waves bye and goes home
+  RUN.followers.push({ animal: o.animal, owner, slot, ph: rand(0, 6), jt: 0, fx: o.x, fdz: o.z - RUN.d, catchT: 0, leaving: false, lt: 0, moving: true });
+  RUN.rescuedTotal++; try { localStorage.setItem('iceMagicRescued', String(RUN.rescuedTotal)); } catch (e) {}
+}
+function relayoutFollowers() {
+  const keep = [];
+  for (const owner of (RUN.nP === 2 ? [0, 1] : [0])) {
+    const n = followerSlots(owner).length;
+    RUN.followers.filter(f => !f.leaving && (RUN.nP === 2 ? f.owner === owner : true)).slice(-n).forEach((f, k) => { f.owner = owner; f.slot = k; keep.push(f); });
+  }
+  for (const f of RUN.followers) if (keep.indexOf(f) < 0 && !f.leaving) { f.leaving = true; f.lt = 0; f.slot = -1; }
+  for (const P of RUN.players) P.look = null;
+}
+function updateFollowers(dt) {
+  for (const f of RUN.followers) {
+    f.jt += dt; f.catchT -= dt;
+    if (f.leaving) { f.lt += dt; f.fx += (f.fx < 0 ? -1 : 1) * dt * 3; f.fdz -= RUN.v * 0.7 * dt; f.moving = true; continue; }
+    const s = followerSlots(f.owner)[f.slot] || [0, 1], own = RUN.players[f.owner] || RUN.players[0];
+    const tx = clamp(own.x + s[0], -3.7, 3.7), tz = s[1];
+    const k = Math.min(1, dt * (f.jt < 2 ? 2.2 : 5));
+    f.fx += (tx - f.fx) * k; f.fdz += (tz - f.fdz) * k;
+    f.moving = Math.abs(tx - f.fx) + Math.abs(tz - f.fdz) > 0.3;
+  }
+  RUN.followers = RUN.followers.filter(f => !(f.leaving && f.lt > 1.6));
+}
+function followersCatch(o, dz, dt) {
+  for (const f of RUN.followers) {
+    if (f.leaving || f.jt < 1.2) continue;
+    if (dz > f.fdz - 0.2 && dz < f.fdz + 3.5 && Math.abs(o.x - f.fx) < 1.6 && o.y3 < 2.2) { o.x += (f.fx - o.x) * Math.min(1, dt * 5); o.y3 += (0.6 - o.y3) * Math.min(1, dt * 3); }
+    if (Math.abs(dz - f.fdz) < 0.6 && Math.abs(o.x - f.fx) < 0.8) {
+      o.got = true; o.gone = true; f.catchT = 0.7;
+      const p = rproj(o.x, dz, o.y3); addFlyStar(p.x, p.y); if (AC) tone(1760, AC.currentTime, 0.15, 'sine', 0.05);
+      return;
+    }
+  }
+}
+function heartPath(c, x, y, s) {
+  c.beginPath(); c.moveTo(x, y + s * 0.42);
+  c.bezierCurveTo(x - s * 0.62, y - s * 0.02, x - s * 0.42, y - s * 0.62, x, y - s * 0.28);
+  c.bezierCurveTo(x + s * 0.42, y - s * 0.62, x + s * 0.62, y - s * 0.02, x, y + s * 0.42);
+  c.closePath();
+}
+function drawFollower(f) {
+  const p = rproj(f.fx, f.fdz, 0), s = 1.1 * p.s * p.PX;
+  ctx.save(); if (f.leaving) ctx.globalAlpha = clamp(1 - f.lt / 1.6, 0, 1);
+  ctx.fillStyle = 'rgba(0,0,30,0.16)'; ctx.beginPath(); ctx.ellipse(p.x, p.y, s * 0.3, s * 0.07, 0, 0, Math.PI * 2); ctx.fill();
+  drawAnimal(f.animal, p.x, p.y - (f.catchT > 0 ? Math.sin(f.catchT / 0.7 * Math.PI) * s * 0.35 : 0), s, now + f.ph, f.moving || RUN.v > 0.5 || f.catchT > 0);
+  // a little heart: right after being rescued, and whenever it catches a star
+  const ht = f.leaving ? 0 : f.jt < 3 ? 1 - f.jt / 3 : f.catchT > 0 ? f.catchT / 0.7 : 0;
+  if (ht > 0) {
+    const hy = p.y - s * (1.15 + (1 - ht) * 0.3);
+    ctx.globalAlpha *= Math.min(1, ht * 2.5); heartPath(ctx, p.x, hy, s * 0.36); ctx.fillStyle = '#ff5f93'; ctx.fill(); ctx.lineWidth = Math.max(1, s * 0.03); ctx.strokeStyle = '#ffffff'; ctx.stroke();
+  }
+  if (f.leaving) drawBounceIcon(p.x, p.y - s * 1.0, '👋', p.s * p.PX * 0.6);
+  ctx.restore();
 }
 function drawSledArch(dz) {
   const L = rproj(-3.4, dz, 0), R = rproj(3.4, dz, 0), k = L.s * L.PX;
@@ -2833,6 +2981,14 @@ function drawPower(o, dz) {
 }
 // original heroine, seen from behind, wearing the wardrobe cape & crown (player 2 has her own look)
 function heroLook(P) {
+  if (RUN.nP === 2) {   // two players: each princess wears that child's clothes colour
+    if (!P.look) {
+      const h = playerHue(P);
+      P.look = { style: { c: [hslHex(h, 90, 90), hslHex(h, 85, 74), hslHex(h, 70, 58)] }, crown: P.i ? (CROWNS.find(c => c.id === P2_STYLE.crown) || CROWNS[0]) : curCrown(),
+        hair: P.i ? P2_STYLE.hair : '#7b4a2e', hair2: P.i ? P2_STYLE.hair2 : '#a0673f', bow: hslHex(h, 85, 72), badge: hslHex(h, 85, 58) };
+    }
+    return P.look;
+  }
   if (P.i === 0) return { style: curCape(), crown: curCrown(), hair: '#7b4a2e', hair2: '#a0673f', bow: '#ff8fc8' };
   return { style: CAPES.find(c => c.id === P2_STYLE.cape) || CAPES[0], crown: CROWNS.find(c => c.id === P2_STYLE.crown) || CROWNS[0], hair: P2_STYLE.hair, hair2: P2_STYLE.hair2, bow: '#7fdcff' };
 }
@@ -2841,8 +2997,8 @@ function drawHeroine(P) {
   const base = rproj(P.x, P.dz, 0);
   const sc = base.s * base.PX * 2.15 / 220;
   const sled = !!RUN.sled;
-  const running = RUN.v > 0.4 && !P.air && !sled, ph = P.phase;
-  const bob = running ? -Math.abs(Math.sin(ph)) * 7 : sled ? Math.sin(now * 9) * 1.2 : Math.sin(now * 2) * 1.5;
+  const running = runMoving(P) && !P.air && !sled, ph = P.phase;
+  const bob = running ? -Math.abs(Math.sin(ph)) * 7 : sled ? (RUN.v > 0.5 ? Math.sin(now * 9) * 1.2 : 0) : Math.sin(now * 2) * 1.5;
   const land = P.landT > 0 ? P.landT / 0.25 : 0;
   const fy = base.y - P.jumpH * base.s * base.PX;
   const trip = P.tripT > 0 ? P.tripT : 0;
@@ -2880,8 +3036,10 @@ function drawHeroine(P) {
   for (let i = 0; i < 5; i++) { const xa = 44 - i * 17.6, xb = 44 - (i + 1) * 17.6; ctx.quadraticCurveTo((xa + xb) / 2, -50, xb, -58); }
   ctx.quadraticCurveTo(-40, -80, -22, -112); ctx.closePath(); ctx.fill();
   const armAngle = sd => {
-    if (P.air) return sd * 2.5;
     if (trip) return sd * (1.8 + Math.sin(now * 25) * 0.4);
+    const k = sd < 0 ? 0 : 1;
+    if (!RUN.auto && P.armA[k] != null && now - P.armT[k] < 0.4) return P.armA[k];   // copy the child's arm
+    if (P.air) return sd * 2.5;
     const waving = P.waveT > 0 && (P.wave === 'B' || (P.wave === 'L' && sd < 0) || (P.wave === 'R' && sd > 0));
     if (waving) return sd * (2.0 + Math.sin(now * 18) * 0.35);
     if (sled) return sd * 0.55;
@@ -2925,6 +3083,10 @@ function drawHeroine(P) {
   ctx.fillStyle = look.bow; ctx.beginPath(); ctx.ellipse(-8, -207, 8, 5, -0.4, 0, Math.PI * 2); ctx.ellipse(8, -207, 8, 5, 0.4, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(0, -207, 4, 0, Math.PI * 2); ctx.fill();
   ctx.lineWidth = 2.2; drawFlake(ctx, 17, -178, 6, now * 0.5, '#ffffff');
   drawCrown(ctx, crown, 0, -214, 46, 0, now);
+  if (RUN.nP === 2 && look.badge) {   // colour heart above her head = the same heart over that child in the camera window
+    const hb = -268 + Math.sin(now * 3 + P.i) * 5;
+    heartPath(ctx, 0, hb, 46); ctx.fillStyle = look.badge; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+  }
   if (trip) for (let k = 0; k < 3; k++) { const a = now * 8 + k * 2.1; drawStar(ctx, Math.cos(a) * 34, -238 + Math.sin(a) * 8, 7, a); }
   ctx.restore();
   for (const [hx, hy3] of hands2) { if (Math.random() < 0.6) addParticle({ type: 'spark', x: base.x + hx * sc, y: fy + (hy3 + bob + yo) * sc, vx: rand(-6, 6) * U, vy: rand(-6, 6) * U, g: 0, drag: 1, r: rand(0.5, 1.1) * U, rot: 0, vr: 0, life: 0.5, max: 0.5, col: c1 }); }
@@ -2962,10 +3124,24 @@ function drawRunPip() {
   ctx.translate(x + w, y); ctx.scale(-1, 1); ctx.drawImage(video, (w - vw * s2) / 2, (h - vh * s2) / 2, vw * s2, vh * s2);
   ctx.restore();
   ctx.save(); rrect(ctx, x, y, w, h, 2 * U); ctx.lineWidth = U * 0.5; ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.stroke();
+  if (RUN.nP === 2) {
+    ctx.save(); rrect(ctx, x, y, w, h, 2 * U); ctx.clip();
+    const ox = (w - vw * s2) / 2, oy = (h - vh * s2) / 2;
+    for (const P of RUN.players) {
+      const lm = P.raw; if (!lm || now - P.rawT > 0.6) continue;
+      const nx = vis(lm[0]) > 0.5 ? lm[0].x : (lm[11].x + lm[12].x) / 2, ny = vis(lm[0]) > 0.5 ? lm[0].y : (lm[11].y + lm[12].y) / 2 - 0.05;
+      const X = x + w - (ox + nx * vw * s2), Y = y + oy + ny * vh * s2;
+      const r = Math.max(2.2 * U, Math.hypot(lm[11].x - lm[12].x, lm[11].y - lm[12].y) * vw * s2 * 0.65);
+      const col = heroLook(P).badge;
+      ctx.lineWidth = U * 0.55; ctx.strokeStyle = col; ctx.beginPath(); ctx.arc(X, Y, r, 0, Math.PI * 2); ctx.stroke();
+      heartPath(ctx, X, Y - r - 1.6 * U, 3.2 * U); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = U * 0.3; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+    }
+    ctx.restore();
+  }
   RUN.players.forEach((P, i) => {
     const e = clamp(P.energy / 1.2, 0, 1), yy = y - (3 + i * 2.4) * U;
     rrect(ctx, x, yy, w, 1.8 * U, 0.9 * U); ctx.fillStyle = 'rgba(10,30,80,0.6)'; ctx.fill();
-    if (e > 0.02) { rrect(ctx, x, yy, w * e, 1.8 * U, 0.9 * U); ctx.fillStyle = P.runSpeed > 0 ? (i ? '#c38bff' : '#7ed957') : '#bfe9ff'; ctx.fill(); }
+    if (e > 0.02) { rrect(ctx, x, yy, w * e, 1.8 * U, 0.9 * U); ctx.fillStyle = RUN.nP === 2 ? heroLook(P).badge : P.runSpeed > 0 ? '#7ed957' : '#bfe9ff'; ctx.globalAlpha = P.runSpeed > 0 ? 1 : 0.55; ctx.fill(); ctx.globalAlpha = 1; }
   });
   ctx.font = `${3 * U}px sans-serif`; ctx.textBaseline = 'bottom'; ctx.fillText(RUN.players.some(P => P.runSpeed > 0) ? '🏃‍♀️' : '🧍‍♀️', x, y - (3.4 + (RUN.players.length - 1) * 2.4) * U);
   ctx.restore();
@@ -2977,7 +3153,7 @@ function drawRunner() {
   for (const o of RUN.objs) { const dz = o.z - RUN.d; if (dz > -2.5 && dz < 70 && true) list.push([o.kind === 'river' ? dz + o.len : dz, o.kind, o]); }
   if (!RUN.sled) { const ls = Math.ceil((RUN.d - 2) / 9) * 9; for (let z = ls; z < RUN.d + 70; z += 9) { list.push([z - RUN.d, 'lamp', -1]); list.push([z - RUN.d + 4.5, 'lamp', 1]); } }
   for (const P of RUN.players) list.push([P.dz + 0.001 * P.i, 'hero', P]);
-  list.push([0.75, 'followers', null]);
+  for (const f of RUN.followers) list.push([f.fdz, 'follower', f]);
   list.sort((a, b) => b[0] - a[0]);
   for (const [dz, kind, o] of list) {
     const odz = kind === 'river' ? dz - o.len : dz;
@@ -2993,7 +3169,7 @@ function drawRunner() {
     else if (kind === 'star') drawRunStar(o, dz);
     else if (kind === 'power') drawPower(o, dz);
     else if (kind === 'hero') drawHeroine(o);
-    else if (kind === 'followers') drawFollowers();
+    else if (kind === 'follower') drawFollower(o);
     else if (kind === 'sledStart') drawSledArch(dz);
   }
   drawRunBolts();
@@ -3351,7 +3527,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

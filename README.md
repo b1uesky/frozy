@@ -17,7 +17,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | | |
 |---|---|
 | 🗺️ 冰雪大冒险 Ice Adventure | Fire imps → frozen town → the Fire King boss → build an ice castle |
-| 🏃‍♀️ 冰雪奔跑 Snow Run | Endless street: run in place to run, wave left/right to freeze houses, freeze fire imps and rivers that block the way, jump over obstacles. Rescue trapped animals (they run along with you), sled downhill every 500 m (lean to steer), Fire King boss every 500 m, power-ups (👢 speed boots, 💎 big ice crystal, 🧲 star magnet), day/night and weather, and a two-player race when two people are on camera |
+| 🏃‍♀️ 冰雪奔跑 Snow Run | Endless street: run in place to run, wave left/right to freeze houses, freeze fire imps and rivers that block the way, jump over obstacles. Rescue trapped animals (they run along with you), sled downhill every 500 m (lean to steer), Fire King boss every 500 m, power-ups (👢 speed boots, 💎 big ice crystal, 🧲 star magnet), day/night and weather, and two players side by side when two people are on camera (each princess wears that child’s clothes colour, copies her arms, and has a matching heart over her in the camera window) |
 | 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
 | 🏘️ 冰封小镇 | Turn the town into ice |
 | ⛄ 堆雪人 | Catch snowflakes to build snowmen |
