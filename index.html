@@ -610,8 +610,7 @@ function updateFlyStars(dt) {
 }
 function onStar() {
   addTotalStar();
-  if (S.stars % 10 === 0) { celebrate(S.lang === 'zh' ? `${S.stars} 颗星星！` : `${S.stars} stars!`); say(tr('count')(S.stars), true); }
-  else if (S.stars % 5 === 0) say(tr('count')(S.stars), true);
+  if (S.stars % 25 === 0) { celebrate(S.lang === 'zh' ? `${S.stars} 颗星星！` : `${S.stars} stars!`); say(tr('count')(S.stars)); }
   else tone(2637, AC ? AC.currentTime : 0, 0.2, 'sine', 0.05);
 }
 function celebrate(text) {
