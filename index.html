@@ -2084,10 +2084,11 @@ function updateHands(dt) {
     if (S.mode !== 'menu' && h.speed > 110 * U && h.cd <= 0) { spawnShard(h); h.cd = 0.11; }
     h.trail.push({ x: h.x, y: h.y, t: now }); while (h.trail.length > 14) h.trail.shift();
     if (S.mode !== 'menu' && Math.random() < Math.min(1, h.speed / (60 * U)) * 0.9)
-      addParticle({ type: Math.random() < 0.5 ? 'spark' : 'flake', x: h.x + rand(-2, 2) * U, y: h.y + rand(-2, 2) * U, vx: rand(-8, 8) * U - h.vx * 0.08, vy: rand(-8, 8) * U - h.vy * 0.08, g: 10 * U, drag: 1.5, r: rand(0.5, 1.2) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(0.4, 0.8), max: 0.8, col: '#dff6ff' });
+      addParticle({ type: (h.ptr || Math.random() < 0.5) ? 'spark' : 'flake', x: h.x + rand(-2, 2) * U, y: h.y + rand(-2, 2) * U, vx: rand(-8, 8) * U - h.vx * 0.08, vy: rand(-8, 8) * U - h.vy * 0.08, g: 10 * U, drag: 1.5, r: rand(0.5, 1.2) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(0.4, 0.8), max: 0.8, col: '#dff6ff' });
   }
 }
 function drawHand(h) {
+  if (h.ptr) return;
   ctx.save(); ctx.globalCompositeOperation = 'lighter';
   for (let i = 0; i < h.trail.length - 1; i++) {
     const p = h.trail[i], q = h.trail[i + 1], a = i / h.trail.length;
@@ -2104,14 +2105,15 @@ function drawHand(h) {
 
 // pointer (mouse / touch)
 function ptrPos(e) { return [e.clientX * DPR, e.clientY * DPR]; }
-cv.addEventListener('pointerdown', e => { ensureAudio(); const [x, y] = ptrPos(e); feedHand('m' + e.pointerId, x, y); iceBlast(x, y); });
-cv.addEventListener('pointermove', e => { const [x, y] = ptrPos(e); feedHand('m' + e.pointerId, x, y); });
+function ptrMagic() { return !(S.input === 'camera' && (camState === 'on' || camState === 'loading')); }
+cv.addEventListener('pointerdown', e => { ensureAudio(); if (!ptrMagic()) return; const [x, y] = ptrPos(e); feedHand('m' + e.pointerId, x, y); iceBlast(x, y); });
+cv.addEventListener('pointermove', e => { if (!ptrMagic()) { hands.delete('m' + e.pointerId); return; } const [x, y] = ptrPos(e); feedHand('m' + e.pointerId, x, y); });
 const ptrEnd = e => { if (e.pointerType !== 'mouse') hands.delete('m' + e.pointerId); };
 cv.addEventListener('pointerup', ptrEnd); cv.addEventListener('pointercancel', ptrEnd);
 cv.addEventListener('pointerleave', e => hands.delete('m' + e.pointerId));
-cv.addEventListener('dblclick', () => blizzard());
+cv.addEventListener('dblclick', () => { if (ptrMagic()) blizzard(); });
 let lastTap = 0;
-cv.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') { if (now - lastTap < 0.3) blizzard(); lastTap = now; } });
+cv.addEventListener('pointerdown', e => { if (e.pointerType === 'touch' && ptrMagic()) { if (now - lastTap < 0.3) blizzard(); lastTap = now; } });
 
 // ---------- camera + pose ----------
 const clapArm = [], clapCd = [];
