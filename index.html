@@ -1253,7 +1253,6 @@ function registerFreeze(x, y) {
   if (comboN >= 2) {
     floatText(x, y, tr('combo')(comboN), comboN >= 5 ? '#ffe27a' : '#dff6ff', (4.5 + Math.min(comboN, 8) * 0.4) * U);
     if (AC) tone(1046.5 * Math.pow(2, Math.min(comboN, 12) / 12), AC.currentTime + 0.05, 0.35, 'triangle', 0.07);
-    if (comboN === 3 || comboN === 6 || comboN === 10) say(tr('combo')(comboN), true);
   }
 }
 
@@ -2134,7 +2133,7 @@ async function startCamera(deviceId) {
     if (!landmarker) {
       visionMod = visionMod || await import(`${MP_CDN}/vision_bundle.mjs`);
       const fs = await visionMod.FilesetResolver.forVisionTasks(`${MP_CDN}/wasm`);
-      const mk = delegate => visionMod.PoseLandmarker.createFromOptions(fs, { baseOptions: { modelAssetPath: MP_MODEL, delegate }, runningMode: 'VIDEO', numPoses: 2, minPoseDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+      const mk = delegate => visionMod.PoseLandmarker.createFromOptions(fs, { baseOptions: { modelAssetPath: MP_MODEL, delegate }, runningMode: 'VIDEO', numPoses: 2, minPoseDetectionConfidence: 0.65, minPosePresenceConfidence: 0.65, minTrackingConfidence: 0.6 });
       try { landmarker = await mk('GPU'); } catch (e) { console.warn('GPU delegate failed, using CPU', e); landmarker = await mk('CPU'); }
     }
     camState = 'on'; lastPoseSeen = 0;
@@ -2159,6 +2158,20 @@ function videoRect() {
   return { ox: (W - dw) / 2, oy: (H - dh) / 2, dw, dh };
 }
 function mapPt(nx, ny) { const r = videoRect(); return [W - (r.ox + nx * r.dw), r.oy + ny * r.dh]; }
+// a real person: head and both shoulders clearly visible, head above the shoulders, sensible body size
+let poseOkFrames = 0;
+function plausiblePose(lm) {
+  const n = lm[0], ls = lm[11], rs = lm[12];
+  if (vis(n) < 0.75 || vis(ls) < 0.75 || vis(rs) < 0.75) return false;
+  if (vis(lm[2]) < 0.6 && vis(lm[5]) < 0.6) return false;
+  const sw = Math.hypot(ls.x - rs.x, ls.y - rs.y);
+  if (sw < 0.045 || sw > 0.9) return false;
+  const sx = (ls.x + rs.x) / 2, sy = (ls.y + rs.y) / 2;
+  if (n.y > sy - sw * 0.15) return false;
+  if (Math.abs(n.x - sx) > sw * 0.9) return false;
+  if (Math.abs(ls.y - rs.y) > sw * 0.8) return false;
+  return true;
+}
 function detectPose() {
   if (camState !== 'on' || !landmarker || video.readyState < 2) return;
   if (video.currentTime === lastVidTime) return;
@@ -2166,7 +2179,9 @@ function detectPose() {
   const tms = performance.now();
   let res; try { res = landmarker.detectForVideo(video, tms); } catch (e) { return; }
   const fdt = lastDetect ? (tms - lastDetect) / 1000 : 0.033; lastDetect = tms;
-  const lms = (res && res.landmarks) || [];
+  const lms = ((res && res.landmarks) || []).filter(plausiblePose);
+  poseOkFrames = lms.length ? poseOkFrames + 1 : 0;
+  if (poseOkFrames < 5) { lms.length = 0; }
   if (lms.length) lastPoseSeen = now;
   if (lms.length) {
     poseT = now;
@@ -2175,7 +2190,7 @@ function detectPose() {
   lms.forEach((lm, i) => {
     // clap = ice shockwave
     const lw0 = lm[15], rw0 = lm[16];
-    if (vis(lw0) > 0.4 && vis(rw0) > 0.4) {
+    if (vis(lw0) > 0.65 && vis(rw0) > 0.65) {
       const dw = Math.hypot(lw0.x - rw0.x, lw0.y - rw0.y);
       if (dw > 0.22) clapArm[i] = now;
       else if (dw < 0.08 && now - (clapArm[i] || -9) < 0.7 && now - (clapCd[i] || -9) > 1.2) {
@@ -2186,13 +2201,13 @@ function detectPose() {
     }
     for (const [side, wi, ei] of [['L', 15, 13], ['R', 16, 14]]) {
       const w = lm[wi], e = lm[ei];
-      if (vis(w) < 0.35) continue;
+      if (vis(w) < 0.6 || vis(e) < 0.5) continue;
       const hx = w.x + (w.x - e.x) * 0.3, hy = w.y + (w.y - e.y) * 0.3;
       const [sx, sy] = mapPt(hx, hy);
       feedHand('p' + i + side, sx, sy);
     }
     const nose = lm[0], lw = lm[15], rw = lm[16];
-    const up = vis(lw) > 0.35 && vis(rw) > 0.35 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
+    const up = vis(lw) > 0.6 && vis(rw) > 0.6 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
     armsUp[i] = up ? (armsUp[i] || 0) + fdt : 0;
     if (armsUp[i] > 0.3) { blizzard(); armsUp[i] = -3; }
   });
