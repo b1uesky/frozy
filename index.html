@@ -408,7 +408,6 @@ function freezeSprite(s) {
   sfx.freeze(); burst(s.x, s.y, s.ember ? 12 : 26); ring(s.x, s.y, s.r * 1.8); addShake(s.ember ? 0.4 * U : 0.9 * U);
   registerFreeze(s.x, s.y - s.r);
   if (S.mode === 'adventure' && S.stage === 'sprites') ADV.count++;
-  if (!s.ember) say(pick(tr('freeze')));
 }
 function updateSprites(dt) {
   let maxN = 3 + Math.min(4, Math.floor(S.stars / 8));
@@ -610,7 +609,7 @@ function updateFlyStars(dt) {
 }
 function onStar() {
   addTotalStar();
-  if (S.stars % 50 === 0) { celebrate(S.lang === 'zh' ? `${S.stars} 颗星星！` : `${S.stars} stars!`); say(tr('count')(S.stars)); }
+  if (S.stars % 50 === 0) { celebrate(S.lang === 'zh' ? `${S.stars} 颗星星！` : `${S.stars} stars!`); }
   else tone(2637, AC ? AC.currentTime : 0, 0.2, 'sine', 0.05);
 }
 function celebrate(text) {
@@ -790,7 +789,6 @@ function addFrostB(b, amt, px, py) {
     b.done = true; const r = bRect(b);
     sfx.freeze(); burst(r.x + r.w / 2, r.top + r.h * 0.3, 30, { power: 1.2 }); ring(r.x + Math.min(r.w, 40 * U) / 2, r.top + r.h / 2, Math.min(r.w, 40 * U) * 0.9); addShake(1.2 * U); registerFreeze(r.x + Math.min(r.w, 40 * U) / 2, r.top);
     addFlyStar(r.x + Math.min(r.w, 40 * U) / 2, r.top + r.h * 0.3);
-    say(pick(tr('freeze')));
   }
 }
 function updateTown(dt) {
@@ -822,7 +820,7 @@ function updateTown(dt) {
     }
   }
   if (buildings.length && buildings.every(b => b.frost >= 1)) {
-    if (!townDoneAt) { townDoneAt = now; setTimeout(() => { if (SC() === 'town') { celebrate(S.lang === 'zh' ? '冰雪王国！' : 'Ice Kingdom!'); say(tr('townDone'), true); } }, 900); if (S.mode === 'adventure') advanceStage(4.5); }
+    if (!townDoneAt) { townDoneAt = now; setTimeout(() => { if (SC() === 'town') { celebrate(S.lang === 'zh' ? '冰雪王国！' : 'Ice Kingdom!');  } }, 900); if (S.mode === 'adventure') advanceStage(4.5); }
     else if (S.mode !== 'adventure' && now - townDoneAt > 6.5) { genTown(); showHint(tr(S.input !== 'camera' ? 'hintTownPtr' : 'hintTown'), 5); }
   }
 }
@@ -1232,7 +1230,7 @@ function updateFree(dt) {
 // ---- blizzard ----
 function blizzard() {
   if (S.mode === 'menu' || now < blizzReady) return;
-  blizzReady = now + 5; flash = 1; sfx.blizzard(); say(tr('blizzard'), true);
+  blizzReady = now + 5; flash = 1; sfx.blizzard();
   for (let i = 0; i < 160; i++) addParticle({ type: 'flake', x: rand(-0.3, 1) * W, y: -rand(0, 0.6) * H, vx: rand(50, 90) * U, vy: rand(45, 80) * U, g: 0, drag: 0, r: rand(0.8, 2.6) * U, rot: rand(0, 6), vr: rand(-4, 4), life: rand(2.2, 3.2), max: 3.2 });
   if (SC() === 'sprites') sprites.forEach(s => { if (s.state === 'alive') s.pending = rand(0.25, 1.1); });
   else if (SC() === 'town') buildings.forEach(b => { if (b.frost < 1) b.pending = rand(0.2, 1.0); });
@@ -1292,7 +1290,7 @@ function finishAdventure() {
   castlesBuilt++; try { localStorage.setItem('iceMagicCastles', String(castlesBuilt)); } catch (e) {}
   const got = S.stars - ADV.startStars;
   showTitle(tr('advDone'), `⭐ ${got}    🏰 × ${castlesBuilt}`, 7);
-  say(tr('advDoneSay')(got), true); celebrate('🏆');
+  celebrate('🏆');
   for (let i = 0; i < 5; i++) setTimeout(() => { burst(rand(0.15, 0.85) * W, rand(0.2, 0.6) * H, 40, { power: 1.6, col: pick(['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0']) }); sfx.star(); }, i * 450);
   const tok = ADV.token;
   const ph = canPhoto();
@@ -1343,7 +1341,7 @@ function bossHit(a) {
     boss.state = 'frozen'; boss.t = 0;
     sfx.freeze(); setTimeout(() => sfx.freeze(), 180); addShake(3.5 * U); flash = 0.6;
     burst(boss.x, boss.y, 70, { power: 1.8, size: 1.4 }); ring(boss.x, boss.y, boss.r * 2.5);
-    say(tr('bossDone'), true); celebrate(tr('stDone')[2]);
+    celebrate(tr('stDone')[2]);
     sprites.forEach(s => { if (s.state === 'alive') s.pending = rand(0.1, 0.6); });
   }
 }
@@ -1372,7 +1370,7 @@ function updateBoss(dt) {
       sfx.tick();
       if (boss.frost >= 1) { boss.frost = 0.999; bossHit(0.01); }
     }
-    if (!boss.angry && boss.frost >= 0.5) { boss.angry = true; boss.vx *= 1.4; say(tr('bossAngry'), true); floatText(boss.x, boss.y - boss.r * 1.7, '😤', '#ffffff', 9 * U); addShake(1.6 * U); if (AC) noise(AC.currentTime, 0.6, 0.15, 'lowpass', 600, 120, 1); }
+    if (!boss.angry && boss.frost >= 0.5) { boss.angry = true; boss.vx *= 1.4; floatText(boss.x, boss.y - boss.r * 1.7, '😤', '#ffffff', 9 * U); addShake(1.6 * U); if (AC) noise(AC.currentTime, 0.6, 0.15, 'lowpass', 600, 120, 1); }
     if (Math.random() < dt * 8) addParticle({ type: 'spark', x: boss.x + rand(-1, 1) * boss.r, y: boss.y - boss.r * rand(0.8, 1.6), vx: rand(-4, 4) * U, vy: -rand(8, 16) * U, g: 0, drag: 0.5, r: rand(0.6, 1.3) * U, rot: 0, vr: 0, life: 0.7, max: 0.7, col: boss.frost > 0.6 ? '#bfe9ff' : '#ffb347' });
   } else if (boss.state === 'frozen') {
     if (boss.t > 2.6) {
@@ -1465,7 +1463,7 @@ function itemArrive(it) {
     if (AC) { const sc5 = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.5, 1568, 1760, 2093]; tone(sc5[i % sc5.length], AC.currentTime, 0.7, 'triangle', 0.14); tone(sc5[i % sc5.length] * 2, AC.currentTime + 0.05, 0.4, 'sine', 0.05); }
     addFlyStar(px, py);
     if (castle.n >= CASTLE_PARTS.length) {
-      celebrate(tr('stDone')[3]); say(tr('castleDone'), true); flash = 0.5;
+      celebrate(tr('stDone')[3]); flash = 0.5;
       for (let k = 0; k < 6; k++) setTimeout(() => { const b = castleBase(); burst(b[0] + rand(-35, 35) * U, b[1] - rand(30, 75) * U, 35, { power: 1.6, col: pick(['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0', '#a8ffea']) }); sfx.star(); }, k * 380);
       if (S.mode === 'adventure') advanceStage(4.5);
       else setTimeout(() => { if (SC() === 'castle') castle.n = 0; }, 6000);
@@ -1477,7 +1475,7 @@ function itemArrive(it) {
     if (AC) tone(659.25 * Math.pow(2, (snow.n % 12) / 12), AC.currentTime, 0.5, 'sine', 0.09);
     addFlyStar(t[0], t[1]); if (it.value > 1) { setTimeout(() => addFlyStar(t[0], t[1]), 160); floatText(t[0], t[1] - 6 * U, '+2', '#ffe27a'); }
     if (snow.n >= snow.goal) {
-      snow.doneT = now; celebrate(tr('snowDoneShort')); say(tr('snowDone'), true);
+      snow.doneT = now; celebrate(tr('snowDoneShort'));
       setTimeout(() => {
         if (SC() !== 'snowman') return;
         snow.built.push({ scarf: snow.scarf, hat: snow.hat, band: snow.band, side: snow.built.length % 2 ? 1 : -1 });
@@ -1845,7 +1843,7 @@ function addTotalStar() {
     const msg = (S.lang === 'zh' ? (isCape ? '🎁 解锁新斗篷：' : '🎁 解锁新皇冠：') : (isCape ? '🎁 New cape: ' : '🎁 New crown: ')) + itemName(it) + '！';
     const el = $('#toast'); el.textContent = msg; el.style.opacity = 1; el.style.transform = 'translateX(-50%) scale(1)';
     setTimeout(() => { el.style.opacity = 0; el.style.transform = 'translateX(-50%) scale(0.8)'; }, 4200);
-    sfx.celebrate(); say(msg.replace('🎁 ', ''), true);
+    sfx.celebrate();
     if (isCape) S.cape = it.id; else S.crown = it.id; savePrefs();
   }
 }
@@ -2055,7 +2053,6 @@ function spawnSprite() {
     const x = side < 0 ? -r - i * 9 * U : W + r + i * 9 * U;
     sprites.push({ x, y: baseY + (n > 1 ? (i - 1) * 6 * U : 0), vx: -side * baseV * (kind === 'tiny' ? 1.4 : kind === 'big' ? 0.7 : 1), vy: rand(-5, 5) * U, r, frost: 0, state: 'alive', t: 0, ph: rand(0, 6), pal: kind === 'gold' ? GOLD_PAL : pick(IMP_PALS), gold: kind === 'gold', big: kind === 'big', tiny: kind === 'tiny', tough: kind === 'big' ? 2.2 : kind === 'tiny' ? 0.6 : 1, value: kind === 'gold' ? 3 : kind === 'big' ? 2 : 1, entering: true, pending: 0 });
   }
-  if (kind === 'gold') say(tr('golden')); else if (kind === 'big') say(tr('bigImp'));
 }
 
 // ---------- input: hands ----------
@@ -2196,7 +2193,7 @@ function detectPose() {
       else if (dw < 0.08 && now - (clapArm[i] || -9) < 0.7 && now - (clapCd[i] || -9) > 1.2) {
         clapCd[i] = now; clapArm[i] = -9;
         const q = mapPt((lw0.x + rw0.x) / 2, (lw0.y + rw0.y) / 2);
-        iceBlast(q[0], q[1], true); floatText(q[0], q[1] - 8 * U, '💥', '#ffffff', 7 * U); say(tr('clap'), false);
+        iceBlast(q[0], q[1], true); floatText(q[0], q[1] - 8 * U, '💥', '#ffffff', 7 * U);
       }
     }
     for (const [side, wi, ei] of [['L', 15, 13], ['R', 16, 14]]) {
@@ -2386,7 +2383,7 @@ window.addEventListener('keydown', e => {
 });
 window.addEventListener('resize', resize);
 if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = fillVoiceSel; fillVoiceSel(); setTimeout(fillVoiceSel, 500); }
-$('#voiceSel').addEventListener('change', e => { S.voiceName = e.target.value; savePrefs(); say(S.lang === 'zh' ? '冻住啦！好厉害！' : 'Frozen! Amazing!', true); });
+$('#voiceSel').addEventListener('change', e => { S.voiceName = e.target.value; savePrefs(); say(S.lang === 'zh' ? '挥挥手，把小火怪冻住吧！' : 'Wave to freeze the fire imps!', true); });
 $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪来捣乱啦！挥挥手，用冰冻魔法冻住它们！' : 'Wave your hands and freeze the fire imps!', true));
 
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
