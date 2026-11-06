@@ -1,0 +1,25 @@
+# Frozy ❄️ 冰雪魔法
+
+A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.github.io/frozy/**
+
+一个给小朋友玩的"挥手冰冻"体感小游戏。
+
+## How to play / 怎么玩
+
+- **Camera (best)** — open in Chrome on a laptop/tablet with a camera, choose 📷, stand 1.5–3 m away, and cast the screen to the TV (HDMI or AirPlay).
+  - Wave over things to freeze them · fast wave = ice shards · **both hands up = blizzard** · **clap = ice shockwave**
+  - Two people can play together
+- **Mouse / touch** — move to freeze, click/tap = homing ice magic, double-click = blizzard
+- **TV browser (LG webOS etc.)** — arrow keys + OK = homing ice magic, color keys = blizzard
+
+## Modes / 模式
+
+| | |
+|---|---|
+| 🗺️ 冰雪大冒险 Ice Adventure | Fire imps → frozen town → the Fire King boss → build an ice castle |
+| 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
+| 🏘️ 冰封小镇 | Turn the town into ice |
+| ⛄ 堆雪人 | Catch snowflakes to build snowmen |
+| ❄️ 画冰花 | Paint frost; hold still to grow ice flowers |
+
+Pose tracking uses [MediaPipe Pose Landmarker](https://developers.google.com/mediapipe) in the browser; video never leaves the device. Everything is a single `index.html`.
