@@ -17,6 +17,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | | |
 |---|---|
 | 🗺️ 冰雪大冒险 Ice Adventure | Fire imps → frozen town → the Fire King boss → build an ice castle |
+| 🏃‍♀️ 冰雪奔跑 Snow Run | Endless street: run in place to run, wave left/right to freeze houses, freeze fire imps and rivers that block the way, jump over obstacles |
 | 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
 | 🏘️ 冰封小镇 | Turn the town into ice |
 | ⛄ 堆雪人 | Catch snowflakes to build snowmen |
