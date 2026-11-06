@@ -22,4 +22,12 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | ⛄ 堆雪人 | Catch snowflakes to build snowmen |
 | ❄️ 画冰花 | Paint frost; hold still to grow ice flowers |
 
+Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
+
+## Extras
+
+- 👑 **Dress-up** — with the camera on, she wears an ice crown and a cape that flows *behind* her
+- 👗 **Wardrobe** — stars are saved across sessions and unlock 6 cape colors and 4 crowns
+- 📸 **Photo booth** — 3-2-1 photo with crown & cape (press P or the 📸 button); a champion photo is taken automatically after the adventure. Photos stay in this browser and can be saved as JPG
+
 Pose tracking uses [MediaPipe Pose Landmarker](https://developers.google.com/mediapipe) in the browser; video never leaves the device. Everything is a single `index.html`.
