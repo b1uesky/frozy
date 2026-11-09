@@ -9,6 +9,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 - **Camera (best)** — open in Chrome on a laptop/tablet with a camera, choose 📷, stand 1.5–3 m away, and cast the screen to the TV (HDMI or AirPlay).
   - Wave over things to freeze them · fast wave = ice shards · **both hands up = blizzard** · **clap = ice shockwave**
   - Two people can play together
+  - **Kids drive it themselves** — the home screen is a hall of floating bubbles: hold a hand on a bubble for a moment to enter that game; in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
 - **Mouse / touch** — move to freeze, click/tap = homing ice magic, double-click = blizzard
 - **TV browser (LG webOS etc.)** — arrow keys + OK = homing ice magic, color keys = blizzard
 

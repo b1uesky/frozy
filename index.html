@@ -13,26 +13,62 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 #starBox{top:2vmin;left:2.5vmin;font-size:7vmin;font-weight:800;display:flex;align-items:center;text-shadow:0 .4vmin 1.2vmin rgba(0,0,40,.7)}
 #starIcon{display:inline-block;transition:transform .15s}
 #starBox.bump #starIcon{transform:scale(1.5) rotate(15deg)}
-#topBtns{top:2vmin;right:2.5vmin;display:flex;pointer-events:auto}
+#topBtns{top:2vmin;right:2.5vmin;display:flex;pointer-events:auto;z-index:11}
 .iconBtn{width:8vmin;height:8vmin;border-radius:50%;border:.3vmin solid rgba(255,255,255,.6);background:rgba(20,50,110,.55);color:#fff;font-size:3.8vmin;cursor:pointer}
 #status{top:11vmin;left:50%;transform:translateX(-50%);font-size:2.8vmin;padding:.9vmin 2.4vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap;transition:opacity .5s}
 #hint{bottom:4vmin;left:50%;transform:translateX(-50%);font-size:3.6vmin;padding:1.3vmin 3.4vmin;border-radius:5vmin;background:rgba(10,30,80,.62);transition:opacity .8s;white-space:nowrap;text-align:center}
-#menu{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,rgba(70,130,210,.6),rgba(8,20,50,.94));overflow:auto;padding:3vmin}
+#menu{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(8,20,50,.6),rgba(8,20,50,.1) 32%,rgba(8,20,50,.1) 68%,rgba(8,20,50,.62));overflow:auto;padding:2.5vmin 3vmin 2vmin}
 #menu.hide{display:none}
-#menu h1{font-size:10vmin;letter-spacing:.6vmin;text-shadow:0 0 3vmin #8fd8ff,0 0 1vmin #fff}
-#menu .sub{font-size:3.2vmin;opacity:.92;margin-top:-1.5vmin}
-.modes{display:flex;flex-wrap:wrap;justify-content:center}
-#menu>*{margin:1.4vmin 0}
-.modes>.mode{margin:0 1.5vmin}
+#hallTop,#hallBottom{display:flex;flex-direction:column;align-items:center}
+#menu h1{font-size:7.5vmin;letter-spacing:.6vmin;text-align:center;text-shadow:0 0 3vmin #8fd8ff,0 0 1vmin #fff}
+#menu .sub{font-size:2.8vmin;opacity:.95;text-align:center;margin-top:.5vmin;text-shadow:0 .3vmin 1vmin rgba(0,0,40,.8)}
+#castleLine{padding:.5vmin 2.4vmin;border-radius:5vmin;background:rgba(10,30,80,.5)}
+#castleLine:empty{display:none}
+.modes{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:76vmin}
 .opts>*{margin:.8vmin 1.2vmin}
 #starIcon{margin-right:1.2vmin}
 #topBtns .iconBtn{margin-left:1.2vmin}
-.mode .em{margin-bottom:1.6vmin}
-.mode{width:24vmin;height:28vmin;border-radius:4vmin;border:.5vmin solid rgba(255,255,255,.75);background:linear-gradient(160deg,rgba(160,220,255,.38),rgba(40,90,180,.38));color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3.6vmin;font-weight:700;font-family:inherit;transition:transform .15s,box-shadow .15s}
-.mode:hover,.mode:focus{transform:translateY(-.8vmin) scale(1.04);box-shadow:0 0 4vmin rgba(150,220,255,.85);outline:none}
-.mode .em{font-size:9.5vmin;line-height:1}
+.mode{position:relative;width:21vmin;margin:1vmin 1vmin;padding:0;border:0;background:none;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:inherit;font-size:3vmin;font-weight:800;outline:none;-webkit-tap-highlight-color:transparent}
+.orb{position:relative;width:19vmin;height:19vmin;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9.5vmin;line-height:1;border:.45vmin solid rgba(255,255,255,.88);background:rgba(90,150,235,.45);background:radial-gradient(circle at 32% 23%,rgba(255,255,255,.9),rgba(255,255,255,.2) 19%,rgba(255,255,255,0) 40%),radial-gradient(circle at 50% 62%,var(--c1),var(--c2));box-shadow:inset 0 -2.2vmin 4vmin rgba(10,40,130,.45),inset 0 1vmin 2vmin rgba(255,255,255,.35),0 0 3.2vmin rgba(150,220,255,.6);box-shadow:inset 0 -2.2vmin 4vmin rgba(10,40,130,.45),inset 0 1vmin 2vmin rgba(255,255,255,.35),0 0 3.2vmin var(--glow);transition:transform .2s,box-shadow .2s;animation:bob 4.4s ease-in-out infinite}
+.orb::after{content:"";position:absolute;top:-2vmin;left:-2vmin;right:-2vmin;bottom:-2vmin;border-radius:50%;background:conic-gradient(#fff calc(var(--p,0)*1turn),rgba(255,255,255,.22) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 1.4vmin),#000 calc(100% - 1.3vmin));mask:radial-gradient(farthest-side,transparent calc(100% - 1.4vmin),#000 calc(100% - 1.3vmin));opacity:0;transition:opacity .15s;filter:drop-shadow(0 0 1vmin #bfeaff)}
+.mode.aim .orb::after{opacity:1}
+.mode:hover .orb,.mode:focus .orb,.mode.aim .orb{animation:none;transform:scale(1.12);box-shadow:inset 0 -2.2vmin 4vmin rgba(10,40,130,.35),inset 0 1vmin 2vmin rgba(255,255,255,.5),0 0 6vmin #fff}
+.mode .lbl{position:relative;z-index:1;margin-top:1.9vmin;padding:.5vmin 1.8vmin;border-radius:4vmin;background:rgba(10,30,80,.6);white-space:nowrap;text-shadow:0 .2vmin .8vmin rgba(0,0,40,.8)}
+.mode:nth-child(2) .orb{animation-delay:-.7s}.mode:nth-child(3) .orb{animation-delay:-1.9s}.mode:nth-child(4) .orb{animation-delay:-3.1s}.mode:nth-child(5) .orb{animation-delay:-1.2s}.mode:nth-child(6) .orb{animation-delay:-2.6s}
+.m-adventure{--c1:rgba(255,232,140,.8);--c2:rgba(214,125,40,.55);--glow:rgba(255,220,120,.75)}
+.m-runner{--c1:rgba(255,180,222,.78);--c2:rgba(190,70,165,.52);--glow:rgba(255,160,220,.7)}
+.m-sprites{--c1:rgba(255,186,130,.78);--c2:rgba(205,66,66,.52);--glow:rgba(255,150,110,.7)}
+.m-town{--c1:rgba(160,245,225,.72);--c2:rgba(30,130,155,.52);--glow:rgba(130,235,220,.7)}
+.m-snowman{--c1:rgba(225,243,255,.78);--c2:rgba(70,120,215,.52);--glow:rgba(170,220,255,.75)}
+.m-free{--c1:rgba(208,190,255,.78);--c2:rgba(100,72,205,.52);--glow:rgba(190,165,255,.7)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.7vmin)}}
+@keyframes palm{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.18)}}
+#hallHint{max-width:96vw;font-size:3.3vmin;font-weight:700;padding:1.1vmin 3.4vmin;border-radius:5vmin;background:rgba(10,30,80,.66);text-align:center;border:.25vmin solid rgba(255,255,255,.35)}
+#hallHint b{display:inline-block;animation:palm 1.3s ease-in-out infinite;margin-right:1vmin;font-weight:400}
+.kid{font-size:3.1vmin !important;padding:1.3vmin 3.2vmin !important;font-weight:700;background:rgba(20,50,110,.55) !important}
+#btnParent{margin-top:1.2vmin;opacity:.8;background:rgba(10,30,80,.5)}
+#soundTip{position:absolute;right:2.5vmin;top:12.5vmin;font-size:2.5vmin;padding:1.1vmin 2.4vmin;border-radius:5vmin;background:rgba(255,94,126,.85);display:none}
+#parentPanel .panel{max-width:150vmin}
+.aim:not(.mode){background-image:linear-gradient(90deg,rgba(255,255,255,.8) calc(var(--p,0)*100%),rgba(255,255,255,0) 0) !important;box-shadow:0 0 4vmin #fff !important}
+.iconBtn.aim{transform:scale(1.35)}
+.wand{position:fixed;left:0;top:0;z-index:40;pointer-events:none;display:none;width:0;height:0}
+.wand i{position:absolute;left:-6vmin;top:-6vmin;width:12vmin;height:12vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,230,255,.55) 34%,rgba(90,170,255,0) 70%);display:flex;align-items:center;justify-content:center;font-size:5vmin;font-style:normal}
+@media (min-aspect-ratio: 8/5) {
+  .modes{flex-wrap:nowrap;max-width:none}
+  .mode.big{width:26vmin}
+  .mode.big .orb{width:24vmin;height:24vmin;font-size:12vmin}
+  .mode.big .lbl{font-size:3.5vmin}
+  #btnParent{position:absolute;left:2.5vmin;bottom:2vmin;margin:0}
+  .mode:nth-child(1),.mode:nth-child(6){margin-top:11vmin}
+  .mode:nth-child(2),.mode:nth-child(5){margin-top:5vmin}
+}
+@media (min-aspect-ratio: 16/9) {
+  .mode{width:24vmin;margin:1vmin 1.2vmin;font-size:3.2vmin}
+  .orb{width:22vmin;height:22vmin;font-size:11vmin}
+  .mode.big{width:29vmin}
+  .mode.big .orb{width:27vmin;height:27vmin;font-size:13.5vmin}
+}
 #runBar{top:2.2vmin;left:50%;transform:translateX(-50%);display:flex;font-size:3.8vmin;font-weight:700;padding:.8vmin 2.6vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap}
-.mode.adv{border-color:#ffe27a;background:linear-gradient(160deg,rgba(255,226,122,.35),rgba(60,110,200,.45));box-shadow:0 0 3vmin rgba(255,220,120,.45)}
 #advBar{top:2.2vmin;left:50%;transform:translateX(-50%);display:flex;font-size:3.4vmin;padding:.6vmin 1.6vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap}
 #advBar span{margin:0 .9vmin;opacity:.45}
 #advBar span.on{opacity:1;transform:scale(1.15)}
@@ -74,11 +110,16 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   #toast{white-space:normal;text-align:center;width:88vw;top:30vmin;font-size:5.4vmin}
   #starBox{font-size:9vmin}
   .iconBtn{width:10.5vmin;height:10.5vmin;font-size:5vmin}
-  #menu{justify-content:flex-start;padding-top:8vmin}
-  #menu h1{font-size:11vmin}
-  #menu .sub{font-size:4.4vmin}
-  .mode{width:40vmin;height:34vmin;font-size:4.6vmin;margin:1.6vmin !important}
-  .mode .em{font-size:13vmin}
+  #menu{justify-content:flex-start;padding-top:15vmin}
+  #menu h1{font-size:10vmin}
+  #menu .sub{font-size:4.2vmin}
+  .modes{max-width:none}
+  .mode{width:40vmin;font-size:4.2vmin;margin:1.2vmin 1.5vmin}
+  .orb{width:30vmin;height:30vmin;font-size:15vmin}
+  .mode .lbl{margin-top:1.4vmin}
+  #hallHint{font-size:4vmin}
+  .kid{font-size:4.2vmin !important}
+  #soundTip{position:static;margin-top:1.5vmin;font-size:3.6vmin}
   .opts{font-size:3.8vmin}
   .seg button,.tog{font-size:3.8vmin;padding:1.6vmin 3vmin}
   select{font-size:3.6vmin}
@@ -105,36 +146,51 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
 <div id="wardrobe" class="overlay" style="display:none"><div class="panel">
   <div class="ptitle"><span data-t="wardT">👗 我的衣橱</span><span id="wTotal"></span></div>
   <div id="wardrobeItems"></div>
-  <button class="bigbtn" id="wDone"><span data-t="wDone">✨ 好了</span></button>
+  <button class="bigbtn" id="wDone" data-dwell><span data-t="wDone">✨ 好了</span></button>
 </div></div>
 <div id="photoModal" class="overlay" style="display:none"><div class="panel">
   <img id="photoImg" alt="">
-  <div class="prow"><a id="photoSave" class="bigbtn" href="#" download="frozy.jpg"><span data-t="pSave">💾 保存照片</span></a><button class="bigbtn" id="photoClose"><span data-t="pClose">▶️ 继续</span></button></div>
+  <div class="prow"><a id="photoSave" class="bigbtn" href="#" download="frozy.jpg"><span data-t="pSave">💾 保存照片</span></a><button class="bigbtn" id="photoClose" data-dwell><span data-t="pClose">▶️ 继续</span></button></div>
 </div></div>
 <div id="gallery" class="overlay" style="display:none"><div class="panel">
   <div class="ptitle"><span data-t="galT">📷 相册</span></div>
   <div id="galleryGrid"></div>
-  <button class="bigbtn" id="galClose"><span data-t="galClose">关闭</span></button>
+  <button class="bigbtn" id="galClose" data-dwell><span data-t="galClose">关闭</span></button>
 </div></div>
 <div class="hud" id="hint" style="opacity:0"></div>
 <div class="hud" id="topBtns">
   <button class="iconBtn" id="btnPhoto" title="拍照" style="display:none">📸</button>
   <button class="iconBtn" id="btnFull" title="全屏">⛶</button>
-  <button class="iconBtn" id="btnHome" title="回到菜单">🏠</button>
+  <button class="iconBtn" id="btnHome" title="回到菜单" style="display:none">🏠</button>
 </div>
 
 <div id="menu">
-  <h1>❄️ 冰雪魔法 ❄️</h1>
-  <div class="sub" id="subTitle">挥挥手，把一切都冻住！</div>
-  <div class="sub" id="castleLine"></div>
-  <div class="modes">
-    <button class="mode adv" data-mode="adventure"><span class="em">🗺️</span><span data-t="m0">冰雪大冒险</span></button>
-    <button class="mode" data-mode="runner"><span class="em">🏃‍♀️</span><span data-t="m5">冰雪奔跑</span></button>
-    <button class="mode" data-mode="sprites"><span class="em">🔥</span><span data-t="m1">冻住小火怪</span></button>
-    <button class="mode" data-mode="town"><span class="em">🏘️</span><span data-t="m2">冰封小镇</span></button>
-    <button class="mode" data-mode="snowman"><span class="em">⛄</span><span data-t="m4">堆雪人</span></button>
-    <button class="mode" data-mode="free"><span class="em">❄️</span><span data-t="m3">画冰花</span></button>
+  <div id="hallTop">
+    <h1>❄️ 冰雪魔法 ❄️</h1>
+    <div class="sub" id="subTitle">挥挥手，把一切都冻住！</div>
+    <div class="sub" id="castleLine"></div>
   </div>
+  <div class="modes" id="hall">
+    <button class="mode m-sprites" data-mode="sprites" data-dwell><span class="orb">🔥</span><span class="lbl" data-t="m1">冻住小火怪</span></button>
+    <button class="mode m-town" data-mode="town" data-dwell><span class="orb">🏘️</span><span class="lbl" data-t="m2">冰封小镇</span></button>
+    <button class="mode big m-adventure" data-mode="adventure" data-dwell><span class="orb">🗺️</span><span class="lbl" data-t="m0">冰雪大冒险</span></button>
+    <button class="mode big m-runner" data-mode="runner" data-dwell><span class="orb">🏃‍♀️</span><span class="lbl" data-t="m5">冰雪奔跑</span></button>
+    <button class="mode m-snowman" data-mode="snowman" data-dwell><span class="orb">⛄</span><span class="lbl" data-t="m4">堆雪人</span></button>
+    <button class="mode m-free" data-mode="free" data-dwell><span class="orb">❄️</span><span class="lbl" data-t="m3">画冰花</span></button>
+  </div>
+  <div id="hallBottom">
+    <div class="opts">
+      <button class="tog kid" id="btnWardrobe" data-dwell>👗 衣橱</button>
+      <button class="tog kid" id="btnGallery" data-dwell style="display:none"><span data-t="galT">📷 相册</span></button>
+    </div>
+    <div id="hallHint"></div>
+  </div>
+  <button class="tog" id="btnParent">⚙️ <span data-t="parentT">家长设置</span></button>
+  <div id="soundTip"><span data-t="soundTip">🔇 点一下屏幕，打开声音</span></div>
+</div>
+
+<div id="parentPanel" class="overlay" style="display:none"><div class="panel">
+  <div class="ptitle">⚙️ <span data-t="parentT">家长设置</span></div>
   <div class="opts">
     <div class="seg" id="inputSeg">
       <button data-v="camera" class="on">📷 摄像头挥手</button>
@@ -142,8 +198,6 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     </div>
     <button class="tog on" id="togVideo">🪞 显示我自己</button>
     <button class="tog on" id="togDress"><span data-t="dressT">👑 变身</span></button>
-    <button class="tog" id="btnWardrobe">👗 衣橱</button>
-    <button class="tog" id="btnGallery" style="display:none"><span data-t="galT">📷 相册</span></button>
     <button class="tog on" id="togMusic">🎵 音乐</button>
     <button class="tog on" id="togVoice">🗣️ 语音</button>
     <div class="seg" id="langSeg">
@@ -154,13 +208,16 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   <div class="opts"><span id="camRow" style="align-items:center;gap:1vh">📷 <select id="camSel"></select></span>
     <span id="voiceRow" style="display:none;align-items:center;gap:1vh">🗣️ <select id="voiceSel"></select> <button class="tog" id="voiceTest">▶️ 试听</button></span></div>
   <div class="tips" id="tips">
-    家长小贴士：用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
+    用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
     让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<br>
+    <b>孩子可以自己选游戏：把手放在泡泡上停一下就进去；游戏里把手放在右上角 🏠 上停 2 秒 = 回大厅</b><br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单
   </div>
-</div>
+  <button class="bigbtn" id="parentClose"><span data-t="wDone">✨ 好了</span></button>
+</div></div>
+<div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div>
 
 <script type="module">
 // ---------- constants ----------
@@ -227,6 +284,10 @@ const T = {
     camFail: '📷 没打开摄像头，先用鼠标或触屏玩吧',
     mpFail: '⚠️ 魔法识别没加载成功（需要联网），先用鼠标或触屏玩吧',
     melt: '🧽',
+    parentT: '家长设置', soundTip: '🔇 点一下屏幕，打开声音',
+    hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
+    hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
+    hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
   },
   en: {
     sub: 'Wave your hands and freeze everything!', m1: 'Freeze the Fire Imps', m2: 'Frozen Town', m3: 'Ice Painting', m0: 'Ice Adventure', m4: 'Build a Snowman',
@@ -269,6 +330,10 @@ const T = {
     camFail: '📷 Camera not available — play with mouse or touch',
     mpFail: '⚠️ Motion tracking failed to load (needs internet) — use mouse or touch',
     melt: '🧽',
+    parentT: 'Grown-ups', soundTip: '🔇 Tap the screen to turn sound on',
+    hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
+    hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
+    hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
   }
 };
 const tr = k => T[S.lang][k];
@@ -1877,6 +1942,7 @@ function buildWardrobe() {
       const tile = document.createElement('button'); tile.className = 'wtile' + (sel ? ' sel' : '') + (locked ? ' locked' : '');
       const cvs = document.createElement('canvas'); cvs.width = 180; cvs.height = 220; cvs.dataset.kind = kind; cvs.dataset.id = it.id; tile.appendChild(cvs);
       const lb = document.createElement('div'); lb.className = 'wlabel'; lb.textContent = locked ? `🔒 ⭐${it.need}` : itemName(it); tile.appendChild(lb);
+      if (!locked) tile.setAttribute('data-dwell', '');
       if (!locked) tile.addEventListener('click', () => { if (kind === 'cape') S.cape = it.id; else S.crown = it.id; savePrefs(); buildWardrobe(); sfx.star(); });
       row.appendChild(tile);
     });
@@ -2046,7 +2112,7 @@ function drawBackground() {
     ctx.restore();
   }
   drawMoon();
-  if (S.mode !== 'menu' && sc !== 'town' && sc !== 'castle' && sc !== 'snowman' && sc !== 'runner') drawHills();
+  if (sc !== 'town' && sc !== 'castle' && sc !== 'snowman' && sc !== 'runner') drawHills();
 }
 function drawCastle() {
   const [bx, by] = castleBase();
@@ -3225,6 +3291,66 @@ function drawHand(h) {
   drawFlake(ctx, h.x, h.y, 2.2 * U, now * 2, '#ffffff');
 }
 
+// ---------- magic touch: hold a hand on a bubble to choose it (so the child can drive the menus herself) ----------
+const DW = { cool: 0, p: new Map(), said: false, homeTip: false };
+const wands = [...document.querySelectorAll('.wand')];
+function topOverlay() { for (const id of ['#photoModal', '#gallery', '#wardrobe', '#parentPanel']) { const el = $(id); if (el.style.display !== 'none') return el; } return null; }
+function dwellTargets() {
+  const ov = topOverlay();
+  if (ov) return ov.id === 'parentPanel' ? [] : [...ov.querySelectorAll('[data-dwell]')];
+  if (S.mode === 'menu') return [...$('#menu').querySelectorAll('[data-dwell]')];
+  return [$('#btnHome')];
+}
+function dwellClear() { for (const el of DW.p.keys()) { el.classList.remove('aim'); el.style.removeProperty('--p'); } DW.p.clear(); }
+function dwellFire(el) {
+  dwellClear(); DW.cool = 1.6;
+  const r = el.getBoundingClientRect(), x = (r.left + r.width / 2) * DPR, y = (r.top + r.height / 2) * DPR;
+  sfx.freeze(); flash = Math.max(flash, 0.45); ring(x, y, 16 * U); burst(x, y, 36, { power: 1.5, col: '#dff6ff' });
+  el.click();
+}
+function updateDwell(dt) {
+  DW.cool -= dt;
+  const camHands = []; if (camState === 'on') for (const [k, h] of hands) if (k[0] === 'p') camHands.push(h);
+  const inMenus = S.mode === 'menu' || !!topOverlay();
+  wands.forEach((w, i) => { const h = inMenus && camHands[i]; w.style.display = h ? 'block' : 'none'; if (h) w.style.transform = `translate(${h.x / DPR}px,${h.y / DPR}px)`; });
+  const hot = new Set();
+  if (camHands.length && DW.cool <= 0 && photoT <= 0) {
+    const els = dwellTargets(), vm = Math.min(innerWidth, innerHeight) / 100;
+    for (const h of camHands) {
+      const x = h.x / DPR, y = h.y / DPR; let best = null, bd = 1e9;
+      for (const el of els) {
+        const r = el.getBoundingClientRect(); if (!r.width) continue;
+        const home = el.id === 'btnHome', pad = (home ? 5 : 2.5) * vm;
+        if (home && h.speed > 40 * U) continue;
+        if (x > r.left - pad && x < r.right + pad && y > r.top - pad && y < r.bottom + pad) { const d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2)); if (d < bd) { bd = d; best = el; } }
+      }
+      if (best) hot.add(best);
+    }
+  }
+  for (const el of hot) if (!DW.p.has(el)) { DW.p.set(el, 0); el.classList.add('aim'); }
+  for (const [el, p0] of DW.p) {
+    const need = el.id === 'btnHome' ? 1.8 : 1.2;
+    const p = hot.has(el) ? p0 + dt / need : p0 - dt * 2.5;
+    if (p >= 1) { dwellFire(el); return; }
+    if (p <= 0) { DW.p.delete(el); el.classList.remove('aim'); el.style.removeProperty('--p'); continue; }
+    if (Math.floor(p * 4) > Math.floor(p0 * 4) && AC) tone(880 + 220 * Math.floor(p * 4), AC.currentTime, 0.12, 'sine', 0.07);
+    DW.p.set(el, p); el.style.setProperty('--p', p.toFixed(3));
+  }
+}
+let hallText = '', soundTipOn = null;
+function updateHall() {
+  let k = 'hallTap';
+  if (S.input === 'camera' && !IS_TV) {
+    if (camState === 'on') k = now - lastPoseSeen < 1.2 && lastPoseSeen ? 'hallCam' : 'hallLook';
+    else if (camState === 'loading') k = 'hallWait';
+    else if (camState === 'fail') k = 'camFail';
+    else k = 'hallTapCam';
+  }
+  const t = tr(k) + S.lang; if (t !== hallText) { hallText = t; $('#hallHint').innerHTML = tr(k); }
+  if (k === 'hallCam' && !DW.said && !topOverlay()) { DW.said = true; say(tr('hallSay'), true); }
+  const st = !(AC && AC.state === 'running'); if (st !== soundTipOn) { soundTipOn = st; $('#soundTip').style.display = st ? 'block' : 'none'; }
+}
+
 // pointer (mouse / touch)
 function ptrPos(e) { return [e.clientX * DPR, e.clientY * DPR]; }
 function ptrMagic() { return !(S.input === 'camera' && (camState === 'on' || camState === 'loading')); }
@@ -3370,7 +3496,7 @@ let lastT = performance.now(), foundAt = 0, lastPhBtn = null;
 function frame(tms) {
   const dt = Math.min(0.05, Math.max(0, (tms - lastT) / 1000)); lastT = tms; now += dt;
   detectPose();
-  updateHands(dt); updateParticles(dt);
+  updateHands(dt); updateParticles(dt); updateDwell(dt);
   const sc = SC();
   if (sc === 'sprites' || sc === 'boss') updateSprites(dt);
   if (sc === 'town') updateTown(dt);
@@ -3394,11 +3520,12 @@ function frame(tms) {
       else { if (!foundAt) foundAt = now; setStatus(now - foundAt < 2.5 ? tr('camFound') : ''); }
     }
   }
+  if (S.mode === 'menu') { setStatus(''); updateHall(); }
   if (hintUntil && now > hintUntil) { hintEl.style.opacity = 0; hintUntil = 0; }
 
   // draw
   drawBackground();
-  if (S.mode !== 'menu') drawDress();
+  drawDress();
   if (SC() === 'runner') drawRunner();
   ctx.save();
   if (shake) ctx.translate(rand(-1, 1) * shake, rand(-1, 1) * shake);
@@ -3434,7 +3561,8 @@ function frame(tms) {
 
 // ---------- mode control ----------
 function startMode(m) {
-  ensureAudio();
+  ensureAudio(); dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = '';
+  if (S.input === 'camera' && !IS_TV && !DW.homeTip) { DW.homeTip = true; setTimeout(() => { if (S.mode !== 'menu' && camState === 'on') showHint(tr('homeHint'), 7); }, 12000); }
   $('#menu').classList.add('hide'); titleT = 0; comboN = 0;
   $('#btnMelt') && ($('#btnMelt').style.display = m === 'free' ? '' : 'none');
   if (S.input === 'camera' && camState !== 'on' && camState !== 'loading') startCamera($('#camSel').value || undefined);
@@ -3458,11 +3586,14 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
 $('#btnWardrobe').addEventListener('click', openWardrobe);
+$('#btnParent').addEventListener('click', () => { $('#parentPanel').style.display = 'flex'; });
+$('#parentClose').addEventListener('click', () => { $('#parentPanel').style.display = 'none'; });
+document.addEventListener('pointerdown', ensureAudio, true);
 $('#wDone').addEventListener('click', closeWardrobe);
 $('#btnPhoto').addEventListener('click', () => startPhoto(false));
 $('#photoClose').addEventListener('click', closePhoto);
@@ -3525,9 +3656,11 @@ if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = fillVoiceSe
 $('#voiceSel').addEventListener('change', e => { S.voiceName = e.target.value; savePrefs(); say(S.lang === 'zh' ? '挥挥手，把小火怪冻住吧！' : 'Wave to freeze the fire imps!', true); });
 $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪来捣乱啦！挥挥手，用冰冻魔法冻住它们！' : 'Wave your hands and freeze the fire imps!', true));
 
+// camera already allowed on an earlier visit: open it right away so the child can pick a game with her hands
+if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>
