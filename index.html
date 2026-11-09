@@ -17,12 +17,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .iconBtn{width:8vmin;height:8vmin;border-radius:50%;border:.3vmin solid rgba(255,255,255,.6);background:rgba(20,50,110,.55);color:#fff;font-size:3.8vmin;cursor:pointer}
 #status{top:11vmin;left:50%;transform:translateX(-50%);font-size:2.8vmin;padding:.9vmin 2.4vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap;transition:opacity .5s}
 #hint{bottom:4vmin;left:50%;transform:translateX(-50%);font-size:3.6vmin;padding:1.3vmin 3.4vmin;border-radius:5vmin;background:rgba(10,30,80,.62);transition:opacity .8s;white-space:nowrap;text-align:center}
-#menu{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(8,20,50,.6),rgba(8,20,50,.1) 32%,rgba(8,20,50,.1) 68%,rgba(8,20,50,.62));overflow:auto;padding:2.5vmin 3vmin 2vmin}
+#menu{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:linear-gradient(180deg,rgba(8,20,50,.6),rgba(8,20,50,.1) 32%,rgba(8,20,50,0) 66%);overflow:auto;padding:2.5vmin 3vmin 2vmin}
 #menu.hide{display:none}
 #hallTop,#hallBottom{display:flex;flex-direction:column;align-items:center}
+#hallBottom{position:absolute;left:50%;bottom:1.6vmin;transform:translateX(-50%)}
+#hall{margin-top:1.6vmin}
+.mode.nudge .orb{animation:nudge .7s ease-in-out 2}
+@keyframes nudge{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.2) rotate(-7deg)}75%{transform:scale(1.2) rotate(7deg)}}
 #menu h1{font-size:7.5vmin;letter-spacing:.6vmin;text-align:center;text-shadow:0 0 3vmin #8fd8ff,0 0 1vmin #fff}
 #menu .sub{font-size:2.8vmin;opacity:.95;text-align:center;margin-top:.5vmin;text-shadow:0 .3vmin 1vmin rgba(0,0,40,.8)}
-#castleLine{padding:.5vmin 2.4vmin;border-radius:5vmin;background:rgba(10,30,80,.5)}
+#castleLine{display:none;margin-top:.8vmin;font-size:2.4vmin !important;padding:.4vmin 2.2vmin;border-radius:5vmin;background:rgba(10,30,80,.5)}
 #castleLine:empty{display:none}
 .modes{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:76vmin}
 .opts>*{margin:.8vmin 1.2vmin}
@@ -43,7 +47,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .m-free{--c1:rgba(208,190,255,.78);--c2:rgba(100,72,205,.52);--glow:rgba(190,165,255,.7)}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.7vmin)}}
 @keyframes palm{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.18)}}
-#hallHint{max-width:96vw;font-size:3.3vmin;font-weight:700;padding:1.1vmin 3.4vmin;border-radius:5vmin;background:rgba(10,30,80,.66);text-align:center;border:.25vmin solid rgba(255,255,255,.35)}
+#hallHint{max-width:96vw;margin-top:.8vmin;font-size:3.1vmin;font-weight:700;padding:.9vmin 3.2vmin;border-radius:5vmin;background:rgba(10,30,80,.66);text-align:center;border:.25vmin solid rgba(255,255,255,.35)}
 #hallHint b{display:inline-block;animation:palm 1.3s ease-in-out infinite;margin-right:1vmin;font-weight:400}
 .kid{font-size:3.1vmin !important;padding:1.3vmin 3.2vmin !important;font-weight:700;background:rgba(20,50,110,.55) !important}
 #btnParent{margin-top:1.2vmin;opacity:.8;background:rgba(10,30,80,.5)}
@@ -111,6 +115,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   #starBox{font-size:9vmin}
   .iconBtn{width:10.5vmin;height:10.5vmin;font-size:5vmin}
   #menu{justify-content:flex-start;padding-top:15vmin}
+  #hallBottom{position:static;transform:none}
   #menu h1{font-size:10vmin}
   #menu .sub{font-size:4.2vmin}
   .modes{max-width:none}
@@ -167,7 +172,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
 <div id="menu">
   <div id="hallTop">
     <h1>❄️ 冰雪魔法 ❄️</h1>
-    <div class="sub" id="subTitle">挥挥手，把一切都冻住！</div>
+    <div id="hallHint"></div>
     <div class="sub" id="castleLine"></div>
   </div>
   <div class="modes" id="hall">
@@ -183,7 +188,6 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
       <button class="tog kid" id="btnWardrobe" data-dwell>👗 衣橱</button>
       <button class="tog kid" id="btnGallery" data-dwell style="display:none"><span data-t="galT">📷 相册</span></button>
     </div>
-    <div id="hallHint"></div>
   </div>
   <button class="tog" id="btnParent">⚙️ <span data-t="parentT">家长设置</span></button>
   <div id="soundTip"><span data-t="soundTip">🔇 点一下屏幕，打开声音</span></div>
@@ -211,6 +215,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
     让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<br>
     <b>孩子可以自己选游戏：把手放在泡泡上停一下就进去；游戏里把手放在右上角 🏠 上停 2 秒 = 回大厅</b><br>
+    <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单
@@ -287,6 +292,7 @@ const T = {
     parentT: '家长设置', soundTip: '🔇 点一下屏幕，打开声音',
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
+    kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
     hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
   },
   en: {
@@ -333,6 +339,7 @@ const T = {
     parentT: 'Grown-ups', soundTip: '🔇 Tap the screen to turn sound on',
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
+    kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
     hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
   }
 };
@@ -945,7 +952,7 @@ function updateTown(dt) {
     }
   }
   if (buildings.length && buildings.every(b => b.frost >= 1)) {
-    if (!townDoneAt) { townDoneAt = now; setTimeout(() => { if (SC() === 'town') { celebrate(S.lang === 'zh' ? '冰雪王国！' : 'Ice Kingdom!');  } }, 900); if (S.mode === 'adventure') advanceStage(4.5); }
+    if (!townDoneAt) { townDoneAt = now; kdAddHouse(); setTimeout(() => { if (SC() === 'town') { celebrate(S.lang === 'zh' ? '冰雪王国！' : 'Ice Kingdom!');  } }, 900); if (S.mode === 'adventure') advanceStage(4.5); }
     else if (S.mode !== 'adventure' && now - townDoneAt > 6.5) { genTown(); showHint(tr(S.input !== 'camera' ? 'hintTownPtr' : 'hintTown'), 5); }
   }
 }
@@ -1605,7 +1612,7 @@ function itemArrive(it) {
     if (AC) tone(659.25 * Math.pow(2, (snow.n % 12) / 12), AC.currentTime, 0.5, 'sine', 0.09);
     addFlyStar(t[0], t[1]); if (it.value > 1) { setTimeout(() => addFlyStar(t[0], t[1]), 160); floatText(t[0], t[1] - 6 * U, '+2', '#ffe27a'); }
     if (snow.n >= snow.goal) {
-      snow.doneT = now; celebrate(tr('snowDoneShort'));
+      snow.doneT = now; celebrate(tr('snowDoneShort')); kdAddSnowman(snow);
       setTimeout(() => {
         if (SC() !== 'snowman') return;
         snow.built.push({ scarf: snow.scarf, hat: snow.hat, band: snow.band, side: snow.built.length % 2 ? 1 : -1 });
@@ -2114,10 +2121,10 @@ function drawBackground() {
   drawMoon();
   if (sc !== 'town' && sc !== 'castle' && sc !== 'snowman' && sc !== 'runner') drawHills();
 }
-function drawCastle() {
-  const [bx, by] = castleBase();
-  const done = castle.n >= CASTLE_PARTS.length;
-  if (done && !LITE) {
+function drawCastle(kx, ky) {
+  const mini = kx != null, [bx, by] = mini ? [kx, ky] : castleBase(), cn = mini ? CASTLE_PARTS.length : castle.n;   // mini = a finished castle in the kingdom
+  const done = cn >= CASTLE_PARTS.length;
+  if (done && !LITE && !mini) {
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
     const cy = by - 40 * U;
     for (let k = 0; k < 14; k++) {
@@ -2127,14 +2134,14 @@ function drawCastle() {
     }
     ctx.restore();
   }
-  ctx.fillStyle = 'rgba(235,247,255,0.92)'; ctx.beginPath(); ctx.ellipse(bx, by + 2 * U, 50 * U, 5 * U, 0, 0, Math.PI * 2); ctx.fill();
+  if (!mini) { ctx.fillStyle = 'rgba(235,247,255,0.92)'; ctx.beginPath(); ctx.ellipse(bx, by + 2 * U, 50 * U, 5 * U, 0, 0, Math.PI * 2); ctx.fill(); }
   CASTLE_PARTS.forEach((p, i) => {
     const x0 = bx + p[0] * U, y0 = by + p[1] * U, x1 = bx + p[2] * U, y1 = by + p[3] * U, w = x1 - x0, h = y1 - y0;
-    const placed = i < castle.n, kind = p[4];
+    const placed = i < cn, kind = p[4];
     ctx.save();
-    if (!placed) { ctx.setLineDash([U * 1.2, U * 1]); ctx.strokeStyle = i === castle.n ? `rgba(255,255,255,${0.45 + 0.35 * Math.sin(now * 5)})` : 'rgba(255,255,255,0.22)'; ctx.lineWidth = U * 0.35; }
+    if (!placed) { ctx.setLineDash([U * 1.2, U * 1]); ctx.strokeStyle = i === cn ? `rgba(255,255,255,${0.45 + 0.35 * Math.sin(now * 5)})` : 'rgba(255,255,255,0.22)'; ctx.lineWidth = U * 0.35; }
     else {
-      const age = now - (castle.popT[i] || 0), sc = age < 0.35 ? 1 + 0.25 * Math.sin(age / 0.35 * Math.PI) : 1;
+      const age = mini ? 9 : now - (castle.popT[i] || 0), sc = age < 0.35 ? 1 + 0.25 * Math.sin(age / 0.35 * Math.PI) : 1;
       ctx.translate((x0 + x1) / 2, (y0 + y1) / 2); ctx.scale(sc, sc); ctx.translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
       ctx.strokeStyle = '#ffffff'; ctx.lineWidth = U * 0.35;
     }
@@ -2149,7 +2156,7 @@ function drawCastle() {
       ctx.lineTo(x1, y1); ctx.closePath();
     }
     if (placed) {
-      if (kind === 'star') { ctx.fillStyle = '#ffffff'; ctx.shadowColor = '#9fe6ff'; ctx.shadowBlur = 4 * U; }
+      if (kind === 'star') { ctx.fillStyle = '#ffffff'; ctx.shadowColor = '#9fe6ff'; ctx.shadowBlur = mini ? 0 : 4 * U; }
       else if (kind === 'spire') { const g = ctx.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, '#ffffff'); g.addColorStop(0.5, '#cfeeff'); g.addColorStop(1, '#88c8f0'); ctx.fillStyle = g; }
       else { const g = ctx.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, '#f6fcff'); g.addColorStop(1, '#a9dcff'); ctx.fillStyle = g; }
       ctx.fill();
@@ -2172,7 +2179,7 @@ function drawCastle() {
     }
     ctx.restore();
   });
-  if (done && Math.random() < 0.35) addParticle({ type: 'spark', x: bx + rand(-34, 34) * U, y: by - rand(0, 70) * U, vx: 0, vy: 0, g: 0, drag: 0, r: rand(0.6, 1.4) * U, rot: 0, vr: 0, life: 0.7, max: 0.7, col: pick(['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0']) });
+  if (done && !mini && Math.random() < 0.35) addParticle({ type: 'spark', x: bx + rand(-34, 34) * U, y: by - rand(0, 70) * U, vx: 0, vy: 0, g: 0, drag: 0, r: rand(0.6, 1.4) * U, rot: 0, vr: 0, life: 0.7, max: 0.7, col: pick(['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0']) });
 }
 function spawnSprite() {
   const roll = Math.random();
@@ -2937,6 +2944,7 @@ function addFollower(o, owner) {
   if (slot < 0) { const old = mine[0]; slot = old.slot; old.leaving = true; old.lt = 0; old.slot = -1; }   // the oldest friend waves bye and goes home
   RUN.followers.push({ animal: o.animal, owner, slot, ph: rand(0, 6), jt: 0, fx: o.x, fdz: o.z - RUN.d, catchT: 0, leaving: false, lt: 0, moving: true });
   RUN.rescuedTotal++; try { localStorage.setItem('iceMagicRescued', String(RUN.rescuedTotal)); } catch (e) {}
+  kdAddAnimal(o.animal);
 }
 function relayoutFollowers() {
   const keep = [];
@@ -3246,6 +3254,200 @@ function drawRunner() {
   drawRunPip();
 }
 // ======================================================================
+// ---- my ice kingdom: the hall is her own place — what she does in the games moves in and stays ----
+// castle = adventures finished · ice houses = towns frozen · snowmen = snowmen built · animals = animals rescued · crystal trees = stars
+const KD = { animals: [], snowmen: [], houses: [], sn: 0, hn: 0, seen: null, ents: [], sig: '', k: 1, u: 1, cd: 0, clock: 0, toastAt: -1, toastKey: '', popN: 0, tt: 0 };
+const KD_ANIMALS = ['penguin', 'bunny', 'fox', 'owl'];
+const KD_HOUSES = ['house', 'shop', 'cabin', 'mushroom', 'tower', 'windmill'];
+const KD_TINTS = ['#bfe9ff', '#d9c8ff', '#b8f5e6', '#ffd3ec', '#cfe0ff', '#fff0b8'];
+const KD_NOTES = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.5];
+const KD_POP = ['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0', '#a8ffea'];
+try {
+  const d = JSON.parse(localStorage.getItem('iceMagicKingdom') || 'null');
+  if (d) { KD.animals = (d.animals || []).filter(a => KD_ANIMALS.includes(a)); KD.snowmen = (d.snowmen || []).filter(s => s && s.scarf); KD.houses = (d.houses || []).filter(h => KD_HOUSES.includes(h)); KD.sn = Math.max(d.sn | 0, KD.snowmen.length); KD.hn = Math.max(d.hn | 0, KD.houses.length); KD.seen = d.seen || null; }
+} catch (e) {}
+// animals rescued before the kingdom existed move in too
+while (KD.animals.length < Math.min(RUN.rescuedTotal, 8)) KD.animals.unshift(KD_ANIMALS[KD.animals.length % 4]);
+function kdSave() { try { localStorage.setItem('iceMagicKingdom', JSON.stringify({ animals: KD.animals.slice(-12), snowmen: KD.snowmen.slice(-4), houses: KD.houses.slice(-4), sn: KD.sn, hn: KD.hn, seen: KD.seen })); } catch (e) {} }
+function kdAddAnimal(type) { KD.animals.push(KD_ANIMALS.includes(type) ? type : 'penguin'); if (KD.animals.length > 12) KD.animals.shift(); kdSave(); }
+function kdAddSnowman(c) { KD.sn++; KD.snowmen.push({ scarf: c.scarf, hat: c.hat, band: c.band }); if (KD.snowmen.length > 4) KD.snowmen.shift(); kdSave(); }
+function kdAddHouse() { const c = buildings.filter(b => KD_HOUSES.includes(b.type)); KD.hn++; KD.houses.push(c.length ? pick(c).type : 'house'); if (KD.houses.length > 4) KD.houses.shift(); kdSave(); }
+function kdCounts() { return { c: castlesBuilt, h: KD.hn, s: KD.sn, a: Math.max(RUN.rescuedTotal, KD.animals.length), t: Math.min(6, Math.floor(totalStars / 30)) }; }
+function kdGeom() {
+  const r = $('#hall').getBoundingClientRect(); if (!r.width) return;
+  KD.k = clamp((H - r.bottom * DPR) / (31 * U), 0.5, 1); KD.u = U * KD.k;
+}
+function kdBuild() {
+  const u = KD.u, wide = W / u > 135, n = kdCounts(), first = !KD.seen, seen = KD.seen || { c: 0, h: 0, s: 0, a: 0, t: 0 };
+  const old = new Map(KD.ents.map(e => [e.id, e])), ents = [], fresh = [], yB = H - 12.5 * u;
+  const put = (kind, i, total, shown, seenN, e) => {
+    const g = total - shown + i; e.kind = kind; e.id = kind + g; e.pokeT = -9; e.born = -9; e.popped = true;
+    const o = old.get(e.id);
+    if (o) { e.born = o.born; e.popped = o.popped; e.popT = o.popT; if (o.b) e.b = o.b; if (kind === 'animal') { e.x = e.tx = clamp(o.x, W * e.z0, W * e.z1); e.dir = o.dir; } }
+    else if (g >= (seenN || 0)) { e.popped = false; fresh.push(e); }
+    ents.push(e);
+  };
+  const ghost = (of, icon, mode, x, y, hw, hh) => ents.push({ kind: 'ghost', id: 'ghost-' + of, of, icon, mode, x, y, hw, hh, cool: 1.2, pokeT: -9, born: -9, popped: true });
+  // castles
+  const CS = wide ? [[0.8, 1], [0.925, 0.6], [0.685, 0.52]] : [[0.78, 1]];
+  let d = Math.min(n.c, LITE ? 1 : CS.length);
+  for (let i = 0; i < d; i++) put('castle', i, n.c, d, seen.c, { x: W * CS[i][0], y: yB - (i ? 1.4 * u : 0), s: 0.32 * KD.k * CS[i][1], hw: 10.5 * u * CS[i][1], hh: 23 * u * CS[i][1], cool: 2.6 });
+  if (!d) ghost('castle', '🗺️', 'adventure', W * CS[0][0], yB, 10.5 * u, 21 * u);
+  // ice houses
+  const HS = wide ? [0.065, 0.145, 0.225, 0.305] : [0.1, 0.27];
+  const hl = KD.houses.slice(-HS.length); d = hl.length;
+  for (let i = 0; i < d; i++) { const tall = hl[i] === 'tower' || hl[i] === 'windmill', th = (tall ? 19 : 13.5) * u; put('house', i, KD.hn, d, seen.h, { x: W * HS[i], y: yB + (i % 2 ? 0.9 * u : 0), type: hl[i], th, hw: 4.6 * u, hh: th, cool: 1.5 }); }
+  if (!d) ghost('house', '🏘️', 'town', W * HS[wide ? 1 : 0], yB, 4.4 * u, 12 * u);
+  // crystal trees
+  const TS = wide ? [0.47, 0.53, 0.415, 0.585, 0.36, 0.64] : [0.5, 0.42, 0.6];
+  d = Math.min(n.t, TS.length);
+  for (let i = 0; i < d; i++) { const th = (9 + (i * 5) % 4 * 1.7) * u; put('tree', i, n.t, d, seen.t, { x: W * TS[i], y: yB + ((i * 7) % 3 - 1) * 0.7 * u, th, i, hw: 3.2 * u, hh: th, cool: 0.45 }); }
+  if (!d) ghost('tree', '⭐', '', W * TS[0], yB, 3 * u, 9.5 * u);
+  // snowmen
+  const SS = wide ? [0.345, 0.655, 0.265, 0.735] : [0.36, 0.64];
+  const sl = KD.snowmen.slice(-SS.length); d = sl.length;
+  for (let i = 0; i < d; i++) put('snowman', i, KD.sn, d, seen.s, { x: W * SS[i], y: H - 7.5 * u, col: sl[i], hw: 3.6 * u, hh: 15 * u, cool: 1.2 });
+  if (!d) ghost('snowman', '⛄', 'snowman', W * SS[0], H - 7.5 * u, 3.4 * u, 11 * u);
+  // rescued animals wander about in front
+  const al = KD.animals.slice(-(wide ? (LITE ? 6 : 10) : 5)); d = al.length;
+  for (let i = 0; i < d; i++) { const z = wide ? (i % 2 ? [0.57, 0.97] : [0.13, 0.43]) : [0.06, 0.94], x = W * rand(z[0], z[1]); put('animal', i, n.a, d, seen.a, { type: al[i], z0: z[0], z1: z[1], x, tx: x, y: H - (i % 3 === 1 ? 2.4 : i % 3 ? 3.8 : 5.2) * u, wait: rand(0.5, 4), dir: Math.random() < 0.5 ? -1 : 1, ph: rand(0, 6), s: 6.5 * u, hw: 3.3 * u, hh: 6.5 * u, cool: 1.3 }); }
+  if (!d) ghost('animal', '🏃‍♀️', 'runner', W * (wide ? 0.2 : 0.22), H - 4 * u, 2.8 * u, 5.5 * u);
+  ents.sort((a, b) => a.y - b.y);
+  KD.ents = ents;
+  if (fresh.length) {
+    const step = fresh.length > 8 ? 0.2 : 0.5;
+    fresh.forEach((e, i) => { e.born = KD.clock + 1 + i * step; });
+    KD.popN = 0; KD.toastKey = first ? 'kdFirst' : 'kdGrow'; KD.toastAt = KD.clock + 0.7;
+  }
+  KD.seen = n; kdSave();
+}
+function kdToast(msg) {
+  const el = $('#toast'); el.textContent = msg; el.style.opacity = 1; el.style.transform = 'translateX(-50%) scale(1)';
+  clearTimeout(KD.tt); KD.tt = setTimeout(() => { el.style.opacity = 0; el.style.transform = 'translateX(-50%) scale(0.8)'; }, 4200);
+}
+function kdReact(e) {
+  e.pokeT = now; const u = KD.u, top = e.y - e.hh, t = AC ? AC.currentTime : 0;
+  if (e.kind === 'animal') {
+    parts.push({ type: 'text', text: '💗', x: e.x, y: top - u, vx: 0, vy: -10 * u, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ff8fb0', size: 3.6 * u });
+    e.tx = e.x; e.wait = 1.5;
+    if (AC) { const f = { penguin: 1250, bunny: 1560, fox: 1050, owl: 780 }[e.type] || 1200; tone(f, t, 0.09, 'sine', 0.09); tone(f * 1.26, t + 0.1, 0.15, 'sine', 0.09); }
+  } else if (e.kind === 'tree') {
+    if (AC) { const f = KD_NOTES[e.i % KD_NOTES.length] * 2; tone(f, t, 0.9, 'sine', 0.1); tone(f * 2, t + 0.02, 0.5, 'sine', 0.035); }
+    for (let k = 0; k < 6; k++) addParticle({ type: 'spark', x: e.x + rand(-1, 1) * e.hw, y: e.y - rand(0.2, 1) * e.hh, vx: rand(-4, 4) * u, vy: -rand(4, 12) * u, g: 0, drag: 1, r: rand(0.5, 1.1) * u, rot: 0, vr: 0, life: 0.7, max: 0.7, col: KD_TINTS[e.i % 6] });
+  } else if (e.kind === 'snowman') {
+    if (AC) { tone(330, t, 0.12, 'triangle', 0.1); tone(494, t + 0.12, 0.22, 'triangle', 0.1); }
+    burst(e.x, top + e.hh * 0.3, 8, { power: 0.45 });
+  } else if (e.kind === 'house') {
+    if (AC) { tone(1568, t, 0.5, 'sine', 0.08); tone(2093, t + 0.12, 0.6, 'sine', 0.07); }
+    burst(e.x, top + e.hh * 0.4, 10, { power: 0.5 });
+  } else if (e.kind === 'castle') {
+    for (let k = 0; k < 4; k++) setTimeout(() => { burst(e.x + rand(-1, 1) * e.hw, top - rand(0, 5) * u, 22, { power: 1.1, col: pick(KD_POP) }); sfx.star(); }, k * 220);
+  } else {
+    sfx.tick();
+    const b = e.mode && document.querySelector(`.mode[data-mode="${e.mode}"]`);
+    if (b) { b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 1500); }
+  }
+}
+function kdPoke(x, y) {
+  if (S.mode !== 'menu' || topOverlay()) return false;
+  const u = KD.u;
+  for (let i = KD.ents.length - 1; i >= 0; i--) {
+    const e = KD.ents[i];
+    if (!e.popped || now - e.pokeT < e.cool) continue;
+    if (Math.abs(x - e.x) < e.hw + 1.5 * u && y > e.y - e.hh - 1.5 * u && y < e.y + 2 * u) { kdReact(e); return true; }
+  }
+  return false;
+}
+function updateKingdom(dt) {
+  const ov = !!topOverlay(); if (!ov) KD.clock += dt;
+  KD.cd -= dt;
+  if (KD.cd <= 0) {
+    KD.cd = 0.5; kdGeom();
+    const n = kdCounts(), sig = [W, H, KD.k.toFixed(2), n.c, n.h, n.s, n.a, n.t].join();
+    if (sig !== KD.sig) { KD.sig = sig; kdBuild(); }
+  }
+  if (KD.toastAt >= 0 && KD.clock >= KD.toastAt) { KD.toastAt = -1; kdToast(tr(KD.toastKey)); }
+  const u = KD.u;
+  for (const e of KD.ents) {
+    if (!e.popped) {
+      if (KD.clock < e.born) continue;
+      e.popped = true; e.popT = now;
+      const big = e.kind === 'castle', cy = e.y - e.hh * 0.5;
+      ring(e.x, cy, Math.max(e.hw, 5 * u) * 1.4); burst(e.x, cy, big ? 40 : 14, { power: big ? 1.4 : 0.75, col: pick(KD_POP) });
+      if (AC) { const f = KD_NOTES[KD.popN++ % KD_NOTES.length]; tone(f, AC.currentTime, 0.5, 'triangle', 0.11); tone(f * 2, AC.currentTime + 0.05, 0.35, 'sine', 0.05); }
+      if (big) { sfx.celebrate(); flash = Math.max(flash, 0.3); }
+    }
+    if (e.kind === 'animal') {
+      const dx = e.tx - e.x;
+      if (Math.abs(dx) > 0.3 * u) { e.dir = dx < 0 ? -1 : 1; e.x += e.dir * Math.min(Math.abs(dx), 3.2 * u * dt); e.moving = true; }
+      else { e.moving = false; e.wait -= dt; if (e.wait <= 0) { e.tx = W * rand(e.z0, e.z1); e.wait = rand(1.5, 5); } }
+    }
+  }
+  if (!ov && camState === 'on') for (const [k, h] of hands) if (k[0] === 'p' && h.speed > 6 * U) kdPoke(h.x, h.y);
+}
+const kdBack = t => 1 + 2.7 * Math.pow(t - 1, 3) + 1.7 * Math.pow(t - 1, 2);
+function kdTree(h, tint, i) {
+  ctx.fillStyle = '#9cc4e6'; ctx.fillRect(-h * 0.035, -h * 0.14, h * 0.07, h * 0.14);
+  ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(1, h * 0.022); ctx.strokeStyle = '#ffffff';
+  for (let t = 0; t < 3; t++) {
+    const y0 = -h * (0.1 + t * 0.25), y1 = y0 - h * 0.42, ww = h * 0.31 * (1 - t * 0.24);
+    ctx.beginPath(); ctx.moveTo(-ww, y0); ctx.lineTo(0, y1); ctx.lineTo(ww, y0); ctx.closePath();
+    ctx.fillStyle = t % 2 ? '#eef9ff' : tint; ctx.fill(); ctx.stroke();
+  }
+  drawStar(ctx, 0, -h * 1.04, h * 0.1 * (1 + 0.18 * Math.sin(now * 3 + i * 1.7)), 0);
+}
+function kdGhost(e) {
+  const u = KD.u, a = 0.55 + 0.25 * Math.sin(now * 2.2 + e.x), w = e.hw, h = e.hh;
+  ctx.save();
+  ctx.setLineDash([u * 0.9, u * 0.8]); ctx.lineWidth = Math.max(1.5, u * 0.32); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.strokeStyle = `rgba(255,255,255,${a})`; ctx.fillStyle = `rgba(150,195,245,${a * 0.42})`;
+  ctx.beginPath();
+  if (e.of === 'castle') { const P = [[-1, 0], [-1, -0.55], [-0.62, -0.55], [-0.62, -0.38], [-0.26, -0.38], [-0.26, -0.78], [0, -1], [0.26, -0.78], [0.26, -0.38], [0.62, -0.38], [0.62, -0.55], [1, -0.55], [1, 0]]; P.forEach((p, i) => i ? ctx.lineTo(p[0] * w, p[1] * h) : ctx.moveTo(p[0] * w, p[1] * h)); ctx.closePath(); }
+  else if (e.of === 'house') { ctx.moveTo(-w, 0); ctx.lineTo(-w, -h * 0.58); ctx.lineTo(0, -h); ctx.lineTo(w, -h * 0.58); ctx.lineTo(w, 0); ctx.closePath(); }
+  else if (e.of === 'tree') { ctx.moveTo(-w, 0); ctx.lineTo(0, -h); ctx.lineTo(w, 0); ctx.closePath(); }
+  else if (e.of === 'snowman') { ctx.arc(0, -h * 0.27, h * 0.27, 0, Math.PI * 2); ctx.moveTo(h * 0.2, -h * 0.66); ctx.arc(0, -h * 0.66, h * 0.2, 0, Math.PI * 2); ctx.moveTo(h * 0.14, -h * 0.92); ctx.arc(0, -h * 0.92, h * 0.14, 0, Math.PI * 2); }
+  else { ctx.ellipse(0, -h * 0.36, w * 0.8, h * 0.36, 0, 0, Math.PI * 2); ctx.moveTo(w * 0.55, -h * 0.82); ctx.arc(0, -h * 0.82, w * 0.55, 0, Math.PI * 2); }
+  ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+  // a little bubble above shows which game fills this spot
+  const by = -h - 4.2 * u + Math.sin(now * 2 + e.x) * 0.45 * u, R = 3.2 * u;
+  ctx.fillStyle = 'rgba(20,50,110,0.72)'; ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.lineWidth = Math.max(1, u * 0.28);
+  ctx.beginPath(); ctx.arc(0, by, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.font = `${3.5 * u}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffffff'; ctx.fillText(e.icon, 0, by + 0.15 * u);
+  ctx.restore();
+}
+function drawKingdom() {
+  const u = KD.u;
+  // snow bank across the bottom of the hall
+  ctx.fillStyle = 'rgba(190,218,246,0.9)'; ctx.beginPath(); ctx.moveTo(0, H);
+  for (let x = 0; x <= W + 1; x += W / 36) ctx.lineTo(x, H - 18.5 * u - Math.sin(x / W * 7 + 1) * 1.5 * u);
+  ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  const g = ctx.createLinearGradient(0, H - 17 * u, 0, H); g.addColorStop(0, '#f8fcff'); g.addColorStop(1, '#bcdcf4');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, H);
+  for (let x = 0; x <= W + 1; x += W / 48) ctx.lineTo(x, H - 15.5 * u + Math.sin(x / W * 5.2) * 1.1 * u + Math.sin(x / W * 13 + 2) * 0.4 * u);
+  ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  for (const e of KD.ents) {
+    if (!e.popped) continue;
+    const age = now - (e.popT == null ? -9 : e.popT), pa = now - e.pokeT;
+    const sc = age < 0.5 ? Math.max(0.01, kdBack(age / 0.5)) : 1; let sx = 1, sy = 1, rot = 0;
+    if (pa < 0.7) { const w = Math.sin(pa * 18) * (1 - pa / 0.7); if (e.kind === 'snowman' || e.kind === 'tree') rot = w * 0.13; else if (e.kind !== 'animal') { sy = 1 + w * 0.1; sx = 1 - w * 0.07; } }
+    ctx.fillStyle = 'rgba(110,150,205,0.2)'; ctx.beginPath(); ctx.ellipse(e.x, e.y + 0.2 * u, e.hw * 1.05 * sc, 0.9 * u * sc, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.save(); ctx.translate(e.x, e.y); if (rot) ctx.rotate(rot); ctx.scale(sc * sx, sc * sy);
+    if (e.kind === 'castle') { ctx.scale(e.s, e.s); drawCastle(0, 0); }
+    else if (e.kind === 'house') {
+      if (!e.b) { const b = newBuilding(e.type, 0), z = BSIZE[e.type] || [14, 16, 24, 30]; b.w = z[0]; b.h = z[2]; b.frost = b.ice = 1; b.done = true; e.b = b; }
+      const bw = e.b.w * U, bh = e.b.h * U, q = e.th / bh; ctx.scale(q, q);
+      drawB(e.b, { x: -bw / 2, w: bw, h: bh, gy: 0, top: -bh, bot: 0 }, true);
+    }
+    else if (e.kind === 'tree') kdTree(e.th, KD_TINTS[e.i % 6], e.i);
+    else if (e.kind === 'snowman') drawSnowman(0, 0, 0.3 * KD.k, 20, e.col, false);
+    else if (e.kind === 'animal') { if (e.moving) ctx.translate(0, -Math.abs(Math.sin(now * 9 + e.ph)) * 0.35 * u); ctx.scale(e.dir, 1); drawAnimal(e.type, 0, 0, e.s, now + e.ph, pa < 1.2); }
+    else kdGhost(e);
+    ctx.restore();
+  }
+}
+{ const m = $('#menu'), f = e => { if (e.target.closest && e.target.closest('button')) return; kdPoke(e.clientX * DPR, e.clientY * DPR); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
+
+// ======================================================================
 
 // ---------- input: hands ----------
 function feedHand(key, x, y) {
@@ -3520,12 +3722,13 @@ function frame(tms) {
       else { if (!foundAt) foundAt = now; setStatus(now - foundAt < 2.5 ? tr('camFound') : ''); }
     }
   }
-  if (S.mode === 'menu') { setStatus(''); updateHall(); }
+  if (S.mode === 'menu') { setStatus(''); updateHall(); updateKingdom(dt); }
   if (hintUntil && now > hintUntil) { hintEl.style.opacity = 0; hintUntil = 0; }
 
   // draw
   drawBackground();
   drawDress();
+  if (S.mode === 'menu') drawKingdom();
   if (SC() === 'runner') drawRunner();
   ctx.save();
   if (shake) ctx.translate(rand(-1, 1) * shake, rand(-1, 1) * shake);
@@ -3586,7 +3789,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { dwellClear(); DW.cool = 1.5; KD.cd = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
@@ -3616,7 +3819,7 @@ function togBind(id, key, after) {
   el.addEventListener('click', () => { S[key] = !S[key]; sync(); savePrefs(); after && after(); }); sync();
 }
 function applyLang() {
-  $('#subTitle').textContent = tr('sub'); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
+  $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
   document.querySelectorAll('[data-t]').forEach(e => e.textContent = tr(e.dataset.t));
 }
 segBind('#inputSeg', 'input', () => { if (S.input === 'camera') { ensureAudio(); startCamera(); } });
@@ -3660,7 +3863,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

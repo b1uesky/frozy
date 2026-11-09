@@ -26,6 +26,10 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 
 Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
 
+## Her ice kingdom / 我的冰雪王国
+
+The bottom of the hall is the child's own kingdom, and it remembers what she did: every finished adventure adds an **ice castle**, every frozen town an **ice house**, every snowman she builds stands there, every **rescued animal** moves in and wanders about, and every 30 stars grows a **crystal tree**. New things pop in one by one when she comes back from a game. Empty spots show a dashed outline with the bubble icon of the game that fills them. Everything reacts to a hand (or mouse/finger): animals hop, crystal trees ring like a xylophone, the castle sets off fireworks. Saved in this browser only.
+
 ## Extras
 
 - 👑 **Dress-up** — with the camera on, she wears an ice crown and a cape that flows *behind* her
