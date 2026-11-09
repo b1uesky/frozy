@@ -55,6 +55,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 #parentPanel .panel{max-width:150vmin}
 .aim:not(.mode){background-image:linear-gradient(90deg,rgba(255,255,255,.8) calc(var(--p,0)*100%),rgba(255,255,255,0) 0) !important;box-shadow:0 0 4vmin #fff !important}
 .iconBtn.aim{transform:scale(1.35)}
+#pal{position:fixed;left:0;top:0;width:46vmin;height:46vmin;margin:-25.76vmin 0 0 -23vmin;transform-origin:50% 56%;z-index:12;pointer-events:none;display:none;will-change:transform}
 .wand{position:fixed;left:0;top:0;z-index:40;pointer-events:none;display:none;width:0;height:0}
 .wand i{position:absolute;left:-6vmin;top:-6vmin;width:12vmin;height:12vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,230,255,.55) 34%,rgba(90,170,255,0) 70%);display:flex;align-items:center;justify-content:center;font-size:5vmin;font-style:normal}
 @media (min-aspect-ratio: 8/5) {
@@ -202,6 +203,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     </div>
     <button class="tog on" id="togVideo">🪞 显示我自己</button>
     <button class="tog on" id="togDress"><span data-t="dressT">👑 变身</span></button>
+    <button class="tog on" id="togPal"><span data-t="palT">🤍 雪团团</span></button>
     <button class="tog on" id="togMusic">🎵 音乐</button>
     <button class="tog on" id="togVoice">🗣️ 语音</button>
     <div class="seg" id="langSeg">
@@ -215,6 +217,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
     让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<br>
     <b>孩子可以自己选游戏：把手放在泡泡上停一下就进去；游戏里把手放在右上角 🏠 上停 2 秒 = 回大厅</b><br>
+    <b>🤍 雪团团</b>是会学她动作的小伙伴：大厅里跟在她身边、她举手它也举手；它会把手放在泡泡上示范怎么选游戏，游戏里用动作示范怎么玩（挥手 / 原地跑 / 跳 / 歪身体 / 接雪花），她停下来不知道做什么时会再示范一次——不用识字，也不说话<br>
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
@@ -222,6 +225,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   </div>
   <button class="bigbtn" id="parentClose"><span data-t="wDone">✨ 好了</span></button>
 </div></div>
+<canvas id="pal"></canvas>
 <div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div>
 
 <script type="module">
@@ -240,11 +244,11 @@ let now = 0;
 
 const S = {
   mode: 'menu', stars: 0, input: 'camera',
-  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara',
+  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara', pal: true,
 };
 try { const saved = JSON.parse(localStorage.getItem('iceMagicPrefs') || '{}'); Object.assign(S, saved, { mode: 'menu', stars: 0 }); } catch (e) {}
 if (IS_TV) { S.input = 'pointer'; S.showVideo = false; }
-function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown })); } catch (e) {} }
+function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown, pal: S.pal })); } catch (e) {} }
 
 // ---------- text ----------
 const T = {
@@ -293,7 +297,7 @@ const T = {
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
-    hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
+    palT: '🤍 雪团团', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
   },
   en: {
     sub: 'Wave your hands and freeze everything!', m1: 'Freeze the Fire Imps', m2: 'Frozen Town', m3: 'Ice Painting', m0: 'Ice Adventure', m4: 'Build a Snowman',
@@ -340,7 +344,7 @@ const T = {
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
-    hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
+    palT: '🤍 Snowy', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
   }
 };
 const tr = k => T[S.lang][k];
@@ -383,6 +387,7 @@ function resize() {
   if (old.width && old.height) nctx.drawImage(old, 0, 0, W, H);
   frost = nf; fctx = nctx;
   for (const s of sprites) { s.x = clamp(s.x, s.r, W - s.r); s.y = clamp(s.y, 14 * V, 84 * V); }
+  palCv.width = palCv.height = Math.max(64, Math.round(46 * Math.min(W, H) / 100));
   bgStars = Array.from({ length: 90 }, () => ({ x: Math.random(), y: Math.random() * 0.75, r: rand(0.15, 0.45), p: rand(0, 6) }));
 }
 let bgStars = [];
@@ -739,12 +744,12 @@ function updateFlyStars(dt) {
   flyStars = flyStars.filter(f => !f.done);
 }
 function onStar() {
-  addTotalStar();
+  addTotalStar(); PAL.prog = now;
   if (S.stars % 50 === 0) { celebrate(S.lang === 'zh' ? `${S.stars} 颗星星！` : `${S.stars} stars!`); }
   else tone(2637, AC ? AC.currentTime : 0, 0.2, 'sine', 0.05);
 }
 function celebrate(text) {
-  celebrateT = 2.8; celebrateText = text; sfx.celebrate();
+  PAL.cheerT = 2.8; celebrateT = 2.8; celebrateText = text; sfx.celebrate();
   for (let i = 0; i < 90; i++) {
     const x = rand(0.05, 0.95) * W;
     addParticle({ type: Math.random() < 0.5 ? 'flake' : 'spark', x, y: H + 2 * U, vx: rand(-15, 15) * U, vy: -rand(60, 110) * U, g: 45 * U, drag: 0.6, r: rand(0.8, 2.2) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(1.8, 2.8), max: 2.8, col: pick(['#ffffff', '#bfe9ff', '#ffe680', '#ffc4f0', '#a8ffea']) });
@@ -1383,6 +1388,7 @@ function addShake(a) { shake = Math.max(shake, a); }
 function floatText(x, y, text, col, size) { x = clamp(x, W * 0.18, W * 0.82); y = clamp(y, H * 0.12, H * 0.9); parts.push({ type: 'text', text, x, y, vx: 0, vy: -14 * U, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.3, max: 1.3, col: col || '#ffffff', size: size || 5.5 * U }); }
 let comboN = 0, comboT = -9;
 function registerFreeze(x, y) {
+  PAL.prog = now;
   if (now - comboT < 2.2) comboN++; else comboN = 1;
   comboT = now;
   if (comboN >= 2) {
@@ -1412,7 +1418,7 @@ function enterStage(i) {
   const [a, b] = tr('st')[i];
   showTitle(a, b, 3.6);
   setTimeout(() => say(a + '，' + b, true), 250);
-  showHint(tr('stHint')[i] + '   ' + tr(S.input !== 'camera' ? 'hintBlizPtr' : 'hintBliz'), 9);
+  showHint(tr('stHint')[i] + '   ' + tr(S.input !== 'camera' ? 'hintBlizPtr' : 'hintBliz'), 9); palIntro();
   advBarText = '';
 }
 function advanceStage(delay) {
@@ -1473,7 +1479,7 @@ function spawnBoss() {
 }
 function bossHit(a) {
   if (!boss || boss.state !== 'alive') return;
-  boss.frost = Math.min(1, boss.frost + a); boss.hitT = 0.15; sfx.tick();
+  boss.frost = Math.min(1, boss.frost + a); boss.hitT = 0.15; sfx.tick(); PAL.prog = now;
   if (boss.frost >= 1) {
     boss.state = 'frozen'; boss.t = 0;
     sfx.freeze(); setTimeout(() => sfx.freeze(), 180); addShake(3.5 * U); flash = 0.6;
@@ -2540,7 +2546,7 @@ function updateRunner(dt) {
   const boost = RUN.boostT > 0 ? 1.6 : 1;
   // sled section start/end
   const sl = sledRange(RUN.d);
-  if (!RUN.sled && sl && RUN.d >= sl.start && RUN.d < sl.end) { RUN.sled = sl; showTitle(tr('sledT'), '', 2.6); showHint(tr(RUN.auto ? 'sledHintPtr' : 'sledHint'), 6); if (!RUN.sledSaid) { RUN.sledSaid = true; say(tr('sledSay'), true); } for (const P of RUN.players) { P.air = false; P.jumpH = 0; } }
+  if (!RUN.sled && sl && RUN.d >= sl.start && RUN.d < sl.end) { RUN.sled = sl; showTitle(tr('sledT'), '', 2.6); showHint(tr(RUN.auto ? 'sledHintPtr' : 'sledHint'), 6); palCoach([['run', 2.2], ['lean', 3.8]]); if (!RUN.sledSaid) { RUN.sledSaid = true; say(tr('sledSay'), true); } for (const P of RUN.players) { P.air = false; P.jumpH = 0; } }
   if (RUN.sled && (RUN.d >= RUN.sled.end || RUN.d < RUN.sled.start - 1)) { RUN.sled = null; floatText(W / 2, H * 0.32, '🏁', '#ffffff', 9 * U); }
   // world speed
   let want;
@@ -2568,6 +2574,7 @@ function updateRunner(dt) {
     RUN.hintFor = RUN.blocked;
     const k = RUN.blocked.kind;
     showHint(tr(k === 'monster' ? 'runBlockMonster' : k === 'boss' ? 'runBlockBoss' : k === 'river' ? 'runBlockRiver' : (RUN.auto ? 'runBlockObstaclePtr' : 'runBlockObstacle')), 4);
+    palCoach(palContext());
   }
   const moved = nd - RUN.d;
   RUN.d = nd;
@@ -2622,7 +2629,7 @@ function updateRunner(dt) {
     } else if (o.kind === 'rescue') {
       o.t += dt;
       if (!o.hinted && !o.freed && dz < 20 && !RUN.blocked && (RUN.rescueHints || 0) < 2) {
-        o.hinted = true; RUN.rescueHints = (RUN.rescueHints || 0) + 1; showHint(tr(RUN.auto ? 'rescueHintPtr' : 'rescueHint'), 5);
+        o.hinted = true; RUN.rescueHints = (RUN.rescueHints || 0) + 1; showHint(tr(RUN.auto ? 'rescueHintPtr' : 'rescueHint'), 5); palCoach([[o.side < 0 ? 'waveL' : 'waveR', 4]]);
         if (!RUN.rescueSaid) { RUN.rescueSaid = true; say(tr(RUN.auto ? 'rescueSayPtr' : 'rescueSay'), true); }
       }
       if (o.freed && o.t > 0.7) o.gone = true;
@@ -3323,7 +3330,7 @@ function kdBuild() {
 }
 function kdToast(msg) {
   const el = $('#toast'); el.textContent = msg; el.style.opacity = 1; el.style.transform = 'translateX(-50%) scale(1)';
-  clearTimeout(KD.tt); KD.tt = setTimeout(() => { el.style.opacity = 0; el.style.transform = 'translateX(-50%) scale(0.8)'; }, 4200);
+  PAL.cheerT = 2; clearTimeout(KD.tt); KD.tt = setTimeout(() => { el.style.opacity = 0; el.style.transform = 'translateX(-50%) scale(0.8)'; }, 4200);
 }
 function kdReact(e) {
   e.pokeT = now; const u = KD.u, top = e.y - e.hh, t = AC ? AC.currentTime : 0;
@@ -3445,7 +3452,237 @@ function drawKingdom() {
     ctx.restore();
   }
 }
-{ const m = $('#menu'), f = e => { if (e.target.closest && e.target.closest('button')) return; kdPoke(e.clientX * DPR, e.clientY * DPR); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
+{ const m = $('#menu'), f = e => { palPoke(e.clientX * DPR, e.clientY * DPR); if (e.target.closest && e.target.closest('button')) return; kdPoke(e.clientX * DPR, e.clientY * DPR); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
+
+// ======================================================================
+// ---- 雪团团 (Snowy), a snow buddy — she cannot read the hints, so the buddy SHOWS her instead of telling her:
+//      in the hall it floats beside her and copies her arms; it puts its own hand on a bubble to show how choosing works;
+//      in the games it acts out the move she needs (wave / run / jump / lean / catch) and comes back when she is stuck. It never talks. ----
+const D2R = Math.PI / 180;
+const palCv = $('#pal'), pcx = palCv.getContext('2d');
+const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init: false, g: 'idle', gt: 0, aL: [118 * D2R, 98 * D2R], aR: [62 * D2R, 82 * D2R], lean: 0, dx: 0, dy: 0, sq: 0, blink: 0, nextBlink: 2, look: [0, 0], coach: null, cheerT: 0, pokeT: -9, prog: 0, lastCoach: -9, seenFor: 0, demo: null, demoN: 0, idleT: 0, learned: false, side: 1, hallY: 0, hallCd: 0, back: 0, pa: 0, homeEl: null };
+try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
+// what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
+const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]] };
+const PAL_DEMO = ['adventure', 'runner', 'snowman', 'town', 'sprites', 'free'];
+function palOn() { return S.pal !== false && !IS_TV; }
+function palCoach(seq) {
+  if (!palOn() || S.input !== 'camera' || S.mode === 'menu' || !seq || !seq.length) return;
+  PAL.coach = { seq, i: 0, t: 0 }; PAL.lastCoach = now;
+  if (AC) { const t = AC.currentTime; tone(1318.5, t, 0.1, 'sine', 0.07); tone(1760, t + 0.09, 0.16, 'sine', 0.07); }
+}
+function palContext() {   // the one move she needs right now
+  const sc = SC();
+  if (sc === 'runner') {
+    const b = RUN.blocked;
+    if (b) return [[b.kind === 'monster' || b.kind === 'boss' || b.kind === 'river' ? 'wave' : 'jump', 3.4]];
+    if (RUN.sled) return [['run', 2], ['lean', 3.4]];
+    return [['run', 3.4]];
+  }
+  return (PAL_INTRO[sc] || []).slice(0, 1);
+}
+function palIntro() { PAL.prog = now; palCoach(PAL_INTRO[SC()]); }
+// poses: angles in degrees in screen space (0 = right, 90 = down, -90 = up). R = the arm on the right of the screen.
+function palGesture(g, t) {
+  const o = { R: [62, 82], L: [118, 98], lean: 0, dx: 0, dy: 0, sq: 0, mouth: 0, feet: 0, fx: null }, s = Math.sin;
+  if (g === 'idle') { o.R[0] += 4 * s(t * 1.6); o.L[0] -= 4 * s(t * 1.6 + 1); }
+  else if (g === 'hi') { o.R = [-48, -90 + 30 * s(t * 9)]; o.mouth = 1; o.lean = 0.06 * s(t * 4.5); }
+  else if (g === 'wave') { const a = -90 + 58 * s(t * 4.4); o.R = [a, a + 16 * s(t * 4.4 - 0.7)]; o.L = [128, 112]; o.lean = 0.1 * s(t * 4.4); o.mouth = 1; o.fx = 'R'; }
+  else if (g === 'waveL') { const a = 180 + 30 * s(t * 7.5); o.L = [a, a + 12 * s(t * 7.5 - 0.6)]; o.lean = -0.14; o.dx = -0.25; o.mouth = 1; o.fx = 'L'; }
+  else if (g === 'waveR') { const a = 30 * s(t * 7.5); o.R = [a, a + 12 * s(t * 7.5 - 0.6)]; o.lean = 0.14; o.dx = 0.25; o.mouth = 1; o.fx = 'R'; }
+  else if (g === 'up' || g === 'cheer') { const w = 6 * s(t * 14); o.R = [-74, -84 + w]; o.L = [-106, -96 - w]; o.mouth = 1; o.fx = 'both'; o.dy = g === 'cheer' ? -0.42 * Math.abs(s(t * 6)) : -0.08; }
+  else if (g === 'run') { const p = t * 11, a = 38 * s(p); o.R = [88 + a, -80 + a * 0.5]; o.L = [92 + a, -100 + a * 0.5]; o.dy = -0.2 * Math.abs(s(p)); o.feet = s(p); o.lean = 0.04 * s(p); o.mouth = 1; }
+  else if (g === 'jump') {
+    const u = (t % 1.5) / 1.5;
+    if (u < 0.22) { o.sq = 0.24 * s(u / 0.22 * Math.PI / 2); o.R = [70, 110]; o.L = [110, 70]; }
+    else if (u < 0.72) { const k = (u - 0.22) / 0.5; o.dy = -1.25 * s(k * Math.PI); o.sq = -0.12 * s(k * Math.PI); o.R = [-70, -82]; o.L = [-110, -98]; o.mouth = 1; o.feet = 0.6; }
+    else { const k = (u - 0.72) / 0.28; o.sq = 0.2 * (1 - k) * Math.cos(k * 6); }
+  }
+  else if (g === 'lean') { const k = s(t * 2.6); o.lean = 0.44 * k; o.dx = 0.55 * k; o.R = [-8, -8]; o.L = [188, 188]; o.mouth = 1; }
+  else if (g === 'catch') { const k = s(t * 2.8); o.dx = 0.5 * k; o.R = [-58 + 10 * k, -82]; o.L = [-122 + 10 * k, -98]; o.mouth = 1; o.fx = 'catch'; }
+  else if (g === 'touch') { o.R = [-14, -8]; o.L = [124, 104]; o.lean = 0.08; o.fx = 'hold'; }
+  else if (g === 'paint') { const u = t % 4.2; if (u < 2) { const a = -45 + 34 * s(u * 3.4); o.R = [a, a + 10 * s(u * 3.4 - 0.6)]; o.fx = 'R'; } else { o.R = [-30, -22]; o.fx = 'grow'; } o.L = [126, 108]; }
+  else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
+  return o;
+}
+function palAng(cur, tgt, k) { const d = tgt - cur; return cur + Math.atan2(Math.sin(d), Math.cos(d)) * k; }
+function palStyle(el, p) { if (!el || DW.p.has(el)) return; if (p == null) { el.classList.remove('aim'); el.style.removeProperty('--p'); } else { el.classList.add('aim'); el.style.setProperty('--p', p.toFixed(3)); } }
+function palDemoEnd() { if (PAL.demo) { palStyle(PAL.demo.el, null); PAL.demo = null; } if (PAL.homeEl) { palStyle(PAL.homeEl, null); PAL.homeEl = null; } }
+function palGiggle() {
+  PAL.pokeT = now;
+  parts.push({ type: 'text', text: '💗', x: PAL.x, y: PAL.y - 9 * U * PAL.s, vx: 0, vy: -10 * U, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ff8fb0', size: 3.8 * U });
+  if (AC) { const t = AC.currentTime; [1568, 1976, 2349].forEach((f, i) => tone(f, t + i * 0.08, 0.14, 'sine', 0.08)); }
+}
+function palPoke(x, y) {
+  if (!PAL.vis || PAL.demo || S.mode !== 'menu' || now - PAL.pokeT < 2.2 || topOverlay()) return false;
+  if (dist(x, y, PAL.x, PAL.y) > 9.5 * Math.min(W, H) / 100 * PAL.s) return false;
+  palGiggle(); return true;
+}
+// the buddy puts its own hand on a bubble: she sees the very same white ring she will get, then the bubble wiggles (it does not go in)
+function palDemo(dt, VM) {
+  const d = PAL.demo, r = d.el.querySelector('.orb').getBoundingClientRect();
+  const ox = (r.left + r.width / 2) * DPR, oy = (r.top + r.height / 2) * DPR, rr = r.width / 2 * DPR;
+  const tx = ox - rr * 0.8, ty = oy + rr * 0.74;
+  d.t += dt;
+  if (d.ph === 0) { if (dist(PAL.x, PAL.y, tx, ty) < 3 * VM || d.t > 1.8) { d.ph = 1; d.t = 0; } return [tx, ty, 'idle']; }
+  PAL.pa = Math.atan2(oy - PAL.y, ox - PAL.x) / D2R;
+  if (d.ph === 1) {
+    const p = d.t / 1.3;
+    if (Math.floor(p * 4) > Math.floor(d.p * 4) && AC) tone(880 + 220 * Math.floor(p * 4), AC.currentTime, 0.12, 'sine', 0.07);
+    d.p = p; palStyle(d.el, Math.min(1, p));
+    if (p >= 1) {
+      d.ph = 2; d.t = 0; palStyle(d.el, null); sfx.star(); ring(ox, oy, rr * 0.95); burst(ox, oy, 26, { power: 1.3, col: '#dff6ff' });
+      const b = d.el; b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 1500);
+    }
+    return [tx, ty, 'point'];
+  }
+  if (d.ph === 2) { if (d.t > 1.1) { d.ph = 3; d.t = 0; } return [tx, ty, 'cheer']; }
+  if (d.t > 1.6) { PAL.demo = null; PAL.idleT = 0; }
+  return [null, null, 'hi'];   // back beside her: "your turn"
+}
+function updatePal(dt) {
+  if (!palOn()) { if (PAL.vis) { PAL.vis = false; palCv.style.display = 'none'; } palDemoEnd(); PAL.coach = null; PAL.init = false; return; }
+  const VM = Math.min(W, H) / 100, menu = S.mode === 'menu', camIn = S.input === 'camera';
+  const seen = camIn && camState === 'on' && now - poseT < 0.6 && poseScr.length > 0;
+  PAL.seenFor = seen ? PAL.seenFor + dt : 0;
+  if (PAL.cheerT > 0) PAL.cheerT -= dt;
+  let g = 'idle', want = false, tx = PAL.tx, ty = PAL.ty, ts = 0.6, mir = null, look = [0, 0], back = 0;
+  if (menu) {
+    want = true; PAL.coach = null; if (PAL.homeEl) { palStyle(PAL.homeEl, null); PAL.homeEl = null; }
+    PAL.hallCd -= dt;
+    if (PAL.hallCd <= 0 || !PAL.hallY) { PAL.hallCd = 0.5; const r = $('#hall').getBoundingClientRect(); if (r.width) { PAL.tight = H > W || r.bottom * DPR + 2 * VM > H - 27 * VM; PAL.hallY = PAL.tight ? H - 13 * VM : Math.min(H - 27 * VM, r.bottom * DPR + 6.5 * VM); } }
+    // wide screens have a clear band between the bubbles and the kingdom; on 4:3 / phones there is none, so it stands on the snow
+    tx = PAL.tight ? W * 0.3 : W / 2; ty = PAL.hallY || H * 0.62; if (PAL.tight) ts = 0.5;
+    if (seen) {
+      // float beside her and copy her arms
+      const P = poseScr.reduce((a, b) => dist(b.ls.x, b.ls.y, b.rs.x, b.rs.y) > dist(a.ls.x, a.ls.y, a.rs.x, a.rs.y) ? b : a);
+      const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y), mx = (P.ls.x + P.rs.x) / 2;
+      if (mx < W * 0.42) PAL.side = 1; else if (mx > W * 0.58) PAL.side = -1;
+      tx = clamp(mx + PAL.side * (sw * 0.95 + 6 * VM), 9 * VM, W - 9 * VM);   // beside her, in the clear band between the bubbles and the kingdom
+      const arms = [[P.ls, P.le2, P.lw], [P.rs, P.re2, P.rw]].sort((a, b) => a[0].x - b[0].x);
+      const ang = A => { const [sh, el, wr] = A; if (!sh.v || !el.v) return null; const a1 = Math.atan2(el.y - sh.y, el.x - sh.x); return [a1, wr.v ? Math.atan2(wr.y - el.y, wr.x - el.x) : a1]; };
+      mir = { L: ang(arms[0]), R: ang(arms[1]), lean: clamp(Math.atan2(arms[1][0].y - arms[0][0].y, arms[1][0].x - arms[0][0].x), -0.4, 0.4) };
+      mir.up = !!(mir.L && mir.R && Math.sin(mir.L[1]) < -0.5 && Math.sin(mir.R[1]) < -0.5);
+      g = 'mirror';
+      const ldx = P.nose.x - PAL.x, ldy = P.nose.y - PAL.y, ld = Math.hypot(ldx, ldy) || 1; look = [ldx / ld, ldy / ld];
+      const busy = DW.p.size > 0 || !!topOverlay() || DW.cool > 0;
+      if (busy) PAL.idleT = 0; else if (!PAL.demo) PAL.idleT += dt;
+      if (!PAL.demo && !busy && PAL.idleT > (PAL.learned ? 30 : PAL.demoN ? 14 : 5)) {
+        const el = document.querySelector(`.mode[data-mode="${PAL_DEMO[PAL.demoN++ % PAL_DEMO.length]}"]`);
+        if (el && el.querySelector('.orb').getBoundingClientRect().width) PAL.demo = { el, ph: 0, t: 0, p: 0 };
+      }
+      if (PAL.demo && (topOverlay() || DW.p.has(PAL.demo.el))) palDemoEnd();
+      if (PAL.demo) { const q = palDemo(dt, VM); if (q[0] != null) { tx = q[0]; ty = q[1]; ts = 0.74; look = [0.6, -0.6]; } g = q[2]; }
+      else if (!PAL.demo) for (const [k, h] of hands) if (k[0] === 'p' && h.speed > 6 * U && palPoke(h.x, h.y)) break;
+    } else {
+      palDemoEnd(); PAL.idleT = 0;
+      if (camIn ? now % 6 < 1.8 : now < 2.4) g = 'hi';
+      for (const [k, h] of hands) if (k[0] === 'm') { const ldx = h.x - PAL.x, ldy = h.y - PAL.y, ld = Math.hypot(ldx, ldy) || 1; look = [ldx / ld, ldy / ld]; }
+    }
+    if (PAL.cheerT > 0 && !PAL.demo) g = 'cheer';
+    if (now - PAL.pokeT < 0.9) g = 'cheer';
+  } else {
+    if (PAL.demo) palDemoEnd();
+    if (camIn) {
+      const sc = SC();
+      if (sc === 'runner' && RUN.v > 0.4) PAL.prog = now;
+      if (sc === 'free') for (const h of hands.values()) if (h.speed > 25 * U) PAL.prog = now;
+      // she has stopped and nothing is happening: come back and show the move again
+      if (!PAL.coach && seen && photoT <= 0 && celebrateT <= 0 && titleT <= 0 && now - Math.max(PAL.prog, PAL.lastCoach) > 11) palCoach(palContext());
+      const q = PAL.coach;
+      if (q) { q.t += dt; if (q.t > q.seq[q.i][1]) { q.t = 0; q.i++; if (q.i >= q.seq.length) { PAL.coach = null; PAL.lastCoach = now; } } }
+      const cur = PAL.coach ? PAL.coach.seq[PAL.coach.i][0] : null;
+      if (PAL.homeEl && cur !== 'home') { palStyle(PAL.homeEl, null); PAL.homeEl = null; }
+      if (cur || PAL.cheerT > 0) {
+        want = true; back = 1; ts = 1; tx = Math.max(20 * VM, W * 0.13); ty = H * (sc === 'runner' ? 0.52 : 0.6); g = cur || 'cheer';
+        if (cur === 'home') {   // "want another game?" — it flies up and holds its hand on the little house
+          const el = $('#btnHome'), r = el.getBoundingClientRect(), hx = (r.left + r.width / 2) * DPR, hy = (r.top + r.height / 2) * DPR;
+          tx = hx - 10 * VM; ty = hy + 12 * VM; ts = 0.8; g = 'point'; PAL.pa = Math.atan2(hy - PAL.y, hx - PAL.x) / D2R; PAL.homeEl = el;
+          const p = (PAL.coach.t - 1) % 2.3 / 1.8; palStyle(el, PAL.coach.t < 1 ? null : Math.min(1, p));
+        }
+      }
+    } else PAL.coach = null;
+  }
+  // fly
+  if (want && !PAL.vis) { PAL.vis = true; palCv.style.display = 'block'; if (!PAL.init) { PAL.init = true; PAL.x = tx; PAL.y = ty; PAL.s = 0.05; } else { PAL.x = tx - 6 * VM; PAL.y = H + 30 * VM; } PAL.vx = PAL.vy = 0; }
+  if (!PAL.vis) return;
+  if (!want) { ty = H + 34 * VM; if (PAL.y > H + 28 * VM) { PAL.vis = false; palCv.style.display = 'none'; return; } }
+  PAL.tx = tx; PAL.ty = ty;
+  PAL.vx += ((tx - PAL.x) * 42 - PAL.vx * 10) * dt; PAL.vy += ((ty - PAL.y) * 42 - PAL.vy * 10) * dt; PAL.x += PAL.vx * dt; PAL.y += PAL.vy * dt;
+  PAL.s += (ts - PAL.s) * Math.min(1, dt * 6); PAL.back += (back - PAL.back) * Math.min(1, dt * 5);
+  if (g !== PAL.g) { PAL.g = g; PAL.gt = 0; } PAL.gt += dt;
+  const o = palGesture(g === 'mirror' ? 'idle' : g, PAL.gt);
+  let tR = [o.R[0] * D2R, o.R[1] * D2R], tL = [o.L[0] * D2R, o.L[1] * D2R];
+  if (g === 'mirror' && mir) { if (mir.R) tR = mir.R; if (mir.L) tL = mir.L; o.lean = mir.lean; o.mouth = mir.up ? 1 : 0; if (mir.up) o.fx = 'both'; }
+  const ka = Math.min(1, dt * (g === 'mirror' ? 14 : 22)), kb = Math.min(1, dt * 16);
+  for (let i = 0; i < 2; i++) { PAL.aR[i] = palAng(PAL.aR[i], tR[i], ka); PAL.aL[i] = palAng(PAL.aL[i], tL[i], ka); }
+  PAL.lean += (o.lean + clamp(PAL.vx / (150 * VM), -0.35, 0.35) - PAL.lean) * kb; PAL.dx += (o.dx - PAL.dx) * kb; PAL.dy += (o.dy - PAL.dy) * kb; PAL.sq += (o.sq - PAL.sq) * kb;
+  PAL.look[0] += (look[0] - PAL.look[0]) * kb; PAL.look[1] += (look[1] - PAL.look[1]) * kb;
+  PAL.nextBlink -= dt; if (PAL.nextBlink <= 0) { PAL.blink = 0.15; PAL.nextBlink = rand(2, 5); } if (PAL.blink > 0) PAL.blink -= dt;
+  drawPal(o);
+  const bob = Math.sin(now * 2.1) * 0.7 * VM;
+  palCv.style.transform = `translate(${(PAL.x / DPR).toFixed(1)}px,${((PAL.y + bob) / DPR).toFixed(1)}px) scale(${Math.max(0.01, PAL.s).toFixed(3)})`;
+}
+function drawPal(o) {
+  const c = pcx, N = palCv.width, R = N / 6.2, cx = N / 2, cy = N * 0.56, t = PAL.gt, TAU = Math.PI * 2;
+  c.clearRect(0, 0, N, N);
+  if (PAL.back > 0.02) {   // a soft dark halo so the buddy reads against a busy game
+    const g = c.createRadialGradient(cx, cy - 0.2 * R, R * 0.6, cx, cy - 0.2 * R, R * 3.05);
+    g.addColorStop(0, `rgba(14,38,92,${0.62 * PAL.back})`); g.addColorStop(0.7, `rgba(14,38,92,${0.42 * PAL.back})`); g.addColorStop(1, 'rgba(14,38,92,0)');
+    c.fillStyle = g; c.fillRect(0, 0, N, N);
+  }
+  c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
+  c.translate(cx + PAL.dx * R, cy + R + PAL.dy * R); c.rotate(PAL.lean); c.scale(1 + PAL.sq * 0.8, 1 - PAL.sq); c.translate(0, -R);
+  const spin = now - PAL.pokeT; if (spin < 0.7) { const k = spin / 0.7; c.rotate(TAU * (1 - Math.pow(1 - k, 3))); }
+  // boots
+  for (const sd of [-1, 1]) { const fy = 0.98 * R - sd * o.feet * 0.16 * R; c.fillStyle = '#7fbdf5'; c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.05; c.beginPath(); c.ellipse(sd * 0.38 * R, fy, 0.3 * R, 0.19 * R, 0, 0, TAU); c.fill(); c.stroke(); }
+  // fluffy body
+  const body = () => { c.beginPath(); for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + 0.26, bx = Math.cos(a) * R * 0.9, by = Math.sin(a) * R * 0.9; c.moveTo(bx + R * 0.24, by); c.arc(bx, by, R * 0.24, 0, TAU); } c.moveTo(R * 0.95, 0); c.arc(0, 0, R * 0.95, 0, TAU); };
+  c.shadowColor = 'rgba(30,80,170,0.6)'; c.shadowBlur = R * 0.3; c.fillStyle = '#f4faff'; body(); c.fill(); c.shadowBlur = 0; c.shadowColor = 'transparent';
+  const bg = c.createRadialGradient(-0.3 * R, -0.42 * R, R * 0.1, 0, 0, R * 1.15); bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.6, '#edf6ff'); bg.addColorStop(1, '#bcd9f6'); c.fillStyle = bg; body(); c.fill();
+  // pink earmuffs with a snowflake on top
+  c.strokeStyle = '#ff8fc0'; c.lineWidth = R * 0.14; c.beginPath(); c.arc(0, -0.04 * R, 1.08 * R, Math.PI * 1.13, Math.PI * 1.87); c.stroke();
+  for (const sd of [-1, 1]) { const mg = c.createRadialGradient(sd * 0.98 * R - 0.08 * R, -0.2 * R, R * 0.03, sd * 1.02 * R, -0.1 * R, R * 0.32); mg.addColorStop(0, '#ffd3e8'); mg.addColorStop(1, '#f2619f'); c.fillStyle = mg; c.beginPath(); c.arc(sd * 1.02 * R, -0.1 * R, 0.31 * R, 0, TAU); c.fill(); }
+  drawFlake(c, 0, -1.2 * R, 0.2 * R, now * 0.6, '#ffffff');
+  // face
+  const lx = PAL.look[0] * 0.06 * R, ly = PAL.look[1] * 0.05 * R, bl = PAL.blink > 0 ? 0.12 : 1;
+  c.fillStyle = 'rgba(255,135,180,0.5)'; for (const sd of [-1, 1]) { c.beginPath(); c.ellipse(sd * 0.6 * R, 0.17 * R, 0.17 * R, 0.1 * R, 0, 0, TAU); c.fill(); }
+  for (const sd of [-1, 1]) {
+    c.fillStyle = '#1b2a66'; c.beginPath(); c.ellipse(sd * 0.34 * R + lx, -0.1 * R + ly, 0.14 * R, 0.17 * R * bl, 0, 0, TAU); c.fill();
+    if (bl === 1) { c.fillStyle = '#ffffff'; c.beginPath(); c.arc(sd * 0.34 * R + lx - 0.045 * R, -0.16 * R + ly, 0.05 * R, 0, TAU); c.fill(); }
+  }
+  if (o.mouth) { c.fillStyle = '#d94a7c'; c.beginPath(); c.arc(lx * 0.5, 0.2 * R, 0.17 * R, 0, Math.PI); c.closePath(); c.fill(); }
+  else { c.strokeStyle = '#1b2a66'; c.lineWidth = R * 0.055; c.beginPath(); c.arc(lx * 0.5, 0.15 * R, 0.15 * R, Math.PI * 0.18, Math.PI * 0.82); c.stroke(); }
+  // arms + mittens
+  const hand = {};
+  for (const [key, sd, A] of [['L', -1, PAL.aL], ['R', 1, PAL.aR]]) {
+    const sx = sd * 0.84 * R, sy = 0.2 * R, ex = sx + Math.cos(A[0]) * 0.6 * R, ey = sy + Math.sin(A[0]) * 0.6 * R, hx = ex + Math.cos(A[1]) * 0.68 * R, hy = ey + Math.sin(A[1]) * 0.68 * R;
+    c.strokeStyle = 'rgba(80,135,210,0.6)'; c.lineWidth = R * 0.27; c.beginPath(); c.moveTo(sx, sy); c.lineTo(ex, ey); c.lineTo(hx, hy); c.stroke();
+    c.strokeStyle = '#e8f4ff'; c.lineWidth = R * 0.19; c.beginPath(); c.moveTo(sx, sy); c.lineTo(ex, ey); c.lineTo(hx, hy); c.stroke();
+    c.fillStyle = '#f2619f'; c.beginPath(); c.arc(hx - Math.sin(A[1]) * 0.2 * R * sd, hy + Math.cos(A[1]) * 0.2 * R * sd, 0.11 * R, 0, TAU); c.fill();
+    const mg = c.createRadialGradient(hx - 0.08 * R, hy - 0.08 * R, R * 0.02, hx, hy, R * 0.27); mg.addColorStop(0, '#ffc6e0'); mg.addColorStop(1, '#f2619f'); c.fillStyle = mg; c.beginPath(); c.arc(hx, hy, 0.26 * R, 0, TAU); c.fill();
+    hand[key] = [hx, hy, A[1]];
+  }
+  // what the move does: ice flying from the hand, a snowflake landing in it, a ring filling while it holds still, an ice flower growing
+  const fx = o.fx;
+  if (fx === 'R' || fx === 'L' || fx === 'both') for (const k of fx === 'both' ? ['L', 'R'] : [fx]) {
+    const [hx, hy, a] = hand[k];
+    for (let i = 0; i < 5; i++) { const ph = (now * 1.5 + i * 0.2) % 1, d = a + (i - 2) * 0.36, r = (0.3 + ph * 1.05) * R; c.globalAlpha = 1 - ph; drawFlake(c, hx + Math.cos(d) * r, hy + Math.sin(d) * r, 0.14 * R * (1 - ph * 0.4), now * 2 + i, '#ffffff'); }
+    c.globalAlpha = 1;
+  } else if (fx === 'catch') {
+    ['L', 'R'].forEach((k, j) => { const [hx, hy] = hand[k], ph = (t * 0.8 + j * 0.5) % 1; c.globalAlpha = Math.min(1, ph * 4); drawFlake(c, hx, hy - 0.3 * R - (1 - ph) * 1.7 * R, 0.22 * R, t * 2 + j, '#ffffff'); if (ph > 0.82) { c.globalAlpha = (1 - ph) / 0.18; c.strokeStyle = '#ffe680'; c.lineWidth = R * 0.07; c.beginPath(); c.arc(hx, hy - 0.2 * R, (0.3 + (ph - 0.82) * 3) * R, 0, TAU); c.stroke(); } });
+    c.globalAlpha = 1;
+  } else if (fx === 'hold') {
+    const [hx, hy] = hand.R, ph = (t % 2.1) / 1.4;
+    c.lineWidth = R * 0.1; c.strokeStyle = 'rgba(255,255,255,0.3)'; c.beginPath(); c.arc(hx, hy, 0.45 * R, 0, TAU); c.stroke();
+    c.strokeStyle = '#ffffff'; c.beginPath(); c.arc(hx, hy, 0.45 * R, -Math.PI / 2, -Math.PI / 2 + TAU * Math.min(1, ph)); c.stroke();
+    if (ph > 1) { const k = (ph - 1) / 0.5; c.globalAlpha = 1 - k; for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; c.beginPath(); c.moveTo(hx + Math.cos(a) * (0.55 + k * 0.3) * R, hy + Math.sin(a) * (0.55 + k * 0.3) * R); c.lineTo(hx + Math.cos(a) * (0.75 + k * 0.6) * R, hy + Math.sin(a) * (0.75 + k * 0.6) * R); c.stroke(); } c.globalAlpha = 1; }
+  } else if (fx === 'grow') {
+    const [hx, hy] = hand.R, k = clamp(((t % 4.2) - 2) / 1.5, 0, 1);
+    drawCrystal(c, hx + 0.1 * R, hy - 0.55 * R, 0.75 * R, 0.3, k);
+  }
+  c.restore();
+}
 
 // ======================================================================
 
@@ -3508,6 +3745,7 @@ function dwellFire(el) {
   dwellClear(); DW.cool = 1.6;
   const r = el.getBoundingClientRect(), x = (r.left + r.width / 2) * DPR, y = (r.top + r.height / 2) * DPR;
   sfx.freeze(); flash = Math.max(flash, 0.45); ring(x, y, 16 * U); burst(x, y, 36, { power: 1.5, col: '#dff6ff' });
+  if (el.classList.contains('mode') && !PAL.learned) { PAL.learned = true; try { localStorage.setItem('iceMagicPal', '1'); } catch (e) {} }
   el.click();
 }
 function updateDwell(dt) {
@@ -3723,6 +3961,7 @@ function frame(tms) {
     }
   }
   if (S.mode === 'menu') { setStatus(''); updateHall(); updateKingdom(dt); }
+  updatePal(dt);
   if (hintUntil && now > hintUntil) { hintEl.style.opacity = 0; hintUntil = 0; }
 
   // draw
@@ -3765,31 +4004,31 @@ function frame(tms) {
 // ---------- mode control ----------
 function startMode(m) {
   ensureAudio(); dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = '';
-  if (S.input === 'camera' && !IS_TV && !DW.homeTip) { DW.homeTip = true; setTimeout(() => { if (S.mode !== 'menu' && camState === 'on') showHint(tr('homeHint'), 7); }, 12000); }
+  if (S.input === 'camera' && !IS_TV && !DW.homeTip) { DW.homeTip = true; setTimeout(() => { if (S.mode !== 'menu' && camState === 'on') { showHint(tr('homeHint'), 7); palCoach([['home', 5]]); } }, 12000); }
   $('#menu').classList.add('hide'); titleT = 0; comboN = 0;
   $('#btnMelt') && ($('#btnMelt').style.display = m === 'free' ? '' : 'none');
   if (S.input === 'camera' && camState !== 'on' && camState !== 'loading') startCamera($('#camSel').value || undefined);
   if (S.input !== 'camera') setStatus('');
   if (m === 'adventure') { startAdventure(); return; }
   $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none';
-  if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); setTimeout(() => say(tr('introRun'), true), 300); return; }
+  if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); palIntro(); setTimeout(() => say(tr('introRun'), true), 300); return; }
   S.mode = m; S.stage = '';
   clearScene(); spawnTimer = 0;
   if (m === 'snowman') { snow.n = 0; snow.doneT = 0; snow.built = []; }
-  if (m === 'snowman') { showHint(tr('hintSnow') + '   ' + tr(S.input !== 'camera' ? 'hintBlizPtr' : 'hintBliz'), 9); setTimeout(() => say(tr('introSnow'), true), 300); return; }
+  if (m === 'snowman') { showHint(tr('hintSnow') + '   ' + tr(S.input !== 'camera' ? 'hintBlizPtr' : 'hintBliz'), 9); palIntro(); setTimeout(() => say(tr('introSnow'), true), 300); return; }
   if (m === 'town') genTown();
   if (m === 'free') { fctx.clearRect(0, 0, W, H); }
   $('#btnMelt') && ($('#btnMelt').style.display = m === 'free' ? '' : 'none');
   const intro = { sprites: 'introSprites', town: 'introTown', free: 'introFree' }[m];
   const hint = { sprites: 'hintSprites', town: 'hintTown', free: 'hintFree' }[m];
   const ptr = S.input !== 'camera';
-  showHint(tr(ptr && m === 'town' ? 'hintTownPtr' : hint) + '   ' + tr(ptr ? 'hintBlizPtr' : 'hintBliz'), 9);
+  showHint(tr(ptr && m === 'town' ? 'hintTownPtr' : hint) + '   ' + tr(ptr ? 'hintBlizPtr' : 'hintBliz'), 9); palIntro();
   setTimeout(() => say(tr(intro), true), 300);
   if (S.input === 'camera' && camState !== 'on' && camState !== 'loading') startCamera($('#camSel').value || undefined);
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { dwellClear(); DW.cool = 1.5; KD.cd = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
@@ -3824,7 +4063,7 @@ function applyLang() {
 }
 segBind('#inputSeg', 'input', () => { if (S.input === 'camera') { ensureAudio(); startCamera(); } });
 segBind('#langSeg', 'lang', () => { S.voiceName = ''; savePrefs(); applyLang(); fillVoiceSel(); });
-togBind('#togVideo', 'showVideo'); togBind('#togDress', 'dress'); togBind('#togMusic', 'music'); togBind('#togVoice', 'voice');
+togBind('#togVideo', 'showVideo'); togBind('#togDress', 'dress'); togBind('#togMusic', 'music'); togBind('#togPal', 'pal'); togBind('#togVoice', 'voice');
 applyLang();
 if (IS_TV) {
   $('#inputSeg').style.display = 'none'; $('#togVideo').style.display = 'none'; $('#togDress').style.display = 'none'; $('#btnWardrobe').style.display = 'none';
@@ -3863,7 +4102,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

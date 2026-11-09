@@ -26,6 +26,17 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 
 Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
 
+## Snowy the snow buddy / 雪团团
+
+A five-year-old can't read the hint text, so a little snow buddy **shows** her instead of telling her — and never talks:
+
+- In the hall it floats beside her and **copies her arms** (she raises a hand, it raises a hand). Wave a hand over it and it spins and giggles.
+- If she hasn't picked a game after a few seconds, it flies to a bubble and **holds its own hand on it** — the same white ring fills, the bubble wiggles — then comes back and waves: your turn.
+- When a game or an adventure level starts it **acts out the move**: wave to freeze, hold a hand on a house, reach up to catch, run in place, wave left / right, jump, lean on the sled, hold a hand on 🏠 to go home.
+- If she stops and nothing happens for ~11 s, it comes back and shows the one move she needs right now (e.g. *jump* when an obstacle blocks the road).
+
+Camera mode only for the coaching; switch it off with 🤍 雪团团 in 家长设置.
+
 ## Her ice kingdom / 我的冰雪王国
 
 The bottom of the hall is the child's own kingdom, and it remembers what she did: every finished adventure adds an **ice castle**, every frozen town an **ice house**, every snowman she builds stands there, every **rescued animal** moves in and wanders about, and every 30 stars grows a **crystal tree**. New things pop in one by one when she comes back from a game. Empty spots show a dashed outline with the bubble icon of the game that fills them. Everything reacts to a hand (or mouse/finger): animals hop, crystal trees ring like a xylophone, the castle sets off fireworks. Saved in this browser only.
