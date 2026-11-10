@@ -18,6 +18,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | | |
 |---|---|
 | 🗺️ 冰雪大冒险 Ice Adventure | Fire imps → frozen town → the Fire King boss → build an ice castle |
+| 💃 冰雕舞会 Freeze Dance | Music plays = dance; music stops = hold still and ice climbs up her body until she is an ice statue — click, a photo. Five statues make a photo strip for the album. Whole body, two can play, nobody can lose |
 | 🏃‍♀️ 冰雪奔跑 Snow Run | Endless street: run in place to run, wave left/right to freeze houses, freeze fire imps and rivers that block the way, jump over obstacles. Rescue trapped animals (they run along with you), sled downhill every 500 m (lean to steer), Fire King boss every 500 m, power-ups (👢 speed boots, 💎 big ice crystal, 🧲 star magnet), day/night and weather, and two players side by side when two people are on camera (each princess wears that child’s clothes colour, copies her arms, and has a matching heart over her in the camera window) |
 | 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
 | 🏘️ 冰封小镇 | Turn the town into ice |
@@ -25,6 +26,17 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | ❄️ 画冰花 | Paint frost; hold still to grow ice flowers |
 
 Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
+
+## Freeze dance / 冰雕舞会
+
+Every other game is "wave a hand at a target". This one is her whole body, and it turns the idea around: **she** is the one who gets frozen.
+
+- **Music plays → dance.** Party lights swing with the beat, Snowy dances beside her, and the animals she rescued hop along — they hop when she moves and stop when she stops. Dancing earns stars.
+- **Music stops → freeze!** The room turns cold, Snowy becomes an ice block at once (that is the cue — no reading needed), and while she holds still **ice climbs from the floor up her body**. Wiggle and it slides back down a little; it never fails, and after 10 s it forms anyway.
+- **Ice statue → click.** When the ice is over her head she is a statue: a photo of the pose pops up and flies into the strip at the top.
+- **Five statues** → the five photos become one keepsake picture, saved in 📷 相册 (save it as a JPG from there).
+- Two children each get their own ice — the one who holds still freezes first, and then the ice comes for the other one too. Grown-ups can join.
+- It only needs to know "moving or not", so it is forgiving of rough tracking. Mouse / touch / TV remote: moving the pointer (or pressing keys) = dancing, resting = freezing; no photos without the camera.
 
 ## Snowy the snow buddy / 雪团团
 

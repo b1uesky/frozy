@@ -28,7 +28,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 #menu .sub{font-size:2.8vmin;opacity:.95;text-align:center;margin-top:.5vmin;text-shadow:0 .3vmin 1vmin rgba(0,0,40,.8)}
 #castleLine{display:none;margin-top:.8vmin;font-size:2.4vmin !important;padding:.4vmin 2.2vmin;border-radius:5vmin;background:rgba(10,30,80,.5)}
 #castleLine:empty{display:none}
-.modes{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:76vmin}
+.modes{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:100vmin}
 .opts>*{margin:.8vmin 1.2vmin}
 #starIcon{margin-right:1.2vmin}
 #topBtns .iconBtn{margin-left:1.2vmin}
@@ -38,13 +38,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .mode.aim .orb::after{opacity:1}
 .mode:hover .orb,.mode:focus .orb,.mode.aim .orb{animation:none;transform:scale(1.12);box-shadow:inset 0 -2.2vmin 4vmin rgba(10,40,130,.35),inset 0 1vmin 2vmin rgba(255,255,255,.5),0 0 6vmin #fff}
 .mode .lbl{position:relative;z-index:1;margin-top:1.9vmin;padding:.5vmin 1.8vmin;border-radius:4vmin;background:rgba(10,30,80,.6);white-space:nowrap;text-shadow:0 .2vmin .8vmin rgba(0,0,40,.8)}
-.mode:nth-child(2) .orb{animation-delay:-.7s}.mode:nth-child(3) .orb{animation-delay:-1.9s}.mode:nth-child(4) .orb{animation-delay:-3.1s}.mode:nth-child(5) .orb{animation-delay:-1.2s}.mode:nth-child(6) .orb{animation-delay:-2.6s}
+.mode:nth-child(2) .orb{animation-delay:-.7s}.mode:nth-child(3) .orb{animation-delay:-1.9s}.mode:nth-child(4) .orb{animation-delay:-3.1s}.mode:nth-child(5) .orb{animation-delay:-1.2s}.mode:nth-child(6) .orb{animation-delay:-2.6s}.mode:nth-child(7) .orb{animation-delay:-3.7s}
 .m-adventure{--c1:rgba(255,232,140,.8);--c2:rgba(214,125,40,.55);--glow:rgba(255,220,120,.75)}
 .m-runner{--c1:rgba(255,180,222,.78);--c2:rgba(190,70,165,.52);--glow:rgba(255,160,220,.7)}
 .m-sprites{--c1:rgba(255,186,130,.78);--c2:rgba(205,66,66,.52);--glow:rgba(255,150,110,.7)}
 .m-town{--c1:rgba(160,245,225,.72);--c2:rgba(30,130,155,.52);--glow:rgba(130,235,220,.7)}
 .m-snowman{--c1:rgba(225,243,255,.78);--c2:rgba(70,120,215,.52);--glow:rgba(170,220,255,.75)}
 .m-free{--c1:rgba(208,190,255,.78);--c2:rgba(100,72,205,.52);--glow:rgba(190,165,255,.7)}
+.m-dance{--c1:rgba(170,255,240,.8);--c2:rgba(60,150,230,.55);--glow:rgba(150,245,255,.8)}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.7vmin)}}
 @keyframes palm{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.18)}}
 #hallHint{max-width:96vw;margin-top:.8vmin;font-size:3.1vmin;font-weight:700;padding:.9vmin 3.2vmin;border-radius:5vmin;background:rgba(10,30,80,.66);text-align:center;border:.25vmin solid rgba(255,255,255,.35)}
@@ -59,19 +60,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .wand{position:fixed;left:0;top:0;z-index:40;pointer-events:none;display:none;width:0;height:0}
 .wand i{position:absolute;left:-6vmin;top:-6vmin;width:12vmin;height:12vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,230,255,.55) 34%,rgba(90,170,255,0) 70%);display:flex;align-items:center;justify-content:center;font-size:5vmin;font-style:normal}
 @media (min-aspect-ratio: 8/5) {
-  .modes{flex-wrap:nowrap;max-width:none}
-  .mode.big{width:26vmin}
-  .mode.big .orb{width:24vmin;height:24vmin;font-size:12vmin}
-  .mode.big .lbl{font-size:3.5vmin}
+  /* seven bubbles in one arc: four small + three big (1.2x) always fill the width, whatever the screen shape */
+  .modes{flex-wrap:nowrap;max-width:none;--bw:min(24vmin,calc((100vw - 18vmin) / 7.6))}
+  .mode{width:var(--bw);margin:1vmin .8vmin}
+  .orb{width:calc(var(--bw) - 2vmin);height:calc(var(--bw) - 2vmin);font-size:calc(var(--bw) / 2 - 1vmin)}
+  .mode.big{width:calc(var(--bw) * 1.2)}
+  .mode.big .orb{width:calc(var(--bw) * 1.2 - 2vmin);height:calc(var(--bw) * 1.2 - 2vmin);font-size:calc(var(--bw) * .6 - 1vmin)}
+  .mode.big .lbl{font-size:3.4vmin}
   #btnParent{position:absolute;left:2.5vmin;bottom:2vmin;margin:0}
-  .mode:nth-child(1),.mode:nth-child(6){margin-top:11vmin}
-  .mode:nth-child(2),.mode:nth-child(5){margin-top:5vmin}
+  .mode:nth-child(1),.mode:nth-child(7){margin-top:11vmin}
+  .mode:nth-child(2),.mode:nth-child(6){margin-top:5vmin}
 }
 @media (min-aspect-ratio: 16/9) {
-  .mode{width:24vmin;margin:1vmin 1.2vmin;font-size:3.2vmin}
-  .orb{width:22vmin;height:22vmin;font-size:11vmin}
-  .mode.big{width:29vmin}
-  .mode.big .orb{width:27vmin;height:27vmin;font-size:13.5vmin}
+  .mode{font-size:3.2vmin}
 }
 #runBar{top:2.2vmin;left:50%;transform:translateX(-50%);display:flex;font-size:3.8vmin;font-weight:700;padding:.8vmin 2.6vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap}
 #advBar{top:2.2vmin;left:50%;transform:translateX(-50%);display:flex;font-size:3.4vmin;padding:.6vmin 1.6vmin;border-radius:5vmin;background:rgba(10,30,80,.6);white-space:nowrap}
@@ -120,8 +121,8 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   #menu h1{font-size:10vmin}
   #menu .sub{font-size:4.2vmin}
   .modes{max-width:none}
-  .mode{width:40vmin;font-size:4.2vmin;margin:1.2vmin 1.5vmin}
-  .orb{width:30vmin;height:30vmin;font-size:15vmin}
+  .mode{width:29vmin;font-size:4vmin;margin:1.2vmin .8vmin}
+  .orb{width:25vmin;height:25vmin;font-size:12.5vmin}
   .mode .lbl{margin-top:1.4vmin}
   #hallHint{font-size:4vmin}
   .kid{font-size:4.2vmin !important}
@@ -180,6 +181,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     <button class="mode m-sprites" data-mode="sprites" data-dwell><span class="orb">🔥</span><span class="lbl" data-t="m1">冻住小火怪</span></button>
     <button class="mode m-town" data-mode="town" data-dwell><span class="orb">🏘️</span><span class="lbl" data-t="m2">冰封小镇</span></button>
     <button class="mode big m-adventure" data-mode="adventure" data-dwell><span class="orb">🗺️</span><span class="lbl" data-t="m0">冰雪大冒险</span></button>
+    <button class="mode big m-dance" data-mode="dance" data-dwell><span class="orb">💃</span><span class="lbl" data-t="m6">冰雕舞会</span></button>
     <button class="mode big m-runner" data-mode="runner" data-dwell><span class="orb">🏃‍♀️</span><span class="lbl" data-t="m5">冰雪奔跑</span></button>
     <button class="mode m-snowman" data-mode="snowman" data-dwell><span class="orb">⛄</span><span class="lbl" data-t="m4">堆雪人</span></button>
     <button class="mode m-free" data-mode="free" data-dwell><span class="orb">❄️</span><span class="lbl" data-t="m3">画冰花</span></button>
@@ -220,6 +222,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     <b>🤍 雪团团</b>是会学她动作的小伙伴：大厅里跟在她身边、她举手它也举手；它会把手放在泡泡上示范怎么选游戏，游戏里用动作示范怎么玩（挥手 / 原地跑 / 跳 / 歪身体 / 接雪花），她停下来不知道做什么时会再示范一次——不用识字，也不说话<br>
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
+    <b>💃 冰雕舞会</b>：音乐响就跳舞，音乐一停就不动——冰会从脚往上爬，把她变成冰雕，咔嚓拍一张；5 张冰雕照拼成一张，存进相册（两个人、大人一起跳也行）<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单
   </div>
@@ -297,10 +300,11 @@ const T = {
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
+    m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
     palT: '🤍 雪团团', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
   },
   en: {
-    sub: 'Wave your hands and freeze everything!', m1: 'Freeze the Fire Imps', m2: 'Frozen Town', m3: 'Ice Painting', m0: 'Ice Adventure', m4: 'Build a Snowman',
+    sub: 'Wave your hands and freeze everything!', m1: 'Fire Imps', m2: 'Frozen Town', m3: 'Ice Painting', m0: 'Ice Adventure', m4: 'Snowman',
     st: [['Level 1: Fire Imps', 'Freeze 8 fire imps'], ['Level 2: Frozen Town', 'Turn every house into ice'], ['Level 3: The Fire King!', 'Keep freezing him into a giant ice cube!'], ['Final: Ice Castle', 'Catch the ice blocks and build a castle']],
     stHint: ['🔥 Wave over the fire imps!', '🏘️ Touch the houses to freeze them!', '🌋 Keep freezing the Fire King and his fireballs!', '🏰 Catch the floating ice blocks!'],
     stDone: ['Great!', 'Ice Kingdom!', 'You won!', 'Ice Castle!'],
@@ -344,6 +348,7 @@ const T = {
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
+    m6: 'Freeze Dance', introDance: 'When the music plays, dance! When it stops, freeze like an ice statue!', hintDance: '💃 Music = dance · 🧊 Music stops = hold still and turn into an ice statue!', hintDancePtr: '💃 Music = move the mouse / finger · 🧊 Music stops = hold still!', danceDone: 'Ice statue party!', stripT: 'Freeze Dance', danceStop: 'The music stopped! Freeze like a statue!',
     palT: '🤍 Snowy', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
   }
 };
@@ -447,7 +452,7 @@ const MELODY = [659, 784, 880, 988, 880, 784, 659, 587, 659, 784, 988, 1175, 988
                 587, 659, 784, 880, 784, 659, 587, 523, 587, 659, 784, 659, 587, 523, 587, 0];
 let musicIdx = 0, musicNext = 0;
 function musicTick() {
-  if (!AC || !S.music || S.mode === 'menu') return;
+  if (!AC || !S.music || S.mode === 'menu' || S.mode === 'dance') return;
   const t = AC.currentTime;
   if (musicNext < t) musicNext = t + 0.05;
   while (musicNext < t + 0.2) {
@@ -1378,6 +1383,7 @@ function blizzard() {
   else if (SC() === 'runner') {
     runnerFreezeAll();
   }
+  else if (SC() === 'dance') { }
   else for (let i = 0; i < 5; i++) setTimeout(() => addFlower(rand(0.1, 0.9) * W, rand(0.15, 0.85) * H, true), i * 180);
 }
 
@@ -3464,7 +3470,7 @@ const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init:
 try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
 // what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
 const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]] };
-const PAL_DEMO = ['adventure', 'runner', 'snowman', 'town', 'sprites', 'free'];
+const PAL_DEMO = ['adventure', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
 function palOn() { return S.pal !== false && !IS_TV; }
 function palCoach(seq) {
   if (!palOn() || S.input !== 'camera' || S.mode === 'menu' || !seq || !seq.length) return;
@@ -3502,6 +3508,8 @@ function palGesture(g, t) {
   else if (g === 'catch') { const k = s(t * 2.8); o.dx = 0.5 * k; o.R = [-58 + 10 * k, -82]; o.L = [-122 + 10 * k, -98]; o.mouth = 1; o.fx = 'catch'; }
   else if (g === 'touch') { o.R = [-14, -8]; o.L = [124, 104]; o.lean = 0.08; o.fx = 'hold'; }
   else if (g === 'paint') { const u = t % 4.2; if (u < 2) { const a = -45 + 34 * s(u * 3.4); o.R = [a, a + 10 * s(u * 3.4 - 0.6)]; o.fx = 'R'; } else { o.R = [-30, -22]; o.fx = 'grow'; } o.L = [126, 108]; }
+  else if (g === 'dance') { const p = t * 6.6, k = s(p); o.R = [-35 + 55 * k, -80 + 45 * k]; o.L = [215 + 55 * k, 260 + 45 * k]; o.dy = -0.32 * Math.abs(s(p)); o.feet = s(p); o.lean = 0.16 * s(p / 2); o.dx = 0.3 * s(p / 2); o.mouth = 1; o.fx = 'both'; }
+  else if (g === 'statue') { const q = [[[-70, -100], [160, 110], 0.12], [[-15, -75], [195, 255], 0], [[60, 150], [120, 30], -0.06]][DN.round % 3]; o.R = q[0]; o.L = q[1]; o.lean = q[2]; }
   else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
   return o;
 }
@@ -3602,6 +3610,11 @@ function updatePal(dt) {
         }
       }
     } else PAL.coach = null;
+    // freeze dance: it is her dance partner the whole time — it dances while the music plays, and turns into an ice statue the moment it stops
+    if (SC() === 'dance' && DN.ph !== 'off' && !(PAL.coach && PAL.coach.seq[PAL.coach.i][0] === 'home')) {
+      want = true; back = 0.7; ts = 0.95; tx = Math.max(20 * VM, W * 0.13); ty = H * 0.58;
+      g = DN.ph === 'stop' || DN.ph === 'frozen' ? 'statue' : PAL.cheerT > 0 ? 'cheer' : 'dance';
+    }
   }
   // fly
   if (want && !PAL.vis) { PAL.vis = true; palCv.style.display = 'block'; if (!PAL.init) { PAL.init = true; PAL.x = tx; PAL.y = ty; PAL.s = 0.05; } else { PAL.x = tx - 6 * VM; PAL.y = H + 30 * VM; } PAL.vx = PAL.vy = 0; }
@@ -3681,7 +3694,384 @@ function drawPal(o) {
     const [hx, hy] = hand.R, k = clamp(((t % 4.2) - 2) / 1.5, 0, 1);
     drawCrystal(c, hx + 0.1 * R, hy - 0.55 * R, 0.75 * R, 0.3, k);
   }
+  if (PAL.g === 'statue') {   // an ice block climbs up around it
+    const k = dnPalIce();
+    if (k > 0) {
+      c.save(); c.beginPath(); c.rect(-2.6 * R, 1.3 * R - k * 3.4 * R, 5.2 * R, 3.5 * R); c.clip();
+      c.beginPath(); [[-1.75, 1.22], [-2.05, 0.05], [-1.5, -1.5], [0, -2], [1.5, -1.5], [2.05, 0.05], [1.75, 1.22]].forEach(([x, y], i) => i ? c.lineTo(x * R, y * R) : c.moveTo(x * R, y * R)); c.closePath();
+      const ig = c.createLinearGradient(-2 * R, -2 * R, 2 * R, 1.2 * R); ig.addColorStop(0, 'rgba(240,251,255,0.7)'); ig.addColorStop(0.5, 'rgba(150,212,255,0.42)'); ig.addColorStop(1, 'rgba(110,185,250,0.6)');
+      c.fillStyle = ig; c.fill(); c.strokeStyle = 'rgba(255,255,255,0.95)'; c.lineWidth = R * 0.07; c.stroke();
+      c.lineWidth = R * 0.06; c.beginPath(); c.moveTo(-1.5 * R, -0.5 * R); c.lineTo(-0.7 * R, -1.5 * R); c.moveTo(-1.6 * R, 0.1 * R); c.lineTo(-0.2 * R, -1.6 * R); c.moveTo(1.1 * R, 0.9 * R); c.lineTo(1.7 * R, 0.2 * R); c.stroke();
+      c.restore();
+      if (k >= 1) for (let i = 0; i < 4; i++) { const ph = (now * 0.9 + i * 0.25) % 1; c.globalAlpha = Math.sin(ph * Math.PI); drawFlake(c, Math.cos(i * 1.9) * 1.6 * R, -0.4 * R + Math.sin(i * 2.7) * 1.3 * R, 0.16 * R, now + i, '#ffffff'); }
+      c.globalAlpha = 1;
+    }
+  }
   c.restore();
+}
+
+// ======================================================================
+// ---- 冰雕舞会 (freeze dance): every other game is "wave a hand at a target" — this one is her whole body.
+//      Music plays = dance (Snowy and the animals she rescued dance along). Music stops = hold still: ice climbs up her
+//      body until she is an ice statue — click, a photo of the statue. Five statues become a photo strip in her album.
+//      It only needs "is she moving or not", so it is forgiving of rough tracking, and nobody can lose. ----
+const DN = { ph: 'off', t: 0, round: 0, rounds: 5, dur: 9, e: 0, pt: -9, tr: [], map: [], hold: 0, ice: 0, glow: 0, cold: 0, lowT: 0, starT: 0, noteT: 0, crackT: 0, beat: 0, bpm: 126, shots: [], pol: null, snap: false, snapped: false, kick: 0, gain: null, step: 0, next: 0, playing: false, seen: false, edge: null, layer: null, lx: null, mask: null, mx: null, friends: [] };
+const DN_HOLD = 2.6;                                  // seconds of stillness that make a statue
+const DN_STILL = 1.2, DN_MOVE = 1.0;                  // movement in shoulder-widths per second: below = still, above = dancing
+const DN_LIGHTS = ['255,150,215', '140,225,255', '190,160,255', '150,255,215', '255,225,140'];
+const DN_NOTE = { F2: 87.31, G2: 98, A2: 110, C3: 130.81, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880, C6: 1046.5, D6: 1174.66 };
+// an original little dance tune: four bars of eighth notes over C – Am – F – G
+const DN_LEAD = ['E5', 'G5', 'A5', 'G5', 'E5', 0, 'G5', 0, 'A5', 'C6', 'A5', 'G5', 'E5', 0, 'D5', 0, 'E5', 'G5', 'A5', 'C6', 'D6', 0, 'C6', 'A5', 'G5', 0, 'E5', 'G5', 'A5', 0, 0, 0];
+const DN_BASS = ['C3', 'A2', 'F2', 'G2'];
+function dnAudio() { if (!AC) return false; if (!DN.gain) { DN.gain = AC.createGain(); DN.gain.gain.value = 0; DN.gain.connect(master); } return true; }
+function dnDrum(t0, dur, vol, type, f) {
+  const s = AC.createBufferSource(); s.buffer = noiseBuf; const fl = AC.createBiquadFilter(); fl.type = type; fl.frequency.value = f;
+  const g = AC.createGain(); g.gain.setValueAtTime(vol, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  s.connect(fl); fl.connect(g); g.connect(DN.gain); s.start(t0); s.stop(t0 + dur + 0.02);
+}
+function dnKick(t0) {
+  const o = AC.createOscillator(), g = AC.createGain(); o.frequency.setValueAtTime(150, t0); o.frequency.exponentialRampToValueAtTime(45, t0 + 0.13);
+  g.gain.setValueAtTime(0.5, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.2); o.connect(g); g.connect(DN.gain); o.start(t0); o.stop(t0 + 0.22);
+}
+function dnMusicTick() {
+  if (!DN.playing || !S.music || !dnAudio()) return;
+  const t = AC.currentTime, sp = 30 / DN.bpm;   // one step = an eighth note
+  if (DN.next < t) DN.next = t + 0.05;
+  while (DN.next < t + 0.2) {
+    const i = DN.step % 32, bar = (i >> 3) % 4, n = DN_LEAD[i], b = DN_NOTE[DN_BASS[bar]], at = DN.next;
+    if (i % 2 === 0) dnKick(at); else dnDrum(at, 0.04, 0.05, 'highpass', 7000);
+    if (i % 4 === 2) dnDrum(at, 0.1, 0.16, 'bandpass', 1700);
+    tone(i % 2 ? b * 2 : b, at, sp * 0.9, 'triangle', 0.16, DN.gain);
+    if (n) { tone(DN_NOTE[n], at, sp * 1.5, 'triangle', 0.1, DN.gain); tone(DN_NOTE[n] * 2, at, sp * 0.8, 'sine', 0.03, DN.gain); }
+    if (i % 8 === 0) for (const m of [1, bar === 1 ? 1.2 : 1.26, 1.5]) tone(b * 4 * m, at, sp * 3.5, 'sine', 0.03, DN.gain);
+    DN.step++; DN.next += sp;
+  }
+}
+function dnPlay(on, soft) {   // soft = quiet under the spoken "how to play", then up to full
+  DN.playing = on; if (!dnAudio()) return;
+  const t = AC.currentTime, g = DN.gain.gain; g.cancelScheduledValues(t); g.setTargetAtTime(on && S.music ? (soft ? 0.3 : 0.9) : 0, t, on ? 0.03 : 0.012);
+  if (on && soft && S.music) g.setTargetAtTime(0.9, t + 4.5, 0.4);
+  if (on) DN.next = 0;
+}
+function dnStopSfx() {   // the music "falls over", then an icy ring
+  if (!AC) return; const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sawtooth'; o.frequency.setValueAtTime(700, t); o.frequency.exponentialRampToValueAtTime(90, t + 0.35);
+  g.gain.setValueAtTime(0.1, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4); o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.42);
+  noise(t + 0.05, 0.5, 0.12, 'highpass', 5000, 9000, 0.7); [2637, 3136].forEach((f, i) => tone(f, t + 0.12 + i * 0.07, 0.9, 'sine', 0.07));
+}
+function dnCam() { return S.input === 'camera' && camState === 'on'; }
+function dnSeen() { return S.input === 'camera' && (camState === 'on' || camState === 'loading') ? camState === 'on' && now - poseT < 0.6 && poseScr.length > 0 : true; }
+function dnBig() { return poseScr.reduce((a, b) => dist(b.ls.x, b.ls.y, b.rs.x, b.rs.y) > dist(a.ls.x, a.ls.y, a.rs.x, a.rs.y) ? b : a); }
+function dnAnchor() {
+  if (dnCam() && now - poseT < 0.6 && poseScr.length) { const P = dnBig(); return [P.nose.x, P.nose.y]; }
+  for (const [k, h] of hands) if (k[0] === 'm') return [h.x, h.y];
+  return [W / 2, H * 0.5];
+}
+// how much is each child moving? joint speeds in shoulder-widths per second, so it does not matter how far from the camera she stands.
+// Each child is followed separately (DN.tr), so each gets her own ice: the one who holds still freezes, the one who wiggles does not.
+function dnMeasure(dt) {
+  if (dnCam()) {
+    if (poseT === DN.pt) return;
+    const dtp = clamp(poseT - DN.pt, 1 / 60, 0.25); DN.pt = poseT;
+    const free = DN.tr.filter(T => now - T.seen < 1.2); DN.tr = free.slice(); DN.map = [];
+    let best = 0;
+    poseScr.forEach((P, i) => {
+      const sw = Math.max(2 * U, dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y)), mx = (P.ls.x + P.rs.x) / 2;
+      // the same child as a moment ago = the nearest one we were already following
+      let T = null, bd = Math.max(W * 0.2, sw * 2); for (const q of free) { const d = Math.abs(q.x - mx); if (d < bd) { bd = d; T = q; } }
+      if (T) free.splice(free.indexOf(T), 1); else { T = { x: mx, y: 0, J: {}, e: 0, h: DN.ph === 'frozen' ? 1 : 0, ice: 0, seen: now }; DN.tr.push(T); }
+      T.x = mx; T.y = P.nose.y; T.seen = now; DN.map[i] = T;
+      const J = T.J; let sum = 0, mxs = 0, n = 0;
+      for (const k of ['nose', 'ls', 'rs', 'le2', 're2', 'lw', 'rw']) {
+        const p = P[k]; if (!p || !p.v) { delete J[k]; continue; }
+        const q = J[k]; if (!q) { J[k] = { x: p.x, y: p.y }; continue; }
+        const nx = q.x + (p.x - q.x) * 0.6, ny = q.y + (p.y - q.y) * 0.6;   // smooth the landmark first: tracking jitter is not dancing
+        const sp = Math.min(6, Math.hypot(nx - q.x, ny - q.y) / dtp / sw); q.x = nx; q.y = ny;
+        sum += sp; mxs = Math.max(mxs, sp); n++;
+      }
+      T.e += ((n ? 0.5 * sum / n + 0.5 * mxs : 0) - T.e) * (1 - Math.exp(-dtp / 0.2));
+      best = Math.max(best, T.e);
+    });
+    DN.e = best;
+  } else {
+    let sp = DN.kick; for (const [k, h] of hands) if (k[0] === 'm') sp = Math.max(sp, h.speed / (40 * U));
+    DN.kick = Math.max(0, DN.kick - dt * 2.5);
+    DN.e += (Math.min(6, sp) - DN.e) * (1 - Math.exp(-dt / 0.2));
+  }
+}
+function dnTracks() { return dnCam() && now - poseT < 0.6 ? DN.map.filter(Boolean) : []; }
+function startDance() {
+  Object.assign(DN, { ph: 'dance', t: 0, round: 0, dur: 8.5, e: 0, pt: -9, tr: [], map: [], hold: 0, ice: 0, cold: 0, lowT: 0, starT: 0, noteT: 0, crackT: 0, beat: 0, bpm: 126, shots: [], pol: null, snap: false, snapped: false, kick: 0, step: 0 });
+  // the animals she rescued come to the party (two friends at least)
+  const mine = [...new Set(KD.animals)], types = [...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, Math.max(2, Math.min(4, mine.length)));
+  DN.friends = types.map((type, i) => ({ type, fx: [0.16, 0.87, 0.055, 0.955][i], ph: i * 0.5 }));
+  dnPlay(true, S.voice);
+}
+function dnOff() { DN.ph = 'off'; DN.pol = null; DN.snap = false; dnPlay(false); }
+function dnStop() {
+  DN.ph = 'stop'; DN.t = 0; DN.hold = 0; DN.crackT = 0; for (const T of DN.tr) T.h = 0; dnPlay(false); dnStopSfx(); flash = Math.max(flash, 0.3);
+  if (DN.round === 0) setTimeout(() => { if (SC() === 'dance' && DN.ph === 'stop') say(tr('danceStop'), true); }, 350);   // said once, the first time the music stops
+}
+function dnFreeze() {
+  DN.ph = 'frozen'; DN.t = 0; DN.hold = 1; DN.snapped = false; for (const T of DN.tr) T.h = 1; flash = Math.max(flash, 0.55); addShake(1.4 * U); sfx.freeze();
+  const p = dnAnchor(); ring(p[0], p[1], 24 * U); burst(p[0], p[1], 46, { power: 1.8, col: '#dff6ff' });
+  for (let i = 0; i < 3; i++) setTimeout(() => { if (SC() === 'dance') { const q = dnAnchor(); addFlyStar(q[0] + rand(-6, 6) * U, q[1] - 8 * U); } }, 900 + i * 170);
+}
+function dnThaw() {
+  DN.round++; for (const T of DN.tr) T.h = 0;
+  // the ice shatters
+  const pts = []; if (dnCam() && now - poseT < 0.6) for (const P of poseScr) for (const k of ['nose', 'ls', 'rs', 'lw', 'rw', 'lh', 'rh']) if (P[k] && P[k].v) pts.push(P[k]);
+  if (!pts.length) { const a = dnAnchor(); pts.push({ x: a[0], y: a[1] }); }
+  for (const p of pts) burst(p.x, p.y, 12, { power: 1.3, col: '#cfeeff' });
+  sfx.shard(); if (AC) { const t = AC.currentTime; [784, 1046.5, 1318.5, 1568].forEach((f, i) => tone(f, t + i * 0.06, 0.25, 'triangle', 0.09)); }
+  if (DN.round >= DN.rounds) { dnFinale(); return; }
+  DN.ph = 'dance'; DN.t = 0; DN.hold = 0; DN.lowT = 0; DN.dur = rand(7, 12); DN.bpm = 126 + DN.round * 5; dnPlay(true);
+}
+function dnFinale() {
+  DN.ph = 'finale'; DN.t = 0; DN.hold = 0; DN.bpm = 146; dnPlay(true);
+  celebrate(tr('danceDone'));
+  for (let i = 0; i < 5; i++) setTimeout(() => { if (SC() !== 'dance') return; burst(rand(0.15, 0.85) * W, rand(0.2, 0.6) * H, 40, { power: 1.6, col: pick(['#ffffff', '#ffe680', '#bfe9ff', '#ffc4f0']) }); addFlyStar(rand(0.3, 0.7) * W, H * 0.5); sfx.star(); }, i * 450);
+  const tok = ADV.token, has = DN.shots.length > 0;
+  if (has) setTimeout(() => { if (SC() === 'dance' && tok === ADV.token) dnStrip(); }, 3600);
+  setTimeout(() => { if (SC() === 'dance' && tok === ADV.token) goMenu(); }, has ? 14000 : 8000);
+}
+function updateDance(dt) {
+  dnMeasure(dt); PAL.prog = now;
+  const seen = DN.seen = dnSeen(), ph = DN.ph;
+  if (ph === 'dance' || ph === 'finale') {
+    DN.beat += dt * DN.bpm / 60;
+    if (seen || ph === 'finale') DN.t += dt;
+    if (seen && DN.e > DN_MOVE) {
+      DN.lowT = 0; DN.starT += dt * Math.min(2, DN.e);
+      if (DN.starT > 2.4 && ph === 'dance') { DN.starT = 0; const p = dnAnchor(); addFlyStar(p[0] + rand(-10, 10) * U, p[1]); }
+    } else if (seen) DN.lowT += dt;
+    DN.noteT -= dt * (0.4 + Math.min(2, DN.e));
+    if (DN.noteT <= 0 && DN.friends.length) { DN.noteT = 0.9; const f = pick(DN.friends); parts.push({ type: 'text', text: pick(['🎵', '🎶', '✨']), x: f.fx * W + rand(-3, 3) * U, y: H - 14 * U, vx: rand(-4, 4) * U, vy: -16 * U, g: 0, drag: 0.8, r: 0, rot: 0, vr: 0, life: 1.4, max: 1.4, col: '#ffffff', size: 4.2 * U }); }
+    if (ph === 'dance' && DN.t > DN.dur) dnStop();
+  } else if (ph === 'stop') {
+    if (seen) {
+      DN.t += dt;
+      // still = the ice climbs; moving = it slides back down a little (never a fail). After 10 s it forms anyway.
+      const rateOf = e => { let r = clamp((DN_STILL - e) / 0.6, -0.6, 1); if (DN.t < 0.7) r = Math.max(0, r); if (DN.t > 10) r = Math.max(r, 1.6); return r; };
+      const before = DN.hold, trs = dnTracks(); let crack = null;
+      if (trs.length) {
+        // each child has her own ice; once one of them is a statue, the ice comes for the others too (a little sister cannot hold still for long)
+        const lead = trs.some(T => T.h >= 1); let mn = 1;
+        for (const T of trs) { let r = rateOf(T.e); if (lead) r = Math.max(r, 0.7); T.h = clamp(T.h + r * dt / DN_HOLD, 0, 1); mn = Math.min(mn, T.h); if (r < 0 && T.h > 0.02) crack = [T.x, T.y]; }
+        DN.hold = mn;
+      } else { const r = rateOf(DN.e); DN.hold = clamp(DN.hold + r * dt / DN_HOLD, 0, 1); if (r < 0 && DN.hold > 0.02) crack = dnAnchor(); }
+      if (Math.floor(DN.hold * 5) > Math.floor(before * 5) && AC) tone(1175 + 196 * Math.floor(DN.hold * 5), AC.currentTime, 0.2, 'sine', 0.06);
+      if (crack) {
+        DN.crackT -= dt;
+        if (DN.crackT <= 0) { DN.crackT = 0.16; addParticle({ type: 'flake', x: crack[0] + rand(-12, 12) * U, y: crack[1] + rand(0, 30) * U, vx: rand(-10, 10) * U, vy: rand(5, 20) * U, g: 40 * U, drag: 0.8, r: rand(0.7, 1.5) * U, rot: rand(0, 6), vr: rand(-4, 4), life: 0.8, max: 0.8, col: '#cfeeff' }); sfx.tick(); }
+      }
+      if (DN.hold >= 1) dnFreeze();
+    }
+  } else if (ph === 'frozen') {
+    DN.t += dt;
+    if (DN.t > 0.45 && !DN.snapped) { DN.snapped = true; DN.snap = true; }
+    if (DN.t > 2.7) dnThaw();
+  }
+  if (DN.pol) { DN.pol.t += dt; if (DN.pol.t > 2.1) DN.pol = null; }
+  dnMusicTick();
+}
+function dnPalIce() { return DN.ph === 'frozen' ? 1 : DN.ph === 'stop' ? clamp((DN.t - 0.12) / 0.8, 0, 1) : 0; }
+// the outline of a child from the pose: head, arms, and an ice gown down to the floor. g = how much fatter than the body
+function dnBody(c, P, sw, g) {
+  let A = P.ls, B = P.rs; if (A.x > B.x) { const t2 = A; A = B; B = t2; }
+  const hipsOk = P.lh.v && P.rh.v, hy = hipsOk ? (P.lh.y + P.rh.y) / 2 : (A.y + B.y) / 2 + sw * 1.5;
+  const hl = hipsOk ? (P.lh.x < P.rh.x ? P.lh : P.rh) : { x: A.x + sw * 0.15, y: hy }, hr = hipsOk ? (P.lh.x < P.rh.x ? P.rh : P.lh) : { x: B.x - sw * 0.15, y: hy };
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  c.beginPath(); c.moveTo(A.x - sw * 0.1 - g, A.y - sw * 0.12 - g); c.lineTo(B.x + sw * 0.1 + g, B.y - sw * 0.12 - g);
+  c.lineTo(hr.x + sw * 0.22 + g, hr.y); c.lineTo(hr.x + sw * 0.8 + g, H + sw); c.lineTo(hl.x - sw * 0.8 - g, H + sw); c.lineTo(hl.x - sw * 0.22 - g, hl.y); c.closePath(); c.fill();
+  if (P.nose.v) {
+    c.beginPath(); c.ellipse(P.nose.x, P.nose.y - sw * 0.1, sw * 0.42 + g, sw * 0.54 + g, 0, 0, Math.PI * 2); c.fill();
+    c.lineWidth = sw * 0.34 + g * 2; c.beginPath(); c.moveTo(P.nose.x, P.nose.y); c.lineTo((A.x + B.x) / 2, (A.y + B.y) / 2); c.stroke();
+  }
+  for (const [sh, el, wr] of [[P.ls, P.le2, P.lw], [P.rs, P.re2, P.rw]]) {
+    if (!sh.v || !el || !el.v) continue;
+    c.lineWidth = sw * 0.36 + g * 2; c.beginPath(); c.moveTo(sh.x, sh.y); c.lineTo(el.x, el.y);
+    if (wr && wr.v) { const hx = wr.x + (wr.x - el.x) * 0.3, hy2 = wr.y + (wr.y - el.y) * 0.3; c.lineTo(hx, hy2); c.stroke(); c.beginPath(); c.arc(hx, hy2, sw * 0.2 + g, 0, Math.PI * 2); c.fill(); }
+    else c.stroke();
+  }
+}
+function dnBuildEdge() {
+  const e = DN.edge = document.createElement('canvas'); e.width = W; e.height = H; const c = e.getContext('2d');
+  const g = c.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.42, W / 2, H / 2, Math.hypot(W, H) * 0.56);
+  g.addColorStop(0, 'rgba(225,244,255,0)'); g.addColorStop(0.7, 'rgba(225,244,255,0.42)'); g.addColorStop(1, 'rgba(240,250,255,0.85)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  if (LITE) return;
+  for (let k = 0; k < 30; k++) {
+    const side = k % 4, u = rand(0.02, 0.98), d = rand(1, 11) * U;
+    const x = side === 0 ? u * W : side === 1 ? W - d : side === 2 ? u * W : d, y = side === 0 ? d : side === 1 ? u * H : side === 2 ? H - d : u * H;
+    c.globalAlpha = rand(0.5, 0.9); drawCrystal(c, x, y, rand(4, 10) * U, rand(0, 1), 1);
+  }
+  c.globalAlpha = 1;
+}
+function drawDanceBack() {
+  const ph = DN.ph, party = ph === 'dance' || ph === 'finale';
+  DN.glow += ((party ? 1 : 0) - DN.glow) * 0.18;
+  const cold = ph === 'stop' || ph === 'frozen' ? 1 : 0; DN.cold += (cold - DN.cold) * 0.22;
+  const ice = ph === 'frozen' ? 1 : ph === 'stop' ? DN.hold : 0; DN.ice += (ice - DN.ice) * 0.3;
+  if (DN.glow > 0.02 && !LITE) {
+    // party lights swing with the beat and brighten when she moves
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const pulse = 0.55 + 0.45 * Math.pow(1 - (DN.beat % 1), 2), en = 0.5 + 0.5 * Math.min(1, DN.e / 2);
+    DN_LIGHTS.forEach((col, k) => {
+      const x0 = W * (0.1 + k * 0.2), a = Math.PI / 2 + Math.sin(DN.beat * Math.PI / 4 + k * 1.3) * 0.55, L = H * 1.2, hw = 0.17;
+      const g = ctx.createLinearGradient(x0, 0, x0 + Math.cos(a) * L, Math.sin(a) * L);
+      g.addColorStop(0, `rgba(${col},${(0.4 * DN.glow * pulse * en).toFixed(3)})`); g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x0, -2 * U); ctx.lineTo(x0 + Math.cos(a - hw) * L, Math.sin(a - hw) * L); ctx.lineTo(x0 + Math.cos(a + hw) * L, Math.sin(a + hw) * L); ctx.closePath(); ctx.fill();
+    });
+    ctx.restore();
+  }
+  if (DN.cold > 0.02) {
+    // the music stopped: the whole room goes cold, and frost creeps in from the edges as she holds still
+    ctx.fillStyle = `rgba(110,180,255,${(0.2 * DN.cold).toFixed(3)})`; ctx.fillRect(0, 0, W, H);
+    if (!DN.edge || DN.edge.width !== W || DN.edge.height !== H) dnBuildEdge();
+    ctx.save(); ctx.globalAlpha = DN.cold * (0.3 + 0.7 * DN.ice); ctx.drawImage(DN.edge, 0, 0); ctx.restore();
+  }
+  drawDanceIce();
+  // her friends: they hop when she moves, and freeze when the music stops
+  const hopping = party && (DN.e > 0.45 || ph === 'finale' || !DN.seen);
+  for (const f of DN.friends) {
+    const x = f.fx * W, y = H - 2.5 * U, s = 12 * U;
+    drawAnimal(f.type, x, y, s, (DN.beat + f.ph) * Math.PI / 7, hopping);
+    if (DN.cold > 0.05) {
+      ctx.save(); ctx.globalAlpha = DN.cold * 0.75; const w = s * 0.92, h = s * 1.12;
+      rrect(ctx, x - w / 2, y - h + s * 0.06, w, h, s * 0.12); const g = ctx.createLinearGradient(x - w / 2, y - h, x + w / 2, y); g.addColorStop(0, 'rgba(240,251,255,0.75)'); g.addColorStop(0.5, 'rgba(150,212,255,0.45)'); g.addColorStop(1, 'rgba(120,190,250,0.6)');
+      ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.lineWidth = U * 0.4; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x - w * 0.3, y - h * 0.8); ctx.lineTo(x - w * 0.1, y - h * 0.9); ctx.moveTo(x - w * 0.34, y - h * 0.62); ctx.lineTo(x - w * 0.02, y - h * 0.8); ctx.stroke();
+      ctx.restore();
+    }
+  }
+}
+function drawDanceIce() {
+  const frozen = DN.ph === 'frozen', stop = DN.ph === 'stop';
+  if (!(dnCam() && now - poseT < 0.6 && poseScr.length)) {
+    const ice = DN.ice; if (ice < 0.012) return;
+    // mouse / touch / remote: a big ice crystal grows where the pointer rests
+    const a = dnAnchor(); ctx.save(); ctx.globalAlpha = 0.9; drawCrystal(ctx, a[0], a[1], 20 * U, 0.2, ice); ctx.restore();
+    return;
+  }
+  if (!DN.layer || DN.layer.width !== W || DN.layer.height !== H) { for (const k of ['layer', 'mask']) { DN[k] = document.createElement('canvas'); DN[k].width = W; DN[k].height = H; } DN.lx = DN.layer.getContext('2d'); DN.mx = DN.mask.getContext('2d'); }
+  const c = DN.lx, m = DN.mx; c.clearRect(0, 0, W, H);
+  const joints = [], rings = []; let any = false;
+  poseScr.forEach((P, pi) => {
+    if (!P.ls.v || !P.rs.v) return;
+    const T = DN.map[pi]; let ice = DN.ice;
+    if (T) { T.ice += ((frozen ? 1 : stop ? T.h : 0) - T.ice) * 0.3; ice = T.ice; }
+    if (ice < 0.012) return;
+    any = true; const k = 1 - Math.pow(1 - ice, 1.6);
+    const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y); if (sw < 3 * U) return;
+    const cx = (P.ls.x + P.rs.x) / 2;
+    let top = Math.min(P.ls.y, P.rs.y) - sw * 1.2; for (const q of [P.nose, P.lw, P.rw, P.le2, P.re2]) if (q && q.v) top = Math.min(top, q.y - sw * 0.6);
+    const yTop = H - (H - top) * k;   // the ice climbs from the floor to above her head
+    c.save();
+    c.beginPath(); c.moveTo(cx - sw * 5, H + 2);
+    for (let i = 0; i <= 28; i++) { const x = cx - sw * 5 + i * sw * 10 / 28; c.lineTo(x, yTop + (i % 2 ? -1 : 1) * sw * 0.13 + Math.sin(i * 1.7) * sw * 0.07); }
+    c.lineTo(cx + sw * 5, H + 2); c.closePath(); c.clip();
+    c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.fillStyle = c.strokeStyle = '#ffffff'; dnBody(c, P, sw, sw * 0.09);
+    // thin the inside so she shows through, leaving a bright rim (done through a mask so overlapping limbs are not thinned twice)
+    m.clearRect(0, 0, W, H); m.fillStyle = m.strokeStyle = '#000000'; dnBody(m, P, sw, 0);
+    c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.52; c.drawImage(DN.mask, 0, 0);
+    c.globalCompositeOperation = 'source-atop'; c.globalAlpha = 0.72;
+    const g = c.createLinearGradient(0, top, 0, H); g.addColorStop(0, '#eefaff'); g.addColorStop(0.5, '#a9dcff'); g.addColorStop(1, '#6fb6f2'); c.fillStyle = g; c.fillRect(cx - sw * 5, top - sw, sw * 10, H - top + sw * 2);
+    // glints: slanted bands of light inside the ice; one sweeps across when the statue is done
+    c.globalAlpha = 0.5; c.fillStyle = '#ffffff';
+    const sweep = frozen ? ((DN.t * 0.9) % 1.4 - 0.2) * sw * 8 - sw * 4 : null;
+    for (const off of [-1.9, -0.6, 0.9, 2.1].map(o => o * sw).concat(sweep == null ? [] : [sweep])) { c.beginPath(); c.moveTo(cx + off, top - sw); c.lineTo(cx + off + sw * 0.22, top - sw); c.lineTo(cx + off - sw * 1.4, H); c.lineTo(cx + off - sw * 1.62, H); c.closePath(); c.fill(); }
+    // frost inside the ice, so it does not look like her cape
+    c.globalAlpha = 0.8; for (let i = 0; i < 16; i++) drawFlake(c, cx + (((i * 0.618) % 1) - 0.5) * sw * 3.4, top + ((i * 0.377 + 0.13) % 1) * (H - top), sw * (0.1 + (i % 3) * 0.04), i, '#ffffff');
+    if (P.nose.v) { c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.5; c.fillStyle = '#000000'; c.beginPath(); c.ellipse(P.nose.x, P.nose.y - sw * 0.06, sw * 0.34, sw * 0.44, 0, 0, Math.PI * 2); c.fill(); }   // clearer ice over her face, so the photo is still her
+    c.restore();
+    if (ice < 0.985) rings.push([cx, yTop, sw]);
+    for (const q of [P.lw, P.rw, P.le2, P.re2]) if (q && q.v && q.y > yTop) joints.push([q.x, q.y, sw * 0.75, ice]);
+    if (P.nose.v && P.nose.y - sw * 0.8 > yTop) joints.push([P.nose.x, P.nose.y - sw * 0.95, sw * 1.1, ice]);
+  });
+  if (!any) return;
+  ctx.save(); ctx.globalAlpha = 0.94; if (!LITE) { ctx.shadowColor = 'rgba(190,235,255,0.9)'; ctx.shadowBlur = 2.2 * U; } ctx.drawImage(DN.layer, 0, 0); ctx.restore();
+  joints.forEach(([x, y, sw, ice], i) => { ctx.save(); ctx.globalAlpha = 0.9; drawCrystal(ctx, x, y, sw * 0.42, i * 0.5, clamp(ice * 1.3, 0, 1)); ctx.restore(); });
+  // the freeze line: a glowing ring of snowflakes that rises around her with the ice, so she can see how far it has climbed
+  for (const [x, y, sw] of rings) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineWidth = sw * 0.07; ctx.strokeStyle = 'rgba(235,250,255,0.95)'; if (!LITE) { ctx.shadowColor = '#9fdcff'; ctx.shadowBlur = 2.5 * U; }
+    ctx.beginPath(); ctx.ellipse(x, y, sw * 1.5, sw * 0.25, 0, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0;
+    for (let i = 0; i < 6; i++) { const a = now * 2.2 + i * Math.PI / 3; drawFlake(ctx, x + Math.cos(a) * sw * 1.5, y + Math.sin(a) * sw * 0.25, sw * 0.14, a, '#ffffff'); }
+    ctx.restore();
+  }
+  if (frozen && joints.length && Math.random() < 0.6) { const j = pick(joints); addParticle({ type: 'spark', x: j[0] + rand(-1, 1) * j[2], y: j[1] + rand(-1, 1) * j[2], vx: 0, vy: -3 * U, g: 0, drag: 0, r: rand(0.7, 1.6) * U, rot: 0, vr: 0, life: 0.6, max: 0.6, col: pick(['#ffffff', '#dff6ff', '#ffe680']) }); }
+}
+// where she is in the picture: a square around her (or around both children) for the statue photo
+function dnBox() {
+  let x0 = W, x1 = 0, y0 = H, y1 = 0;
+  if (dnCam() && now - poseT < 0.6) for (const P of poseScr) {
+    if (!P.ls.v || !P.rs.v) continue;
+    const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y), sy = (P.ls.y + P.rs.y) / 2;
+    for (const k of ['nose', 'ls', 'rs', 'le2', 're2', 'lw', 'rw', 'lh', 'rh']) { const p = P[k]; if (p && p.v) { x0 = Math.min(x0, p.x - sw * 0.45); x1 = Math.max(x1, p.x + sw * 0.45); y0 = Math.min(y0, p.y - sw * 0.45); y1 = Math.max(y1, p.y + sw * 0.3); } }
+    y0 = Math.min(y0, P.nose.y - sw * 1.5); y1 = Math.max(y1, sy + sw * 2.3);
+  }
+  const m = Math.min(W, H);
+  if (x1 <= x0) return { x: (W - m) / 2, y: (H - m) / 2, s: m };
+  const s = clamp(Math.max(x1 - x0, y1 - y0) * 1.08, m * 0.45, m), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  return { x: clamp(cx - s / 2, 0, W - s), y: clamp(cy - s / 2, 0, H - s), s };
+}
+function dnSnap() {
+  DN.snap = false;
+  if (!videoShown()) return;   // no picture of her to take (mouse / TV, or "show myself" is off)
+  const b = dnBox(), c = document.createElement('canvas'); c.width = c.height = 360;
+  try { c.getContext('2d').drawImage(cv, b.x, b.y, b.s, b.s, 0, 0, 360, 360); } catch (e) { return; }
+  DN.shots.push(c); DN.pol = { img: c, t: 0, i: DN.shots.length - 1 };
+  flash = 0.9; if (AC) { noise(AC.currentTime, 0.12, 0.25, 'highpass', 2000, 6000, 0.7); tone(1568, AC.currentTime + 0.05, 0.3, 'sine', 0.08); }
+}
+function dnSlot(i) { const s = 8.5 * U, gap = 1.6 * U, n = DN.rounds; return [W / 2 - (n * s + (n - 1) * gap) / 2 + i * (s + gap), 2.4 * U, s]; }
+function dnFrame(c, x, y, s, img, rot) {   // a little instant photo, centred on x, y
+  const b = s * 0.07, fh = s + b * 3.4;
+  c.save(); c.translate(x, y); c.rotate(rot || 0);
+  c.shadowColor = 'rgba(0,10,50,0.5)'; c.shadowBlur = s * 0.08; c.shadowOffsetY = s * 0.03; c.fillStyle = '#ffffff'; rrect(c, -s / 2 - b, -s / 2 - b, s + b * 2, fh, b * 0.6); c.fill();
+  c.shadowColor = 'transparent'; c.shadowBlur = 0; c.shadowOffsetY = 0; c.drawImage(img, -s / 2, -s / 2, s, s);
+  drawFlake(c, 0, s / 2 + b * 1.25, b * 0.8, 0.3, '#7fbdf5');
+  c.restore();
+}
+function drawDanceHud() {
+  // the photo strip at the top: one slot per statue, dashed until she has made it
+  for (let i = 0; i < DN.rounds; i++) {
+    const [x, y, s] = dnSlot(i), shot = DN.shots[i], flying = DN.pol && DN.pol.i === i;
+    ctx.save();
+    if (shot && !flying) { ctx.fillStyle = '#ffffff'; rrect(ctx, x - 0.35 * U, y - 0.35 * U, s + 0.7 * U, s + 0.7 * U, 0.8 * U); ctx.fill(); ctx.drawImage(shot, x, y, s, s); }
+    else {
+      const cur = i === DN.round && DN.ph !== 'finale', done = i < DN.round;
+      rrect(ctx, x, y, s, s, 1.2 * U); ctx.fillStyle = done ? 'rgba(150,212,255,0.55)' : 'rgba(10,30,80,0.42)'; ctx.fill();
+      if (!done) ctx.setLineDash([U * 1.1, U * 0.9]);
+      ctx.lineWidth = U * 0.4; ctx.strokeStyle = cur ? `rgba(255,255,255,${0.6 + 0.4 * Math.sin(now * 5)})` : done ? '#ffffff' : 'rgba(255,255,255,0.4)'; ctx.stroke(); ctx.setLineDash([]);
+      ctx.globalAlpha = done || cur ? 0.95 : 0.4; ctx.lineWidth = U * 0.35;
+      if (cur && (DN.ph === 'stop' || DN.ph === 'frozen')) drawCrystal(ctx, x + s / 2, y + s / 2, s * 0.4, 0, Math.max(0.15, DN.ice)); else drawFlake(ctx, x + s / 2, y + s / 2, s * 0.26, 0.3, '#ffffff');
+    }
+    ctx.restore();
+  }
+  // the photo she just made: pops up big, then flies into its slot
+  const p = DN.pol;
+  if (p) {
+    const [sx, sy, ss] = dnSlot(p.i), big = Math.min(34 * U, H * 0.36), bx = W * 0.8, by = H * 0.5;
+    const pop = clamp(p.t / 0.22, 0, 1), fly = clamp((p.t - 1.5) / 0.55, 0, 1), e = fly * fly * (3 - 2 * fly);
+    const s = (big * (0.6 + 0.4 * pop) * (1 + 0.12 * Math.sin(Math.min(1, pop) * Math.PI))) * (1 - e) + ss * e;
+    dnFrame(ctx, bx + (sx + ss / 2 - bx) * e, by + (sy + ss / 2 - by) * e, s, p.img, -0.09 * (1 - e));
+  }
+}
+// five statues → one keepsake for the album
+function dnStrip() {
+  const n = DN.shots.length; if (!n) return;
+  const pw = 1280, ph = 720, pc = document.createElement('canvas'); pc.width = pw; pc.height = ph; const p = pc.getContext('2d');
+  const g = p.createLinearGradient(0, 0, 0, ph); g.addColorStop(0, '#0b1d4d'); g.addColorStop(0.6, '#2456a6'); g.addColorStop(1, '#7fc4f5'); p.fillStyle = g; p.fillRect(0, 0, pw, ph);
+  for (const [x, y, r, col] of [[190, 130, 400, '255,170,225'], [1090, 170, 430, '150,235,255'], [640, 640, 540, '190,165,255']]) { const lg = p.createRadialGradient(x, y, 0, x, y, r); lg.addColorStop(0, `rgba(${col},0.3)`); lg.addColorStop(1, `rgba(${col},0)`); p.fillStyle = lg; p.fillRect(0, 0, pw, ph); }
+  for (let i = 0; i < 46; i++) { p.globalAlpha = rand(0.25, 0.8); p.lineWidth = 2; drawFlake(p, rand(0, pw), rand(0, ph), rand(5, 16), rand(0, 6), '#ffffff'); }
+  p.globalAlpha = 1; p.textAlign = 'center'; p.textBaseline = 'middle'; p.font = '900 62px "PingFang SC","Microsoft YaHei",sans-serif';
+  const title = '❄️ ' + tr('stripT') + ' ❄️'; p.lineWidth = 10; p.strokeStyle = 'rgba(20,60,140,0.85)'; p.strokeText(title, pw / 2, 98); p.fillStyle = '#ffffff'; p.fillText(title, pw / 2, 98);
+  const s = Math.min(250, (pw - 90) / n - 44), step = n > 1 ? Math.min(s + 60, (pw - 110 - s) / (n - 1)) : 0, x0 = pw / 2 - step * (n - 1) / 2;
+  DN.shots.forEach((im, i) => dnFrame(p, x0 + i * step, 392 + (i % 2 ? 24 : -16), s, im, (i % 2 ? 1 : -1) * 0.045 + (i - (n - 1) / 2) * 0.012));
+  const d = new Date(), ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  p.font = '800 34px "PingFang SC","Microsoft YaHei",sans-serif'; p.textAlign = 'right'; p.textBaseline = 'bottom'; p.lineWidth = 6; p.strokeStyle = 'rgba(20,60,140,0.8)';
+  p.strokeText('❄️ Frozy  ' + ds, pw - 40, ph - 26); p.fillStyle = '#ffffff'; p.fillText('❄️ Frozy  ' + ds, pw - 40, ph - 26);
+  let url = ''; try { url = pc.toDataURL('image/jpeg', 0.85); } catch (e) { return; }
+  savePhoto(url); showPhoto(url);
 }
 
 // ======================================================================
@@ -3738,6 +4128,7 @@ function dwellTargets() {
   const ov = topOverlay();
   if (ov) return ov.id === 'parentPanel' ? [] : [...ov.querySelectorAll('[data-dwell]')];
   if (S.mode === 'menu') return [...$('#menu').querySelectorAll('[data-dwell]')];
+  if (SC() === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return [];   // she is holding still on purpose
   return [$('#btnHome')];
 }
 function dwellClear() { for (const el of DW.p.keys()) { el.classList.remove('aim'); el.style.removeProperty('--p'); } DW.p.clear(); }
@@ -3899,7 +4290,7 @@ function detectPose() {
     const nose = lm[0], lw = lm[15], rw = lm[16];
     const up = vis(lw) > 0.6 && vis(rw) > 0.6 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
     armsUp[i] = up ? (armsUp[i] || 0) + fdt : 0;
-    if (armsUp[i] > 0.3) { if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else { blizzard(); armsUp[i] = -3; } }
+    if (armsUp[i] > 0.3) { if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if (SC() === 'dance' && DN.ph !== 'dance') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }
   });
 }
 
@@ -3943,6 +4334,7 @@ function frame(tms) {
   else if (sc === 'free') updateFree(dt);
   else if (sc === 'boss') updateBoss(dt);
   else if (sc === 'runner') updateRunner(dt);
+  else if (sc === 'dance') updateDance(dt);
   else if (sc === 'castle' || sc === 'snowman') updateItems(dt);
   if (S.mode === 'adventure') updateAdventure(dt);
   updatePhoto(dt);
@@ -3967,6 +4359,7 @@ function frame(tms) {
   // draw
   drawBackground();
   drawDress();
+  if (SC() === 'dance') drawDanceBack();
   if (S.mode === 'menu') drawKingdom();
   if (SC() === 'runner') drawRunner();
   ctx.save();
@@ -3986,6 +4379,7 @@ function frame(tms) {
   ctx.restore();
   for (const h of hands.values()) if (S.mode !== 'menu' && SC() !== 'runner') drawHand(h);
   for (const f of flyStars) { drawStar(ctx, f.x, f.y, 3 * U * (1 + 0.3 * Math.sin(f.t * 12)), f.t * 6); }
+  if (SC() === 'dance') { if (DN.snap) dnSnap(); drawDanceHud(); }
   if (flash > 0) { ctx.fillStyle = `rgba(220,240,255,${flash * 0.55})`; ctx.fillRect(0, 0, W, H); flash = Math.max(0, flash - dt * 1.6); }
   if (celebrateT > 0) {
     celebrateT -= dt; const k = 2.8 - celebrateT;
@@ -4012,6 +4406,7 @@ function startMode(m) {
   if (m === 'adventure') { startAdventure(); return; }
   $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none';
   if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); palIntro(); setTimeout(() => say(tr('introRun'), true), 300); return; }
+  if (m === 'dance') { S.mode = 'dance'; S.stage = ''; clearScene(); startDance(); showHint(tr(S.input !== 'camera' ? 'hintDancePtr' : 'hintDance'), 9); setTimeout(() => say(tr('introDance'), true), 300); return; }
   S.mode = m; S.stage = '';
   clearScene(); spawnTimer = 0;
   if (m === 'snowman') { snow.n = 0; snow.doneT = 0; snow.built = []; }
@@ -4028,7 +4423,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { dnOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
@@ -4073,6 +4468,7 @@ if (IS_TV) {
 }
 
 window.addEventListener('keydown', e => {
+  if (S.mode === 'dance') DN.kick = 2.2;   // a TV remote / keyboard can dance too: keep pressing = moving
   if (SC() === 'runner') {
     const P0 = RUN.players[0];
     if (RUN.sled && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.preventDefault(); const lane = Math.round(P0.tx / 2.2) + (e.key === 'ArrowLeft' ? -1 : 1); P0.tx = clamp(lane, -1, 1) * 2.2; return; }
@@ -4091,7 +4487,7 @@ window.addEventListener('keydown', e => {
   else if (e.key === ' ') { e.preventDefault(); ensureAudio(); blizzard(); }
   else if (e.key === 'p' || e.key === 'P') startPhoto(false);
   else if (e.key === 'm' || e.key === 'M') { S.showVideo = !S.showVideo; $('#togVideo').classList.toggle('on', S.showVideo); savePrefs(); }
-  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free'][+e.key - 1]);
+  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance'][+e.key - 1]);
 });
 window.addEventListener('resize', resize);
 if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = fillVoiceSel; fillVoiceSel(); setTimeout(fillVoiceSel, 500); }
@@ -4102,7 +4498,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>
