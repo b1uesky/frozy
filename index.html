@@ -23,6 +23,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 #hallBottom{position:absolute;left:50%;bottom:1.6vmin;transform:translateX(-50%)}
 #hall{margin-top:1.6vmin}
 .mode.nudge .orb{animation:nudge .7s ease-in-out 2}
+.kid.nudge{animation:nudge .7s ease-in-out 2}
 @keyframes nudge{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.2) rotate(-7deg)}75%{transform:scale(1.2) rotate(7deg)}}
 #menu h1{font-size:7.5vmin;letter-spacing:.6vmin;text-align:center;text-shadow:0 0 3vmin #8fd8ff,0 0 1vmin #fff}
 #menu .sub{font-size:2.8vmin;opacity:.95;text-align:center;margin-top:.5vmin;text-shadow:0 .3vmin 1vmin rgba(0,0,40,.8)}
@@ -66,7 +67,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
   .modes{flex-wrap:nowrap;max-width:none}
   body.hands #hallBottom{left:0;right:0;bottom:auto;top:calc(var(--bw) + 39.2vmin);transform:none;align-items:stretch}
   body.hands #hallBottom .opts{max-width:none;justify-content:flex-end;padding:0 1vmin}
-  body.hands #btnWardrobe{margin-right:auto}
+  body.hands #btnDraw{margin-right:auto}
   .mode{width:var(--bw);margin:1vmin .8vmin}
   .orb{width:calc(var(--bw) - 2vmin);height:calc(var(--bw) - 2vmin);font-size:calc(var(--bw) / 2 - 1vmin)}
   .mode.big{width:calc(var(--bw) * 1.2)}
@@ -129,6 +130,15 @@ body.asleep #nightSum:not(:empty){display:block}
 #menu.movie #hallHint{visibility:hidden}
 #menu.movie:not(.night){background:none}
 #movieBox{position:fixed;left:2.5vmin;bottom:2vmin;z-index:14;display:none}
+#drawBox{position:fixed;left:0;right:0;top:38vh;z-index:14;display:none;justify-content:center}
+#btnPickBig{font-size:4.4vmin;padding:2.6vmin 5vmin}
+body.drawing.drawptr #drawBox{display:flex}
+#btnPick{display:none}
+body.drawing #btnPick{display:inline-block}
+#drList{display:inline-flex;flex-wrap:wrap;gap:1vmin;margin-left:1.2vmin}
+.drChip{position:relative;width:9vmin;height:9vmin;border-radius:1.6vmin;border:.25vmin solid rgba(255,255,255,.5);background:rgba(20,50,110,.55);cursor:pointer;padding:.5vmin}
+.drChip img{width:100%;height:100%;object-fit:contain}
+.drChip i{position:absolute;right:-.9vmin;top:-.9vmin;width:3.4vmin;height:3.4vmin;border-radius:50%;background:#ff5e7e;color:#fff;font-style:normal;font-size:2.6vmin;line-height:3.3vmin;text-align:center}
 body.movie:not(.night) #movieBox{display:block}
 #btnMovieSave,#btnMovieSaveN{font-size:2.3vmin;opacity:.8;background-color:rgba(10,30,80,.65);white-space:nowrap}
 #btnMovieSaveN{display:none;margin-top:1vmin}
@@ -220,6 +230,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
   <div id="hallBottom">
     <div class="opts">
       <button class="tog kid" id="btnWardrobe" data-dwell>👗 衣橱</button>
+      <button class="tog kid" id="btnDraw" data-dwell>🎨 <span data-t="drBtn">画画</span></button>
       <button class="tog kid" id="btnGallery" data-dwell style="display:none"><span data-t="galT">📷 相册</span></button>
       <button class="tog kid" id="btnMovie" data-dwell style="display:none">🎬 电影</button>
     </div>
@@ -256,6 +267,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     </div>
     <button class="tog" id="btnNightNow">🌙 <span data-t="ntNow">现在说晚安</span></button>
   </div>
+  <div class="opts" id="drRow" style="display:none"><span data-t="drRowT">🎨 画的小伙伴（点一下 = 送它回家）</span><span id="drList"></span></div>
   <div class="opts"><span id="camRow" style="align-items:center;gap:1vh">📷 <select id="camSel"></select></span>
     <span id="voiceRow" style="display:none;align-items:center;gap:1vh">🗣️ <select id="voiceSel"></select> <button class="tog" id="voiceTest">▶️ 试听</button></span></div>
   <div class="tips" id="tips">
@@ -271,13 +283,16 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     <b>🌙 晚安</b>：该休息时点右上角 🌙（或按 N）——月亮先升起来提醒她，然后大厅变成夜晚：她摸一摸亮着的小灯，哄王国里的大家睡觉，再举起双手点亮极光。选了“玩多久”，到时间月亮会自己升起。想再玩：按住“☀️ 再玩一会儿”或再按 N<br>
     <b>🎬 魔法电影</b>：开着摄像头玩的时候，游戏会悄悄留下精彩瞬间（暴风雪、变成冰雕、抱抱、整个家冻住、过关…），自动剪成一部约半分钟的小电影。说晚安、点亮极光之后，它会在夜空里放映；平时在大厅把手放在“🎬 电影”上也能看（把手放在右上角 🏠 上 = 关掉）。“💾 保存视频”可以把它存成视频文件发给家人。画面只存在这台电脑的浏览器里，不会上传；只留最近一天的；不想录就关掉“🎬 魔法电影”（已有的片段会一起删掉）<br>
-    快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单，N = 晚安
+    <b>🎨 画画（把画变活）</b>：让孩子在纸上画一个小伙伴（白纸、粗一点的彩笔最清楚），在大厅选“🎨 画画”，把画举到电脑摄像头前面一两步远——画的四周亮起来，3-2-1，它就从纸上下来、活了，住进她的冰雪王国，还会来冰雕舞会和冰冻抱抱。屏幕会一直等她画完；两个孩子可以一人一张，同一张画只收一次。没认出来时，大人点右上角 📸（或按空格）拍下框里的东西，或点 🖼️ 选一张照片。画只存在这台电脑的浏览器里，最多留 8 个；不想要的在上面“🎨 画的小伙伴”那一行点一下就送回家<br>
+    快捷键：空格 = 暴风雪（画画时 = 拍下画），P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单，N = 晚安
   </div>
   <button class="bigbtn" id="parentClose"><span data-t="wDone">✨ 好了</span></button>
 </div></div>
 <canvas id="pal"></canvas>
 <div id="nightDim"></div>
 <div id="nightBox"><div id="nightSum"></div><button class="tog" id="btnWake">☀️ <span data-t="ntWake">按住这里 · 再玩一会儿</span></button><button class="tog" id="btnMovieSaveN">🎬 <span data-t="mvSaveN">保存今天的电影</span></button></div>
+<div id="drawBox"><button class="bigbtn" id="btnPickBig">🖼️ <span data-t="drPick">选一张画的照片</span></button></div>
+<input type="file" id="drFile" accept="image/*" style="display:none">
 <div id="movieBox"><button class="tog" id="btnMovieSave">💾 <span data-t="mvSave">保存视频</span></button></div>
 <div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div>
 
@@ -351,6 +366,9 @@ const T = {
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
+    drBtn: '画画', drPick: '选一张画的照片', drRowT: '🎨 画的小伙伴（点一下 = 送它回家）', drAlive: '✨ 活啦！', introDraw: '画一个小伙伴，把画举到电脑前面，它就会活过来！',
+    hintDraw: '🎨 把画举到电脑摄像头前面，它就活了（大人可点 📸 / 🖼️）', hintDrawPtr: '🖼️ 选一张画的照片（手机上可以直接拍），它就活了',
+    drSmall: '👀 把画再拿近一点', drClose: '↔️ 太近啦，往后退一点点', drBlank: '🤔 没看清上面的画，再举一次',
     m7: '冰冻抱抱', introHug: '挥挥手，把小动物冻住！再抱一抱它，冰就化啦！爸爸妈妈也可以冻住哦！', hugSay: '冻住啦！快抱一抱，冰就化啦！', hugDone: '抱抱最温暖！',
     hintHug: '❄️ 挥手 / 伸手指着 = 冻住小动物，还有身边的人！ · 🤗 抱一抱 = 冰化啦', hintHugPtr: '👆 点两下小动物（或在它身上晃一晃）= 冻住 · 再点一下 = 抱抱，冰化啦',
     m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
@@ -407,6 +425,9 @@ const T = {
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
+    drBtn: 'Draw', drPick: 'Choose a photo of a drawing', drRowT: '🎨 Drawn friends (tap one = send it home)', drAlive: '✨ It is alive!', introDraw: 'Draw a friend, hold your drawing up to the computer, and it will come alive!',
+    hintDraw: '🎨 Hold your drawing up to the camera — it comes alive (grown-ups: 📸 / 🖼️)', hintDrawPtr: '🖼️ Tap to choose a photo of a drawing (on a phone: take one) — it comes alive',
+    drSmall: '👀 Bring the drawing a little closer', drClose: '↔️ Too close — one small step back', drBlank: '🤔 I could not see the drawing — try again',
     m7: 'Freeze Hug', introHug: 'Wave to freeze your animal friends! Then give them a hug, and the ice melts! You can freeze Mum and Dad too!', hugSay: 'Frozen! Quick, a hug melts the ice!', hugDone: 'Hugs are the warmest!',
     hintHug: '❄️ Wave or point = freeze the animals — and the people next to you! · 🤗 A hug = the ice melts', hintHugPtr: '👆 Tap an animal twice (or wiggle over it) = freeze · tap again = a hug, the ice melts',
     m6: 'Freeze Dance', introDance: 'When the music plays, dance! When it stops, freeze like an ice statue!', hintDance: '💃 Music = dance · 🧊 Music stops = hold still and turn into an ice statue!', hintDancePtr: '💃 Music = move the mouse / finger · 🧊 Music stops = hold still!', danceDone: 'Ice statue party!', stripT: 'Freeze Dance', danceStop: 'The music stopped! Freeze like a statue!',
@@ -2424,10 +2445,10 @@ function drawHills() {
 function drawBackground() {
   const sc = SC();
   if (sc === 'runner') { drawRunSky(); return; }
-  if (videoShown()) {
+  if (videoShown() || (sc === 'draw' && drCam())) {   // (the easel always shows the mirror: she has to see where her sheet is)
     const r = videoRect();
     ctx.save(); ctx.translate(W, 0); ctx.scale(-1, 1); ctx.drawImage(video, r.ox, r.oy, r.dw, r.dh); ctx.restore();
-    const room = irOn();
+    const room = irOn() || sc === 'draw';
     ctx.fillStyle = room ? 'rgba(15,40,95,0.12)' : 'rgba(15,40,95,0.38)'; ctx.fillRect(0, 0, W, H);
     const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.95);
     vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, room ? 'rgba(10,25,70,0.3)' : 'rgba(10,25,70,0.55)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
@@ -3209,6 +3230,7 @@ function drawFireball(o, dz) {
 }
 let animSleep = false;
 function drawAnimal(type, x, y, s, t, happy) {
+  if (type[0] === '@') { drFriendDraw(type.slice(1), x, y, s, t, happy); return; }   // a friend she drew herself (🎨)
   ctx.save(); ctx.translate(x, y);
   const hop = happy ? -Math.abs(Math.sin(t * 7)) * 0.25 * s : 0;
   ctx.translate(0, hop);
@@ -3609,6 +3631,7 @@ function kdAddAnimal(type) { KD.animals.push(KD_ANIMALS.includes(type) ? type : 
 function kdAddSnowman(c) { KD.sn++; KD.snowmen.push({ scarf: c.scarf, hat: c.hat, band: c.band }); if (KD.snowmen.length > 4) KD.snowmen.shift(); kdSave(); }
 function kdAddHouse() { const c = buildings.filter(b => KD_HOUSES.includes(b.type)); KD.hn++; KD.houses.push(c.length ? pick(c).type : 'house'); if (KD.houses.length > 4) KD.houses.shift(); kdSave(); }
 function kdCounts() { return { c: castlesBuilt, h: KD.hn, s: KD.sn, a: Math.max(RUN.rescuedTotal, KD.animals.length), t: Math.min(6, Math.floor(totalStars / 30)) }; }
+function kdFriends(wide) { return DR.list.slice(-(wide ? 6 : 3)); }   // the friends she drew herself (🎨) live in the kingdom too
 function kdGeom() {
   const r = $('#hall').getBoundingClientRect(); if (!r.width) return;
   KD.k = clamp((H - r.bottom * DPR) / (31 * U), 0.5, 1); KD.u = U * KD.k;
@@ -3646,9 +3669,25 @@ function kdBuild() {
   for (let i = 0; i < d; i++) put('snowman', i, KD.sn, d, seen.s, { x: W * SS[i], y: H - 7.5 * u, col: sl[i], hw: 3.6 * u, hh: 15 * u, cool: 1.2 });
   if (!d) ghost('snowman', '⛄', 'snowman', W * SS[0], H - 7.5 * u, 3.4 * u, 11 * u);
   // rescued animals wander about in front
-  const al = KD.animals.slice(-(wide ? (LITE ? 6 : 10) : 5)); d = al.length;
+  const fl = kdFriends(wide);
+  const al = KD.animals.slice(-(wide ? (LITE ? 6 : 10 - Math.min(3, fl.length)) : 5)); d = al.length;
   for (let i = 0; i < d; i++) { const z = wide ? (i % 2 ? [0.57, 0.97] : [0.13, 0.43]) : [0.06, 0.94], x = W * rand(z[0], z[1]); put('animal', i, n.a, d, seen.a, { type: al[i], z0: z[0], z1: z[1], x, tx: x, y: H - (i % 3 === 1 ? 2.4 : i % 3 ? 3.8 : 5.2) * u, wait: rand(0.5, 4), dir: Math.random() < 0.5 ? -1 : 1, ph: rand(0, 6), s: 6.5 * u, hw: 3.3 * u, hh: 6.5 * u, cool: 1.3 }); }
   if (!d) ghost('animal', '🏃‍♀️', 'runner', W * (wide ? 0.2 : 0.22), H - 4 * u, 2.8 * u, 5.5 * u);
+  // the friends she drew: paper stickers that rock and hop about in front, a little bigger than the animals (they are hers)
+  if (!fl.length && !IS_TV) ghost('friend', '🎨', 'draw', W * (wide ? 0.585 : 0.8), H - 2.6 * u, 3.6 * u, 8.5 * u);
+  let newF = false;
+  fl.forEach((f, i) => {
+    const a = f.w / f.h; let hh = 12 * u, hw = hh * a / 2; if (hw > 7.5 * u) { hw = 7.5 * u; hh = hw * 2 / a; }
+    const z = wide ? (i % 2 ? [0.12, 0.45] : [0.55, 0.9]) : [0.08, 0.92], x = W * rand(z[0], z[1]);
+    const e = { kind: 'friend', id: 'friend' + f.id, fid: f.id, hz: f.hz || 1100, z0: z[0], z1: z[1], x, tx: x, y: H - (i % 3 === 0 ? 2.1 : i % 3 === 1 ? 4.5 : 3.3) * u, wait: rand(0.5, 4), dir: 1, ph: rand(0, 6), s: hh / 0.98, hw, hh, cool: 1.3, pokeT: -9, born: -9, popped: true };
+    const o = old.get(e.id);
+    if (o) { e.born = o.born; e.popped = o.popped; e.popT = o.popT; e.asleep = o.asleep; e.sleepT = o.sleepT; e.wakeAt = o.wakeAt; e.x = e.tx = clamp(o.x, W * e.z0, W * e.z1); }
+    else if (!f.seen) { e.popped = false; fresh.push(e); }
+    if (!o && (NT.ph === 'aurora' || NT.ph === 'sleep')) e.asleep = true;
+    if (!f.seen) { f.seen = true; newF = true; }
+    ents.push(e);
+  });
+  if (newF) drSave();
   ents.sort((a, b) => a.y - b.y);
   KD.ents = ents;
   if (fresh.length) {
@@ -3669,6 +3708,10 @@ function kdReact(e) {
     parts.push({ type: 'text', text: '💗', x: e.x, y: top - u, vx: 0, vy: -10 * u, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ff8fb0', size: 3.6 * u });
     e.tx = e.x; e.wait = 1.5;
     if (AC) { const f = { penguin: 1250, bunny: 1560, fox: 1050, owl: 780 }[e.type] || 1200; tone(f, t, 0.09, 'sine', 0.09); tone(f * 1.26, t + 0.1, 0.15, 'sine', 0.09); }
+  } else if (e.kind === 'friend') {   // her own drawing: a heart, and its own little voice
+    parts.push({ type: 'text', text: '💗', x: e.x, y: top - u, vx: 0, vy: -10 * u, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ff8fb0', size: 3.8 * u });
+    e.tx = e.x; e.wait = 1.5;
+    if (AC) { tone(e.hz, t, 0.09, 'sine', 0.09); tone(e.hz * 1.5, t + 0.09, 0.1, 'sine', 0.09); tone(e.hz * 1.26, t + 0.2, 0.16, 'sine', 0.09); }
   } else if (e.kind === 'tree') {
     if (AC) { const f = KD_NOTES[e.i % KD_NOTES.length] * 2; tone(f, t, 0.9, 'sine', 0.1); tone(f * 2, t + 0.02, 0.5, 'sine', 0.035); }
     for (let k = 0; k < 6; k++) addParticle({ type: 'spark', x: e.x + rand(-1, 1) * e.hw, y: e.y - rand(0.2, 1) * e.hh, vx: rand(-4, 4) * u, vy: -rand(4, 12) * u, g: 0, drag: 1, r: rand(0.5, 1.1) * u, rot: 0, vr: 0, life: 0.7, max: 0.7, col: KD_TINTS[e.i % 6] });
@@ -3682,7 +3725,7 @@ function kdReact(e) {
     for (let k = 0; k < 4; k++) setTimeout(() => { burst(e.x + rand(-1, 1) * e.hw, top - rand(0, 5) * u, 22, { power: 1.1, col: pick(KD_POP) }); sfx.star(); }, k * 220);
   } else {
     sfx.tick();
-    const b = e.mode && document.querySelector(`.mode[data-mode="${e.mode}"]`);
+    const b = e.mode === 'draw' ? $('#btnDraw') : e.mode && document.querySelector(`.mode[data-mode="${e.mode}"]`);
     if (b) { b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 1500); }
   }
 }
@@ -3701,7 +3744,7 @@ function updateKingdom(dt) {
   KD.cd -= dt;
   if (KD.cd <= 0) {
     KD.cd = 0.5; kdGeom();
-    const n = kdCounts(), sig = [W, H, KD.k.toFixed(2), n.c, n.h, n.s, n.a, n.t].join();
+    const n = kdCounts(), sig = [W, H, KD.k.toFixed(2), n.c, n.h, n.s, n.a, n.t, DR.list.map(f => f.id).join('')].join();
     if (sig !== KD.sig) { KD.sig = sig; kdBuild(); }
   }
   if (KD.toastAt >= 0 && KD.clock >= KD.toastAt) { KD.toastAt = -1; kdToast(tr(KD.toastKey)); }
@@ -3715,7 +3758,7 @@ function updateKingdom(dt) {
       if (AC) { const f = KD_NOTES[KD.popN++ % KD_NOTES.length]; tone(f, AC.currentTime, 0.5, 'triangle', 0.11); tone(f * 2, AC.currentTime + 0.05, 0.35, 'sine', 0.05); }
       if (big) { sfx.celebrate(); flash = Math.max(flash, 0.3); }
     }
-    if (e.kind === 'animal' && !e.asleep) {
+    if ((e.kind === 'animal' || e.kind === 'friend') && !e.asleep) {
       const dx = e.tx - e.x;
       if (Math.abs(dx) > 0.3 * u) { e.dir = dx < 0 ? -1 : 1; e.x += e.dir * Math.min(Math.abs(dx), 3.2 * u * dt); e.moving = true; }
       else { e.moving = false; e.wait -= dt; if (e.wait <= 0) { e.tx = W * rand(e.z0, e.z1); e.wait = rand(1.5, 5); } }
@@ -3743,6 +3786,7 @@ function kdGhost(e) {
   if (e.of === 'castle') { const P = [[-1, 0], [-1, -0.55], [-0.62, -0.55], [-0.62, -0.38], [-0.26, -0.38], [-0.26, -0.78], [0, -1], [0.26, -0.78], [0.26, -0.38], [0.62, -0.38], [0.62, -0.55], [1, -0.55], [1, 0]]; P.forEach((p, i) => i ? ctx.lineTo(p[0] * w, p[1] * h) : ctx.moveTo(p[0] * w, p[1] * h)); ctx.closePath(); }
   else if (e.of === 'house') { ctx.moveTo(-w, 0); ctx.lineTo(-w, -h * 0.58); ctx.lineTo(0, -h); ctx.lineTo(w, -h * 0.58); ctx.lineTo(w, 0); ctx.closePath(); }
   else if (e.of === 'tree') { ctx.moveTo(-w, 0); ctx.lineTo(0, -h); ctx.lineTo(w, 0); ctx.closePath(); }
+  else if (e.of === 'friend') { ctx.rotate(-0.07); ctx.rect(-w, -h, w * 2, h); ctx.moveTo(w * 0.5, -h * 0.55); ctx.arc(0, -h * 0.55, w * 0.5, 0, Math.PI * 2); ctx.moveTo(-w * 0.12, -h * 0.6); ctx.arc(-w * 0.18, -h * 0.6, w * 0.06, 0, Math.PI * 2); ctx.moveTo(w * 0.24, -h * 0.6); ctx.arc(w * 0.18, -h * 0.6, w * 0.06, 0, Math.PI * 2); }   // a sheet of paper with a face on it
   else if (e.of === 'snowman') { ctx.arc(0, -h * 0.27, h * 0.27, 0, Math.PI * 2); ctx.moveTo(h * 0.2, -h * 0.66); ctx.arc(0, -h * 0.66, h * 0.2, 0, Math.PI * 2); ctx.moveTo(h * 0.14, -h * 0.92); ctx.arc(0, -h * 0.92, h * 0.14, 0, Math.PI * 2); }
   else { ctx.ellipse(0, -h * 0.36, w * 0.8, h * 0.36, 0, 0, Math.PI * 2); ctx.moveTo(w * 0.55, -h * 0.82); ctx.arc(0, -h * 0.82, w * 0.55, 0, Math.PI * 2); }
   ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
@@ -3767,7 +3811,7 @@ function drawKingdom() {
     if (!e.popped) continue;
     const age = now - (e.popT == null ? -9 : e.popT), pa = now - e.pokeT;
     const sc = age < 0.5 ? Math.max(0.01, kdBack(age / 0.5)) : 1; let sx = 1, sy = 1, rot = 0;
-    if (pa < 0.7) { const w = Math.sin(pa * 18) * (1 - pa / 0.7); if (e.kind === 'snowman' || e.kind === 'tree') rot = w * 0.13; else if (e.kind !== 'animal') { sy = 1 + w * 0.1; sx = 1 - w * 0.07; } }
+    if (pa < 0.7) { const w = Math.sin(pa * 18) * (1 - pa / 0.7); if (e.kind === 'snowman' || e.kind === 'tree') rot = w * 0.13; else if (e.kind !== 'animal' && e.kind !== 'friend') { sy = 1 + w * 0.1; sx = 1 - w * 0.07; } }
     ctx.fillStyle = 'rgba(110,150,205,0.2)'; ctx.beginPath(); ctx.ellipse(e.x, e.y + 0.2 * u, e.hw * 1.05 * sc, 0.9 * u * sc, 0, 0, Math.PI * 2); ctx.fill();
     ctx.save(); ctx.translate(e.x, e.y); if (rot) ctx.rotate(rot); ctx.scale(sc * sx, sc * sy);
     if (e.kind === 'castle') { ctx.scale(e.s, e.s); drawCastle(0, 0); }
@@ -3782,12 +3826,474 @@ function drawKingdom() {
       if (e.asleep) { ctx.scale(e.dir * 1.07, 0.8 + 0.025 * Math.sin(now * 1.6 + e.ph)); animSleep = true; drawAnimal(e.type, 0, 0, e.s, 0, false); animSleep = false; }
       else { if (e.moving) ctx.translate(0, -Math.abs(Math.sin(now * 9 + e.ph)) * 0.35 * u); ctx.scale(e.dir, 1); drawAnimal(e.type, 0, 0, e.s, now + e.ph, pa < 1.2); }
     }
+    else if (e.kind === 'friend') {
+      if (e.asleep) { ctx.rotate(0.2); ctx.scale(1.05, 0.86 + 0.02 * Math.sin(now * 1.6 + e.ph)); ctx.globalAlpha = 0.9; drFriendDraw(e.fid, 0, 0, e.s, 0, false); ctx.globalAlpha = 1; }
+      else drFriendDraw(e.fid, 0, 0, e.s, now + e.ph, e.moving || pa < 1.2);
+    }
     else if (NT.k < 0.3) kdGhost(e);
     ctx.restore();
   }
   drawKingdomNight();
 }
 { const m = $('#menu'), f = e => { palPoke(e.clientX * DPR, e.clientY * DPR); if (e.target.closest && e.target.closest('button')) return; const hit = kdPoke(e.clientX * DPR, e.clientY * DPR); if (!hit && e.type === 'pointerdown' && ntActive()) ntArmsUp(); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
+
+// ======================================================================
+// ---- 🎨 画的小伙伴活了 (drawings come alive): everything else in the game was drawn by the game. Here the child draws a friend
+//      on paper and holds the sheet up to the computer: three, two, one — it is cut out like a sticker, comes alive, and moves
+//      into her kingdom (and comes along to the freeze dance and the freeze-hug). The screen is patient: it waits for as long
+//      as the drawing takes. One child or two: each sister brings her own sheet, and a drawing is only taken once.
+//      Nothing new has to be recognised about HER: the finder only looks for a sheet of paper. ----
+// -- the finder and the scissors (pure functions on pixels) --
+// a sheet of paper held up to the camera is a big, bright, even patch with something drawn inside it
+const DR_SAT = 0.3;        // paper is not colourful (after the light's own colour is taken out)
+const DR_INK = 0.005;      // …and this much of the sheet has to be drawn on (a blank sheet is not a drawing)
+const DR_BIG = 0.035;      // the sheet has to fill this much of the picture to be worth cutting out (about 1/6 of its width)
+const DR_NEW = 28;
+const DR_PAD = 1.4;        // the found sheet is grown by this much (in finder pixels), so the cutter trims its rim again
+const DR_EDGE = 11;       // a step in brightness this big between neighbours is an edge         // "this was not here before": brightness change against the remembered room
+function drLum(d, n) { const L = new Uint8Array(n); for (let i = 0, j = 0; i < n; i++, j += 4) L[i] = (d[j] * 2 + d[j + 1] * 5 + d[j + 2]) >> 3; return L; }
+function drPct(L, q, sel) { const hist = new Uint32Array(256); let n = 0; for (let i = 0; i < L.length; i++) if (!sel || sel[i]) { hist[L[i]]++; n++; } let c = 0; const want = n * q; for (let v = 0; v < 256; v++) { c += hist[v]; if (c >= want) return v; } return 255; }
+// bright + neutral + flat pixels (neutral = against the colour of the brightest things in view, so a warm lamp does not matter;
+// flat = no edge: the rim of the sheet is an edge, which is what keeps it apart from a pale wall behind it)
+function drPaperMask(d, L, w, h, k, flat, sel) {
+  const n = w * h, hi = drPct(L, 0.9, sel), T = Math.max(90, hi * k); let wr = 0, wg = 0, wb = 0;
+  for (let i = 0, j = 0; i < n; i++, j += 4) if (L[i] >= hi && (!sel || sel[i])) { wr += d[j]; wg += d[j + 1]; wb += d[j + 2]; }
+  const wm = Math.max(wr, wg, wb, 1), lamp = wm - Math.min(wr, wg, wb) <= 0.42 * wm;   // (a lamp tints the paper a little; a page painted sky-blue all over is not "white under a blue lamp")
+  const kr = lamp ? wm / Math.max(1, wr) : 1, kg = lamp ? wm / Math.max(1, wg) : 1, kb = lamp ? wm / Math.max(1, wb) : 1;
+  const M = new Uint8Array(n);
+  for (let y = 0, i = 0, j = 0; y < h; y++) for (let x = 0; x < w; x++, i++, j += 4) {
+    const l = L[i]; if (l < T) continue;
+    const r = d[j] * kr, g = d[j + 1] * kg, b = d[j + 2] * kb, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    if (mx - mn >= DR_SAT * mx) continue;
+    if (!flat) { M[i] = 1; continue; }
+    const e = Math.max(x < w - 1 ? Math.abs(l - L[i + 1]) : 0, y < h - 1 ? Math.abs(l - L[i + w]) : 0, x > 0 ? Math.abs(l - L[i - 1]) : 0, y > 0 ? Math.abs(l - L[i - w]) : 0);
+    if (e < Math.max(DR_EDGE, l * 0.055)) M[i] = 1;
+  }
+  return M;
+}
+// connected patches of a mask: label image + [{n, x0, y0, x1, y1}]
+function drLabel(M, w, h, min) {
+  const lab = new Int32Array(w * h), out = [], st = new Int32Array(w * h); let id = 0;
+  for (let s = 0; s < w * h; s++) {
+    if (!M[s] || lab[s]) continue;
+    id++; let sp = 0, n = 0, x0 = w, y0 = h, x1 = 0, y1 = 0; st[sp++] = s; lab[s] = id;
+    while (sp) {
+      const p = st[--sp], x = p % w, y = (p - x) / w; n++;
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      if (x > 0 && M[p - 1] && !lab[p - 1]) { lab[p - 1] = id; st[sp++] = p - 1; }
+      if (x < w - 1 && M[p + 1] && !lab[p + 1]) { lab[p + 1] = id; st[sp++] = p + 1; }
+      if (y > 0 && M[p - w] && !lab[p - w]) { lab[p - w] = id; st[sp++] = p - w; }
+      if (y < h - 1 && M[p + w] && !lab[p + w]) { lab[p + w] = id; st[sp++] = p + w; }
+    }
+    if (n >= (min || 1)) out.push({ id, n, x0, y0, x1, y1 });
+  }
+  return { lab, list: out };
+}
+// the sheet itself: everything between the outermost paper pixels of each row AND each column (so the drawing inside counts, a thumb over the edge does not)
+function drHull(lab, id, c, w, h) {
+  const Hm = new Uint8Array(w * h), top = new Int32Array(w).fill(1e9), bot = new Int32Array(w).fill(-1); let n = 0;
+  for (let y = c.y0; y <= c.y1; y++) for (let x = c.x0; x <= c.x1; x++) if (lab[y * w + x] === id) { if (y < top[x]) top[x] = y; if (y > bot[x]) bot[x] = y; }
+  for (let y = c.y0; y <= c.y1; y++) {
+    let a = -1, b = -1; for (let x = c.x0; x <= c.x1; x++) if (lab[y * w + x] === id) { if (a < 0) a = x; b = x; }
+    if (a < 0) continue;
+    for (let x = a; x <= b; x++) if (y >= top[x] && y <= bot[x]) { Hm[y * w + x] = 1; n++; }
+  }
+  return { Hm, n };
+}
+// look at a small camera frame: where is a sheet of paper with a drawing on it?
+// ref = the room as it looked a moment ago (RGB). With it, a sheet is something bright that was NOT there before (so a pale wall, a
+// white sofa, a picture on the wall are never taken for one). Without it (a photo from a file), a sheet is a bright patch with an edge all round.
+function drFindPaper(d, w, h, ref) {
+  const n = w * h, L = drLum(d, n), P = drPaperMask(d, L, w, h, 0.6, !ref); let S = P, shift = 0, bright = 0;
+  if (ref) {
+    // the camera re-exposes when something big and white turns up: take that out, measured round the rim of the picture
+    const df = [], m = Math.max(2, (w * 0.07) | 0); for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) if (x < m || y < m || x >= w - m || y >= h - m) { const i = y * w + x; df.push(L[i] - ((ref[i * 3] * 2 + ref[i * 3 + 1] * 5 + ref[i * 3 + 2]) >> 3)); } df.sort((p, q) => p - q); shift = df[df.length >> 1] || 0;
+    S = new Uint8Array(n); for (let i = 0, j = 0, k = 0; i < n; i++, j += 4, k += 3) if (P[i] && Math.max(Math.abs(d[j] - ref[k] - shift), Math.abs(d[j + 1] - ref[k + 1] - shift), Math.abs(d[j + 2] - ref[k + 2] - shift)) > DR_NEW) S[i] = 1;
+    S = drGrow(S, w, h, DR_PAD);                                              // (a line drawn right across the sheet must not cut it in two)
+  }
+  for (let i = 0; i < n; i++) bright += P[i];
+  const out = []; out.shift = shift; out.bright = bright / n;
+  out.close = !!ref && bright > n * 0.6 && shift > 18;                        // pressed right up against the camera: all white, and the camera has dimmed everything
+  if (out.close) return out;
+  const { lab, list } = drLabel(S, w, h, n * 0.004);
+  for (const c of list) {
+    const bw = c.x1 - c.x0 + 1, bh = c.y1 - c.y0 + 1, { Hm, n: hn } = drHull(lab, c.id, c, w, h), In = drShrink(Hm, w, h, DR_PAD + 1); let ink = 0, inN = 0;
+    const sig = new Float32Array(64);                                         // where on the sheet the drawing is, in 8 x 8 squares: tells one drawing from another
+    for (let y = c.y0; y <= c.y1; y++) for (let x = c.x0; x <= c.x1; x++) { const i = y * w + x; if (!In[i]) continue; inN++; if (!P[i]) { ink++; sig[Math.min(7, ((y - c.y0) * 8 / bh) | 0) * 8 + Math.min(7, ((x - c.x0) * 8 / bw) | 0)]++; } }
+    const touch = (c.x0 <= 1) + (c.y0 <= 1) + (c.x1 >= w - 2) + (c.y1 >= h - 2), o = { x0: c.x0 / w, y0: c.y0 / h, x1: (c.x1 + 1) / w, y1: (c.y1 + 1) / h, area: hn / n, fill: hn / (bw * bh), ink: ink / Math.max(1, inN), touch, hull: Hm, hw: w, hh: h, sig };
+    o.sheet = o.fill > 0.6 && o.ink > DR_INK && o.ink < 0.6;                 // a four-sided patch with something (not everything) drawn inside it
+    o.ok = o.sheet && o.area >= DR_BIG && (!!ref || touch <= 1 || o.fill > 0.8);
+    o.small = o.sheet && !o.ok && o.fill > 0.72 && o.area >= 0.006;          // there, but too far away
+    out.push(o);
+  }
+  out.sort((p, q) => (q.ok - p.ok) || (q.area - p.area));
+  return out;
+}
+// the same drawing again? (compare where the ink is)
+function drSame(a, b) {
+  let ma = 0, mb = 0; for (let i = 0; i < 64; i++) { ma += a[i] / 64; mb += b[i] / 64; }
+  let sab = 0, saa = 0, sbb = 0; for (let i = 0; i < 64; i++) { const x = a[i] - ma, y = b[i] - mb; sab += x * y; saa += x * x; sbb += y * y; }
+  return sab / Math.sqrt(saa * sbb + 1e-9);
+}
+// chamfer distance to the nearest set pixel (in 1/3 pixels) — used to grow / shrink shapes roundly
+function drDist(M, w, h) {
+  const D = new Uint16Array(w * h).fill(60000);
+  for (let i = 0; i < w * h; i++) if (M[i]) D[i] = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x; let v = D[i]; if (x > 0) v = Math.min(v, D[i - 1] + 3); if (y > 0) { v = Math.min(v, D[i - w] + 3); if (x > 0) v = Math.min(v, D[i - w - 1] + 4); if (x < w - 1) v = Math.min(v, D[i - w + 1] + 4); } D[i] = v; }
+  for (let y = h - 1; y >= 0; y--) for (let x = w - 1; x >= 0; x--) { const i = y * w + x; let v = D[i]; if (x < w - 1) v = Math.min(v, D[i + 1] + 3); if (y < h - 1) { v = Math.min(v, D[i + w] + 3); if (x < w - 1) v = Math.min(v, D[i + w + 1] + 4); if (x > 0) v = Math.min(v, D[i + w - 1] + 4); } D[i] = v; }
+  return D;
+}
+function drGrow(M, w, h, r) { const D = drDist(M, w, h), O = new Uint8Array(w * h), t = r * 3; for (let i = 0; i < w * h; i++) if (D[i] <= t) O[i] = 1; return O; }
+function drShrink(M, w, h, r) { const I = new Uint8Array(w * h); for (let i = 0; i < w * h; i++) I[i] = M[i] ? 0 : 1; for (let x = 0; x < w; x++) { I[x] = 1; I[(h - 1) * w + x] = 1; } for (let y = 0; y < h; y++) { I[y * w] = 1; I[y * w + w - 1] = 1; } const D = drDist(I, w, h), O = new Uint8Array(w * h), t = r * 3; for (let i = 0; i < w * h; i++) if (D[i] > t) O[i] = 1; return O; }
+function drFillHoles(M, w, h) {
+  const seen = new Uint8Array(w * h), st = new Int32Array(w * h); let sp = 0;
+  const push = i => { if (!M[i] && !seen[i]) { seen[i] = 1; st[sp++] = i; } };
+  for (let x = 0; x < w; x++) { push(x); push((h - 1) * w + x); } for (let y = 0; y < h; y++) { push(y * w); push(y * w + w - 1); }
+  while (sp) { const p = st[--sp], x = p % w, y = (p - x) / w; if (x > 0) push(p - 1); if (x < w - 1) push(p + 1); if (y > 0) push(p - w); if (y < h - 1) push(p + w); }
+  const O = new Uint8Array(w * h); for (let i = 0; i < w * h; i++) O[i] = M[i] || !seen[i] ? 1 : 0; return O;
+}
+// cut the drawing out of a close-up of the sheet: {w, h, data (RGBA), ink} — a sticker with a white edge, the paper's shadows and the lamp's colour taken out
+function drCut(d, w, h, sheet, pad) {
+  const n = w * h, L = drLum(d, n); let Hm, hn = 0, Pp;
+  if (sheet) {   // the finder already knows where the sheet is
+    Hm = sheet; for (let i = 0; i < n; i++) hn += Hm[i];
+    if (hn < n * 0.08) return { fail: 'nopaper' };
+    Pp = drPaperMask(d, L, w, h, 0.62, false, Hm); for (let i = 0; i < n; i++) if (!Hm[i]) Pp[i] = 0;
+  } else {       // a close-up from a file: the sheet is the biggest bright patch with an edge round it
+    const M = drPaperMask(d, L, w, h, 0.62, true), { lab, list } = drLabel(M, w, h, n * 0.02);
+    if (!list.length) return { fail: 'nopaper' };
+    const c = list.reduce((a, b) => b.n > a.n ? b : a), q = drHull(lab, c.id, c, w, h); Hm = q.Hm; hn = q.n;
+    if (hn < n * 0.3) return { fail: 'nopaper' };   // (a small bright patch is part of the picture, not the paper)
+    Pp = new Uint8Array(n); for (let i = 0; i < n; i++) if (lab[i] === c.id) Pp[i] = 1;
+  }
+  const side = Math.sqrt(hn), rim = Math.max(2, side * 0.014) + (pad || 0), In = drShrink(Hm, w, h, rim), band = drShrink(Hm, w, h, rim + Math.max(3, side * 0.035));
+  // the blank paper's colour all over the sheet (it is brighter on one side, and never quite white)
+  const G = 12, gs = new Float32Array(G * G * 4);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x; if (!Pp[i] || !In[i]) continue; const g = (Math.min(G - 1, (y * G / h) | 0) * G + Math.min(G - 1, (x * G / w) | 0)) * 4; gs[g] += d[i * 4]; gs[g + 1] += d[i * 4 + 1]; gs[g + 2] += d[i * 4 + 2]; gs[g + 3]++; }
+  const need = n / (G * G) * 0.1; let known = 0;
+  for (let g = 0; g < G * G; g++) { if (gs[g * 4 + 3] >= need) { gs[g * 4] /= gs[g * 4 + 3]; gs[g * 4 + 1] /= gs[g * 4 + 3]; gs[g * 4 + 2] /= gs[g * 4 + 3]; gs[g * 4 + 3] = 1; known++; } else gs[g * 4 + 3] = 0; }
+  if (!known) return { fail: 'nopaper' };
+  for (let pass = 0; pass < G * 2 && known < G * G; pass++) {
+    const nx = gs.slice();
+    for (let gy = 0; gy < G; gy++) for (let gx = 0; gx < G; gx++) {
+      const g = (gy * G + gx) * 4; if (gs[g + 3]) continue; let r = 0, gg = 0, b = 0, k = 0;
+      for (const [ox, oy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const x2 = gx + ox, y2 = gy + oy; if (x2 < 0 || y2 < 0 || x2 >= G || y2 >= G) continue; const q = (y2 * G + x2) * 4; if (gs[q + 3]) { r += gs[q]; gg += gs[q + 1]; b += gs[q + 2]; k++; } }
+      if (k) { nx[g] = r / k; nx[g + 1] = gg / k; nx[g + 2] = b / k; nx[g + 3] = 1; known++; }
+    }
+    gs.set(nx);
+  }
+  const bg = (x, y, o) => { const fx = clamp(x * G / w - 0.5, 0, G - 1.001), fy = clamp(y * G / h - 0.5, 0, G - 1.001), x0 = fx | 0, y0 = fy | 0, tx = fx - x0, ty = fy - y0, a = (y0 * G + x0) * 4, b = a + 4, c2 = a + G * 4, e = c2 + 4; for (let k = 0; k < 3; k++) o[k] = Math.max(8, (gs[a + k] * (1 - tx) + gs[b + k] * tx) * (1 - ty) + (gs[c2 + k] * (1 - tx) + gs[e + k] * tx) * ty); };
+  // what is drawn: clearly darker than the blank paper in at least one colour
+  const ink = new Uint8Array(n), col = new Float32Array(n * 3), o = [0, 0, 0]; let inkN = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x; if (!Hm[i]) continue;
+    bg(x, y, o); const r = Math.min(1, d[i * 4] / o[0]), g = Math.min(1, d[i * 4 + 1] / o[1]), b = Math.min(1, d[i * 4 + 2] / o[2]);
+    col[i * 3] = r; col[i * 3 + 1] = g; col[i * 3 + 2] = b;
+    if (In[i] && Math.min(r, g, b) < 0.82) ink[i] = 1;
+  }
+  // single specks are camera noise; and whatever hugs the rim of the sheet is not the drawing: the thumbs holding it, the table under it
+  // (a drawing that merely reaches the edge has most of itself further in, and stays)
+  { const q = drLabel(ink, w, h, 1), cnt = new Map(q.list.map(s => [s.id, [0, 0, 0, 0, s]]));
+    for (let i = 0; i < n; i++) if (ink[i]) { const c = cnt.get(q.lab[i]); if (!band[i]) c[0]++; c[1] += col[i * 3]; c[2] += col[i * 3 + 1]; c[3] += col[i * 3 + 2]; }
+    const drop = new Set();
+    for (const [id, c] of cnt) {
+      const s = c[4], r = c[1] / s.n, g = c[2] / s.n, b = c[3] / s.n, skin = r > g && g > b && r - b > 0.12 && r - b < 0.55 && r > 0.6, deep = Math.max(s.x1 - s.x0, s.y1 - s.y0) > side * 0.3;
+      if (s.n < 4 || c[0] > s.n * 0.4 || (c[0] > 0 && skin && !deep)) drop.add(id);
+    }
+    for (let i = 0; i < n; i++) if (ink[i]) { if (drop.has(q.lab[i])) ink[i] = 0; else inkN++; } }
+  const frac = inkN / hn;
+  if (frac < 0.004) return { fail: 'blank', ink: frac };
+  // the sticker: the drawing with a margin of its own paper around it — or the whole sheet when it is coloured in edge to edge
+  const R = clamp(Math.round(side * 0.03), 3, 16); let St;
+  if (frac > 0.5) St = Hm.slice();
+  else {
+    St = drFillHoles(drGrow(ink, w, h, R), w, h); for (let i = 0; i < n; i++) if (!Hm[i]) St[i] = 0;
+    St = drGrow(drShrink(St, w, h, R * 0.45), w, h, R * 0.45);                       // round off the bumps
+    const q = drLabel(St, w, h, 1), big = Math.max(...q.list.map(s => s.n)), keep = new Set(q.list.filter(s => s.n >= big * 0.04).map(s => s.id));
+    for (let i = 0; i < n; i++) if (St[i] && !keep.has(q.lab[i])) St[i] = 0;
+  }
+  const edge = Math.max(2, R * 0.5), Out = drDist(St, w, h);
+  let x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (Out[y * w + x] <= edge * 3 + 3) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < x0) return { fail: 'blank', ink: frac };
+  const ow = x1 - x0 + 1, oh = y1 - y0 + 1, od = new Uint8ClampedArray(ow * oh * 4);
+  for (let y = 0; y < oh; y++) for (let x = 0; x < ow; x++) {
+    const i = (y + y0) * w + x + x0, j = (y * ow + x) * 4, dd = Out[i];
+    if (dd > edge * 3 + 3) continue;
+    if (St[i] && Hm[i]) {
+      let r = Math.pow(Math.min(1, col[i * 3] * 1.04), 1.25), g = Math.pow(Math.min(1, col[i * 3 + 1] * 1.04), 1.25), b = Math.pow(Math.min(1, col[i * 3 + 2] * 1.04), 1.25);
+      const l = (r * 2 + g * 5 + b) / 8; r = l + (r - l) * 1.3; g = l + (g - l) * 1.3; b = l + (b - l) * 1.3;   // webcams wash crayons out
+      od[j] = r * 255; od[j + 1] = g * 255; od[j + 2] = b * 255; od[j + 3] = 255;
+    } else { od[j] = od[j + 1] = od[j + 2] = 255; od[j + 3] = 255 * clamp((edge * 3 + 3 - dd) / 3, 0, 1); }
+  }
+  return { w: ow, h: oh, data: od, ink: frac, x0, y0 };
+}
+// ---- the friends she has drawn, and the "magic easel" that takes a drawing off its paper ----
+const DR = { list: [], img: new Map(), ph: 'off', t: 0, scanT: 0, ref: null, cand: null, box: null, seenT: 0, gapT: 0, steady: false, count: 0, manual: false, done: [], bad: [], got: 0, idle: 0, small: null, smallT: 0, closeT: 0, alive: null, stage: [], hintK: '', hintT: -9, ptr: null, busy: false };
+const DR_W = 256, DR_H = 144;   // the finder looks at the camera picture this small, nine times a second
+const DR_KEEP = 8;              // how many drawn friends are kept (the oldest goes home when a ninth arrives)
+const DR_SHOW = 4.4;            // how long "it's alive!" takes
+const drSc = document.createElement('canvas'); drSc.width = DR_W; drSc.height = DR_H; const drSx = drSc.getContext('2d', { willReadFrequently: true });
+try { const l = JSON.parse(localStorage.getItem('iceMagicFriends') || '[]'); if (Array.isArray(l)) DR.list = l.filter(f => f && f.id && typeof f.src === 'string' && f.w > 0 && f.h > 0).slice(-DR_KEEP); } catch (e) {}
+function drSave() { let l = DR.list; for (;;) { try { localStorage.setItem('iceMagicFriends', JSON.stringify(l)); break; } catch (e) { if (l.length <= 1) break; l = l.slice(1); } } if (l !== DR.list) DR.list = l; }
+function drCam() { return S.input === 'camera' && !IS_TV && camState === 'on' && !!camStream && video.readyState >= 2; }
+function drTypes(n) { return DR.list.slice(-n).reverse().map(f => '@' + f.id); }   // her newest drawn friends, as "animals" for the dance and the hug
+function drImg(id) {
+  let im = DR.img.get(id);
+  if (!im) { const f = DR.list.find(f => f.id === id); if (!f) return null; im = new Image(); im.src = f.src; DR.img.set(id, im); }
+  return im.width && (im.complete === undefined || (im.complete && im.naturalWidth)) ? im : null;
+}
+// a drawn friend, standing on (x, y), about s tall: it is a paper sticker, so it rocks and hops rather than walks
+function drFriendDraw(id, x, y, s, t, happy) {
+  const im = drImg(id); if (!im) return;
+  const a = im.width / im.height; let hh = s * 0.98, ww = hh * a; if (ww > s * 1.1) { ww = s * 1.1; hh = ww / a; }
+  const hop = happy ? Math.abs(Math.sin(t * 7)) : 0, sq = happy ? 0.06 * Math.sin(t * 14) : 0.02 * Math.sin(t * 2.2);
+  ctx.save(); ctx.translate(x, y - hop * 0.24 * s); ctx.rotate(Math.sin(t * (happy ? 7 : 1.7)) * (happy ? 0.08 : 0.035)); ctx.scale(1 - sq, 1 + sq);
+  if (!LITE) { ctx.shadowColor = 'rgba(10,30,80,0.4)'; ctx.shadowBlur = s * 0.07; ctx.shadowOffsetY = s * 0.03; }
+  ctx.drawImage(im, -ww / 2, -hh, ww, hh); ctx.restore();
+}
+function drAdd(cv) {
+  const id = 'f' + Date.now().toString(36) + ((Math.random() * 1296) | 0).toString(36); let src = '';
+  try { src = cv.toDataURL('image/webp', 0.9); if (src.indexOf('data:image/webp') !== 0) src = cv.toDataURL('image/png'); } catch (e) { return null; }
+  const f = { id, src, w: cv.width, h: cv.height, hz: Math.round(rand(700, 1500)), seen: false, t: Date.now() };
+  DR.list.push(f); while (DR.list.length > DR_KEEP) DR.img.delete(DR.list.shift().id);
+  DR.img.set(id, cv); drSave(); KD.cd = 0; drRow(); return f;
+}
+function drRemove(id) { DR.list = DR.list.filter(f => f.id !== id); DR.img.delete(id); DR.stage = DR.stage.filter(s => s.id !== id); drSave(); KD.cd = 0; KD.sig = ''; drRow(); }
+// the grown-ups' list in the settings: tap a friend to send it home (a blurry one, a picture of somebody's T-shirt…)
+function drRow() {
+  const el = $('#drList'); if (!el) return; el.innerHTML = '';
+  $('#drRow').style.display = DR.list.length ? 'flex' : 'none';
+  for (const f of DR.list) { const b = document.createElement('button'); b.className = 'drChip'; b.title = '×'; const im = document.createElement('img'); im.src = f.src; im.alt = ''; b.appendChild(im); const x = document.createElement('i'); x.textContent = '×'; b.appendChild(x); b.addEventListener('click', () => drRemove(f.id)); el.appendChild(b); }
+}
+function drKnown(sig) { return DR.done.some(s => drSame(s, sig) > 0.7) || DR.bad.some(b => now - b.t < 5 && drSame(b.sig, sig) > 0.7); }
+function drHint(k, secs) { if (DR.hintK === k && now - DR.hintT < secs) return; DR.hintK = k; DR.hintT = now; showHint(tr(k), secs); }
+function startDraw() {
+  Object.assign(DR, { ph: 'scan', t: 0, scanT: 0.3, ref: null, cand: null, box: null, seenT: 0, gapT: 0, steady: false, manual: false, done: [], bad: [], got: 0, idle: 0, small: null, smallT: 0, closeT: 0, alive: null, hintK: '', hintT: -9, ptr: null });
+  DR.stage = DR.list.map((f, i) => ({ id: f.id, ph: i * 1.3, k: 1 }));
+  document.body.classList.add('drawing');
+}
+function drOff() { if (DR.ph === 'off') return; DR.ph = 'off'; DR.cand = DR.alive = DR.ref = DR.box = null; document.body.classList.remove('drawing', 'drawptr'); DR.ptr = null; }
+// nine times a second: is somebody holding a drawing up?
+function drScan(sdt) {
+  let d; try { drSx.drawImage(video, 0, 0, DR_W, DR_H); d = drSx.getImageData(0, 0, DR_W, DR_H).data; } catch (e) { return; }
+  const n = DR_W * DR_H;
+  if (!DR.ref) { if (DR.t > 0.5) { DR.ref = new Float32Array(n * 3); for (let i = 0; i < n; i++) { DR.ref[i * 3] = d[i * 4]; DR.ref[i * 3 + 1] = d[i * 4 + 1]; DR.ref[i * 3 + 2] = d[i * 4 + 2]; } } return; }
+  const cs = drFindPaper(d, DR_W, DR_H, DR.ref); let best = null, small = null;
+  // a white T-shirt with a picture on it is not a sheet of paper: the patch has both her shoulder joints in it AND reaches down
+  // to her hips (or out of the bottom of the picture). A sheet held at her chest starts below her shoulders, and one big enough
+  // to cover shoulders and hips hides them — then there is no "her" to compare with, and it is taken for the sheet it is.
+  const sh = [], va = (video.videoHeight || 720) / (video.videoWidth || 1280);
+  if (now - poseT < 0.5) { const r = videoRect(), f = q => [(W - q.x - r.ox) / r.dw, (q.y - r.oy) / r.dh]; for (const P of poseScr) if (P.ls.v && P.rs.v) sh.push([f(P.ls), f(P.rs), P.lh.v && P.rh.v ? f(P.lh) : null, P.lh.v && P.rh.v ? f(P.rh) : null]); }
+  const shirt = c => sh.some(([a, b, ha, hb]) => {
+    const mx = (a[0] + b[0]) / 2, sw = Math.abs(a[0] - b[0]) / va, at = (q, dy) => { const ix = ((q[0] + (mx - q[0]) * 0.25) * DR_W) | 0, iy = ((q[1] + dy) * DR_H) | 0; return ix >= 0 && ix < DR_W && iy >= 0 && iy < DR_H && c.hull[iy * DR_W + ix] === 1; };   // (sw: her shoulder width as a share of the picture's HEIGHT)
+    return at(a, sw * 0.1) && at(b, sw * 0.1) && (c.y1 > 0.985 || (!!ha && at(ha, -sw * 0.2) && at(hb, -sw * 0.2)));
+  });
+  for (const c of cs) { if (!c.sheet || shirt(c)) continue; if (c.ok && !best && !drKnown(c.sig)) best = c; if (c.small && !small && !drKnown(c.sig)) small = c; }
+  if (best) {
+    const p = DR.cand; DR.steady = !!p && Math.abs(p.x0 + p.x1 - best.x0 - best.x1) < 0.03 && Math.abs(p.y0 + p.y1 - best.y0 - best.y1) < 0.045 && Math.abs(best.area / p.area - 1) < 0.14;
+    DR.cand = best; DR.seenT += sdt; DR.gapT = 0;
+  } else { DR.gapT += sdt; if (DR.gapT > 0.45) { DR.cand = null; DR.seenT = 0; DR.steady = false; } }
+  DR.small = best ? null : small; DR.smallT = DR.small ? DR.smallT + sdt : 0;
+  DR.closeT = cs.close ? DR.closeT + sdt : 0;
+  // remember the room as it is now (slowly) — except where a sheet is (or a T-shirt that looks like one: if it faded into the room
+  // bit by bit, the bits still left would look like new sheets), or when the camera has gone dim because a sheet is right in front of it
+  if (cs.close) return;
+  const R = DR.ref, keep = cs.filter(c => c.sheet).map(c => c.hull);
+  for (let i = 0, j = 0, k = 0; i < n; i++, j += 4, k += 3) {
+    let held = false; for (const hm of keep) if (hm[i]) { held = true; break; }
+    if (held) continue;
+    R[k] += (d[j] - R[k]) * 0.04; R[k + 1] += (d[j + 1] - R[k + 1]) * 0.04; R[k + 2] += (d[j + 2] - R[k + 2]) * 0.04;
+  }
+}
+// take a drawing out of a picture (the camera, or a photo from a file). cand = what the finder saw (or null: look for a sheet without knowing the room;
+// box = [x0, y0, x1, y1], the part of the picture to look in). Returns { cv, box, sig } or { fail }.
+function drTake(src, sw, sh, cand, box) {
+  const grab = (x0, y0, x1, y1, max) => {
+    const L = Math.round(x0 * sw), T = Math.round(y0 * sh), cw = Math.max(8, Math.round((x1 - x0) * sw)), ch = Math.max(8, Math.round((y1 - y0) * sh)), sc = Math.min(1, max / Math.max(cw, ch));
+    const c = document.createElement('canvas'); c.width = Math.max(8, Math.round(cw * sc)); c.height = Math.max(8, Math.round(ch * sc)); const x = c.getContext('2d', { willReadFrequently: true });
+    x.imageSmoothingQuality = 'high'; x.drawImage(src, L, T, cw, ch, 0, 0, c.width, c.height); return [c, x];
+  };
+  box = box || [0, 0, 1, 1];
+  if (!cand) {   // no room to compare with: a sheet is a bright patch with an edge all round it
+    const bw = box[2] - box[0], bh = box[3] - box[1], [c0, x0] = grab(box[0], box[1], box[2], box[3], DR_W), cs = drFindPaper(x0.getImageData(0, 0, c0.width, c0.height).data, c0.width, c0.height, null);
+    const c = cs.filter(c => c.sheet && c.area > 0.18)[0];   // (in a photo of a drawing, or inside the frame, the sheet is most of the picture — a small bright patch is part of the drawing)
+    if (c) { c.x0 = box[0] + c.x0 * bw; c.x1 = box[0] + c.x1 * bw; c.y0 = box[1] + c.y0 * bh; c.y1 = box[1] + c.y1 * bh; c.bx = box; cand = c; }
+  }
+  let out = null, at = box;
+  if (cand) {
+    const m = 0.03, a = [Math.max(0, cand.x0 - m), Math.max(0, cand.y0 - m), Math.min(1, cand.x1 + m), Math.min(1, cand.y1 + m)], [c, x] = grab(a[0], a[1], a[2], a[3], 440), w = c.width, h = c.height;
+    // the finder's sheet, laid over the close-up
+    const bx = cand.bx || [0, 0, 1, 1], sheet = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) for (let xx = 0; xx < w; xx++) {
+      const nx = (a[0] + (xx + 0.5) / w * (a[2] - a[0]) - bx[0]) / (bx[2] - bx[0]), ny = (a[1] + (y + 0.5) / h * (a[3] - a[1]) - bx[1]) / (bx[3] - bx[1]);
+      if (nx >= 0 && nx < 1 && ny >= 0 && ny < 1) sheet[y * w + xx] = cand.hull[((ny * cand.hh) | 0) * cand.hw + ((nx * cand.hw) | 0)];
+    }
+    out = drCut(x.getImageData(0, 0, w, h).data, w, h, sheet, (DR_PAD + 1) * w / ((a[2] - a[0]) / (bx[2] - bx[0]) * cand.hw)); at = a;
+  } else { const [c, x] = grab(box[0], box[1], box[2], box[3], 440); out = drCut(x.getImageData(0, 0, c.width, c.height).data, c.width, c.height, null, 0); }
+  if (!out || out.fail) return { fail: (out && out.fail) || 'nopaper', sig: cand && cand.sig };
+  // the sticker, at the size it is kept
+  const raw = document.createElement('canvas'); raw.width = out.w; raw.height = out.h; raw.getContext('2d').putImageData(new ImageData(out.data, out.w, out.h), 0, 0);
+  const sc = Math.min(1, 280 / Math.max(out.w, out.h)), cv = document.createElement('canvas'); cv.width = Math.max(4, Math.round(out.w * sc)); cv.height = Math.max(4, Math.round(out.h * sc));
+  const cx = cv.getContext('2d'); cx.imageSmoothingQuality = 'high'; cx.drawImage(raw, 0, 0, cv.width, cv.height);
+  return { cv, box: at, sig: cand && cand.sig };
+}
+// nothing that looks like a sheet (a page coloured in edge to edge, dark paper, a toy…): what is inside the frame becomes a card
+function drCard(src, sw, sh, box) {
+  const cw = (box[2] - box[0]) * sw, ch = (box[3] - box[1]) * sh, sc = Math.min(1, 260 / Math.max(cw, ch)), w = Math.max(8, Math.round(cw * sc)), h = Math.max(8, Math.round(ch * sc)), b = Math.max(4, Math.round(Math.max(w, h) * 0.035));
+  const cv = document.createElement('canvas'); cv.width = w + b * 2; cv.height = h + b * 2; const x = cv.getContext('2d');
+  x.fillStyle = '#ffffff'; rrect(x, 0, 0, cv.width, cv.height, b * 2.2); x.fill();
+  x.save(); rrect(x, b, b, w, h, b * 1.4); x.clip(); x.imageSmoothingQuality = 'high'; x.drawImage(src, box[0] * sw, box[1] * sh, cw, ch, b, b, w, h); x.restore();
+  return { cv, box };
+}
+// where the "hold it here" frame is, on the screen and in the camera picture
+function drGuide() { const gh = H * 0.5, gw = Math.min(W * 0.62, gh * 1.36); return [W / 2 - gw / 2, H * 0.47 - gh / 2, gw, gh]; }
+function drGuideCam() { const [x, y, w, h] = drGuide(), r = videoRect(), f = (sx, sy) => [clamp((W - sx - r.ox) / r.dw, 0, 1), clamp((sy - r.oy) / r.dh, 0, 1)], a = f(x + w, y), b = f(x, y + h); return [a[0], a[1], b[0], b[1]]; }
+function drScreenBox(b) { const p = mapPt(b[2], b[1]), q = mapPt(b[0], b[3]); return [p[0], p[1], q[0] - p[0], q[1] - p[1]]; }
+function drTick(n) { if (AC) tone(n ? 880 : 1320, AC.currentTime, n ? 0.14 : 0.3, 'sine', 0.11); }
+function drManual() {   // a grown-up presses 📸 (or the space bar): three, two, one — whatever is in the frame is taken
+  if (DR.ph !== 'scan' || topOverlay()) return;
+  ensureAudio();
+  if (!drCam()) { $('#drFile').click(); return; }
+  DR.ph = 'count'; DR.count = 2.7; DR.manual = true; drTick(3);
+}
+function drSnap() {
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720; let r;
+  if (DR.cand) r = drTake(video, vw, vh, DR.cand);
+  else { const g = drGuideCam(); r = drTake(video, vw, vh, null, g); if (r.fail) r = drCard(video, vw, vh, g); }
+  if (r.fail) {   // a blank sheet, or nothing but the hands holding it
+    if (r.sig) DR.bad.push({ sig: r.sig, t: now }); if (DR.bad.length > 6) DR.bad.shift();
+    DR.ph = 'scan'; DR.cand = null; DR.seenT = 0; DR.manual = false; drHint('drBlank', 5);
+    if (AC) { tone(392, AC.currentTime, 0.16, 'triangle', 0.08); tone(330, AC.currentTime + 0.14, 0.22, 'triangle', 0.08); }
+    return;
+  }
+  if (r.sig) DR.done.push(r.sig);
+  drAlive(r.cv, drScreenBox(r.box));
+}
+// it's alive! — the drawing comes off the paper, turns round to face her, and hops
+function drAlive(cv, from) {
+  const f = drAdd(cv); if (!f) { DR.ph = 'scan'; return; }
+  from = from || [W / 2 - 6 * U, H / 2 - 6 * U, 12 * U, 12 * U];
+  DR.alive = { id: f.id, w: cv.width, h: cv.height, t: 0, fx: from[0] + from[2] / 2, fy: from[1] + from[3] / 2, fh: Math.max(6 * U, Math.min(from[3], from[2] * cv.height / cv.width)), pop: false, stars: false };
+  DR.ph = 'alive'; DR.cand = null; DR.box = null; DR.seenT = 0; DR.manual = false; PAL.prog = now; hintEl.style.opacity = 0;
+  flash = Math.max(flash, 0.9); sfx.freeze(); mvMark('draw', 3, 3.4);
+  if (AC) noise(AC.currentTime, 0.12, 0.2, 'highpass', 2000, 6000, 0.7);
+}
+function drFile(file) {   // a photo of a drawing, from a file (on a phone: straight from its camera)
+  if (!file || DR.ph !== 'scan' || DR.busy) return;
+  DR.busy = true; const url = URL.createObjectURL(file), im = new Image();
+  im.onload = () => {
+    DR.busy = false; URL.revokeObjectURL(url); if (DR.ph !== 'scan') return;
+    const sc = Math.min(1, 1280 / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas'); c.width = Math.max(8, Math.round(im.naturalWidth * sc)); c.height = Math.max(8, Math.round(im.naturalHeight * sc));
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    let r = drTake(c, c.width, c.height, null); if (r.fail) r = drCard(c, c.width, c.height, [0, 0, 1, 1]);
+    drAlive(r.cv, null);
+  };
+  im.onerror = () => { DR.busy = false; URL.revokeObjectURL(url); drHint('drBlank', 5); };
+  im.src = url;
+}
+function updateDraw(dt) {
+  DR.t += dt; const cam = drCam();
+  if (DR.ptr !== !cam) { DR.ptr = !cam; document.body.classList.toggle('drawptr', !cam); }   // no camera: a big "choose a photo" button instead
+  for (const s of DR.stage) s.k = Math.min(1, s.k + dt * 2.5);
+  if (DR.ph === 'scan' || DR.ph === 'count') {
+    if (cam) { DR.scanT -= dt; if (DR.scanT <= 0) { DR.scanT = 0.11; drScan(0.11); } } else { DR.cand = null; DR.small = null; }
+    // the glowing outline follows the sheet smoothly
+    const c = DR.cand || DR.small;
+    if (c) { const k = DR.box ? Math.min(1, dt * 14) : 1, b = DR.box || [0, 0, 0, 0], t = [c.x0, c.y0, c.x1, c.y1]; DR.box = b.map((v, i) => v + (t[i] - v) * k); } else DR.box = null;
+  }
+  if (DR.ph === 'scan') {
+    if (DR.cand && DR.seenT > 0.3) { DR.ph = 'count'; DR.count = 2.7; DR.manual = false; drTick(3); PAL.coach = null; }
+    else if (DR.closeT > 0.5) drHint('drClose', 3);
+    else if (DR.smallT > 1.4) drHint('drSmall', 3);
+    if (DR.cand || DR.small || DR.closeT > 0) { DR.idle = 0; PAL.prog = now; } else DR.idle += dt;
+    if (cam && DR.got && DR.idle > 14 && !topOverlay() && !DW.p.size) { goMenu(); return; }   // she has shown her drawing(s): back to the kingdom, where they have moved in
+  } else if (DR.ph === 'count') {
+    PAL.prog = now;
+    if (!DR.manual && !DR.cand) { DR.ph = 'scan'; return; }                                   // the sheet went away
+    const b = Math.ceil(DR.count / 0.9); DR.count -= dt; const a = Math.ceil(DR.count / 0.9);
+    if (a !== b && a > 0) drTick(a);
+    if (DR.count <= 0 && (DR.manual || DR.steady || DR.count < -0.8)) drSnap();              // (waits a moment for the sheet to hold still: a moving sheet is a blurred one)
+  } else if (DR.ph === 'alive') {
+    const A = DR.alive; A.t += dt; PAL.prog = now;
+    if (!A.pop && A.t > 0.95) {
+      A.pop = true; sfx.celebrate(); PAL.cheerT = 3; ring(W / 2, H * 0.5, 22 * U);
+      for (let i = 0; i < 70; i++) { const a = rand(0, Math.PI * 2), sp = rand(25, 85) * U; addParticle({ type: Math.random() < 0.5 ? 'flake' : 'spark', x: W / 2, y: H * 0.5, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 20 * U, g: 30 * U, drag: 1.4, r: rand(0.7, 2) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(1, 2), max: 2, col: pick(KD_POP) }); }
+    }
+    if (!A.stars && A.t > 1.5) { A.stars = true; for (let i = 0; i < 5; i++) addFlyStar(W / 2 + rand(-8, 8) * U, H * 0.45 + rand(-6, 6) * U); }
+    if (A.pop && Math.random() < dt * 5) parts.push({ type: 'text', text: pick(['💗', '✨', '❄️']), x: W / 2 + rand(-20, 20) * U, y: H * 0.62 - rand(0, 26) * U, vx: 0, vy: -9 * U, g: 0, drag: 1, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ffffff', size: 3.4 * U });
+    if (A.t >= DR_SHOW) {
+      DR.stage.push({ id: A.id, ph: rand(0, 6), k: 0.4 }); if (DR.stage.length > DR_KEEP) DR.stage = DR.stage.filter(s => DR.list.some(f => f.id === s.id));
+      DR.alive = null; DR.got++; DR.idle = 0; DR.ph = 'scan'; DR.scanT = 0.3;
+      if (!cam) goMenu();   // (a photo from a file: straight home, to see it move in)
+    }
+  }
+}
+function drStageAt(i, n) { return [W * (0.5 + (i - (n - 1) / 2) * Math.min(0.105, 0.78 / Math.max(1, n))), H - 2.4 * U, 11.5 * U]; }
+function drDigit(x, y, n, k, size) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(0.8 + k * 0.45, 0.8 + k * 0.45); ctx.globalAlpha = 0.95;
+  ctx.fillStyle = 'rgba(16,44,110,0.72)'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = size * 0.07; ctx.beginPath(); ctx.arc(0, 0, size * 0.74, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.font = `900 ${size}px "PingFang SC","Microsoft YaHei",sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffffff'; ctx.fillText(String(n), 0, size * 0.06);
+  ctx.restore();
+}
+// under the sparkles: the friends she already has (they watch from the bottom of the screen), the "hold it here" frame, the glow round a sheet that has been seen
+function drawDrawBack() {
+  const n = DR.stage.length, lively = PAL.cheerT > 0 || !!DR.cand;
+  DR.stage.forEach((s, i) => { const [x, y, sz] = drStageAt(i, n); ctx.fillStyle = 'rgba(8,24,70,0.3)'; ctx.beginPath(); ctx.ellipse(x, y + 0.2 * U, sz * 0.36 * s.k, sz * 0.07 * s.k, 0, 0, Math.PI * 2); ctx.fill(); drFriendDraw(s.id, x, y, sz * s.k, now * (lively ? 1 : 0.6) + s.ph, lively); });
+  if (DR.ph === 'alive' || !drCam()) return;
+  const [gx, gy, gw, gh] = drGuide(), c = DR.cand, counting = DR.ph === 'count';
+  ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  if (!c) {   // nothing yet: a frame that says "bring it here" (and, while a far-away sheet is in view, where that sheet is)
+    const a = 0.5 + 0.3 * Math.sin(now * 2.4), near = DR.small && DR.box;
+    ctx.fillStyle = `rgba(255,255,255,${0.05 + 0.04 * Math.sin(now * 2.4)})`; rrect(ctx, gx, gy, gw, gh, 3 * U); ctx.fill();
+    ctx.setLineDash([2.4 * U, 1.8 * U]); ctx.lineDashOffset = -now * 3 * U; ctx.lineWidth = 0.7 * U; ctx.strokeStyle = `rgba(255,255,255,${a})`; rrect(ctx, gx, gy, gw, gh, 3 * U); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#ffffff'; ctx.globalAlpha = counting ? 0 : 0.6 + 0.25 * Math.sin(now * 2.4); ctx.font = `${9 * U}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🎨', W / 2, gy + gh / 2); ctx.globalAlpha = 1;
+    if (near) {   // "I can see it — closer!": its little outline, and arrows growing out to the big frame
+      const [bx, by, bw, bh] = drScreenBox(DR.box), k = (now * 0.9) % 1;
+      ctx.lineWidth = 0.6 * U; ctx.strokeStyle = '#ffe680'; rrect(ctx, bx, by, bw, bh, 1.2 * U); ctx.stroke();
+      ctx.globalAlpha = 1 - k; rrect(ctx, bx + (gx - bx) * k, by + (gy - by) * k, bw + (gw - bw) * k, bh + (gh - bh) * k, (1.2 + 1.8 * k) * U); ctx.stroke(); ctx.globalAlpha = 1;
+    }
+  }
+  if (c && DR.box) {   // seen! the sheet glows, and three, two, one…
+    const [bx, by, bw, bh] = drScreenBox(DR.box), p = counting ? clamp(1 - DR.count / 2.7, 0, 1) : 0;
+    ctx.globalCompositeOperation = 'lighter'; ctx.shadowColor = '#9fe2ff'; ctx.shadowBlur = 3 * U;
+    ctx.lineWidth = (0.9 + 0.9 * p) * U; ctx.strokeStyle = `rgba(190,235,255,${0.75 + 0.2 * Math.sin(now * 9)})`; rrect(ctx, bx - U, by - U, bw + 2 * U, bh + 2 * U, 2 * U); ctx.stroke();
+    ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'source-over';
+    for (let i = 0; i < 4; i++) { const cx = bx - U + (i % 2) * (bw + 2 * U), cy = by - U + (i >> 1) * (bh + 2 * U); drawFlake(ctx, cx, cy, (1.6 + 0.5 * Math.sin(now * 6 + i)) * U, now * 2 + i, '#ffffff'); }
+    if (Math.random() < 0.5) { const e = (Math.random() * 4) | 0, u = Math.random(), px = e < 2 ? bx + u * bw : e === 2 ? bx : bx + bw, py = e === 0 ? by : e === 1 ? by + bh : by + u * bh; addParticle({ type: 'spark', x: px, y: py, vx: rand(-4, 4) * U, vy: -rand(2, 10) * U, g: 0, drag: 1, r: rand(0.4, 1) * U, rot: 0, vr: 0, life: 0.6, max: 0.6, col: '#dff6ff' }); }
+  }
+  ctx.restore();
+  if (counting && DR.count > 0) {
+    const nn = Math.ceil(DR.count / 0.9), k = DR.count / 0.9 - Math.floor(DR.count / 0.9), b = c && DR.box ? drScreenBox(DR.box) : [gx, gy, gw, gh];
+    drDigit(clamp(b[0] + b[2] / 2, 12 * U, W - 12 * U), Math.max(11 * U, b[1] - 9 * U), nn, k, 11 * U);
+  }
+}
+// on top of everything: the drawing leaves its paper, grows, turns round and hops — then joins the others at the bottom
+function drawDrawFront() {
+  const A = DR.alive; if (!A) return;
+  const t = A.t, sm = v => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); }, out = sm((t - (DR_SHOW - 0.7)) / 0.7), dim = sm(t / 0.4) * (1 - out);
+  ctx.fillStyle = `rgba(8,20,62,${0.62 * dim})`; ctx.fillRect(0, 0, W, H);
+  const a = A.w / A.h, TH = Math.min(H * 0.5, W * 0.55 / a), k = sm(t / 0.9), [hx, hy, hs] = drStageAt(DR.stage.length, DR.stage.length + 1);
+  let cx = A.fx + (W / 2 - A.fx) * k, by = A.fy + A.fh / 2 + (H * 0.76 - A.fy - A.fh / 2) * k, hh = A.fh + (TH - A.fh) * k;
+  cx += (hx - cx) * out; by += (hy - by) * out; hh += (hs - hh) * out;
+  if (dim > 0.05) {   // a halo with slow rays behind it
+    ctx.save(); ctx.translate(cx, by - hh * 0.5); ctx.globalAlpha = dim * k; ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(0, 0, hh * 0.1, 0, 0, hh * 1.05); g.addColorStop(0, 'rgba(190,235,255,0.75)'); g.addColorStop(0.5, 'rgba(120,190,255,0.28)'); g.addColorStop(1, 'rgba(120,190,255,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, hh * 1.05, 0, Math.PI * 2); ctx.fill();
+    ctx.rotate(now * 0.35); ctx.fillStyle = 'rgba(210,240,255,0.14)'; for (let i = 0; i < 10; i++) { ctx.rotate(Math.PI / 5); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-hh * 0.11, -hh * 1.2); ctx.lineTo(hh * 0.11, -hh * 1.2); ctx.closePath(); ctx.fill(); }
+    ctx.restore();
+  }
+  const flip = t < 0.6 ? Math.cos(Math.PI * sm(t / 0.6)) * -1 : 1;   // on the screen she sees her sheet as in a mirror: the drawing turns round to face her the right way
+  ctx.save(); ctx.translate(cx, by); ctx.scale(Math.abs(flip) < 0.04 ? 0.04 : flip, 1);
+  drFriendDraw(A.id, 0, 0, hh / 0.98, t < 0.95 ? 0 : (t - 0.95) * 1.15, t >= 0.95 && !out);
+  ctx.restore();
+  if (t > 0.95 && t < DR_SHOW - 0.6) {
+    const q = t - 0.95, s = q < 0.35 ? q / 0.35 * 1.15 : 1 + 0.05 * Math.sin(q * 6), txt = tr('drAlive');
+    ctx.save(); ctx.globalAlpha = clamp((DR_SHOW - 0.6 - t) / 0.4, 0, 1); ctx.translate(W / 2, H * 0.13); ctx.scale(s, s);
+    fitFont(ctx, txt, 800, 12 * U, W * 0.8); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.lineWidth = U * 1.5; ctx.strokeStyle = 'rgba(30,70,150,0.9)'; ctx.strokeText(txt, 0, 0); ctx.fillStyle = '#ffffff'; ctx.shadowColor = '#8fdcff'; ctx.shadowBlur = 4 * U; ctx.fillText(txt, 0, 0);
+    ctx.restore();
+  }
+}
 
 // ======================================================================
 // ---- 雪团团 (Snowy), a snow buddy — she cannot read the hints, so the buddy SHOWS her instead of telling her:
@@ -3798,7 +4304,7 @@ const palCv = $('#pal'), pcx = palCv.getContext('2d');
 const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init: false, g: 'idle', gt: 0, aL: [118 * D2R, 98 * D2R], aR: [62 * D2R, 82 * D2R], lean: 0, dx: 0, dy: 0, sq: 0, blink: 0, nextBlink: 2, look: [0, 0], coach: null, cheerT: 0, pokeT: -9, prog: 0, lastCoach: -9, seenFor: 0, demo: null, demoN: 0, idleT: 0, learned: false, side: 1, hallY: 0, hallCd: 0, back: 0, pa: 0, homeEl: null };
 try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
 // what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
-const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3], ['up', 2.4]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]] };
+const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3], ['up', 2.4]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]], draw: [['show', 6.4]] };
 const PAL_DEMO = ['adventure', 'hug', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
 function palOn() { return S.pal !== false && !IS_TV; }
 function palCoach(seq) {
@@ -3845,6 +4351,10 @@ function palGesture(g, t) {
   else if (g === 'hug') {   // arms wide — then they close round a little ice block, which melts into a heart
     const u = t % 2.2, k = u < 0.6 ? 0 : u < 0.9 ? (u - 0.6) / 0.3 : u < 1.95 ? 1 : 1 - (u - 1.95) / 0.25, L = (a, b) => a + (b - a) * k;
     o.R = [L(8, 62), L(28, 205)]; o.L = [L(172, 118), L(152, -25)]; o.sq = 0.09 * k * (1 + 0.35 * s(t * 10)); o.shut = k > 0.6; o.mouth = k > 0.6 ? 0 : 1; o.fx = 'hug'; o.hk = k;
+  }
+  else if (g === 'show') {   // it holds a little drawing out towards her — nearer, nearer — and the drawing sparkles
+    const u = t % 3.2, k = u < 0.5 ? 0 : u < 1.2 ? (u - 0.5) / 0.7 : u < 2.7 ? 1 : 1 - (u - 2.7) / 0.5, e = k * k * (3 - 2 * k), L = (a, b) => a + (b - a) * e;
+    o.R = [L(60, 70), L(215, 10)]; o.L = [L(120, 110), L(-35, 170)]; o.mouth = 1; o.fx = 'paper'; o.hk = e; o.dy = -0.05 * e;
   }
   else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
   return o;
@@ -4030,6 +4540,20 @@ function drawPal(o) {
     if (k < 1) { c.save(); c.globalAlpha = 1 - k; rrect(c, -bs / 2, by - bs / 2, bs, bs, bs * 0.18); const ig = c.createLinearGradient(-bs / 2, by - bs / 2, bs / 2, by + bs / 2); ig.addColorStop(0, 'rgba(240,251,255,0.95)'); ig.addColorStop(1, 'rgba(120,190,250,0.9)'); c.fillStyle = ig; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.stroke(); drawFlake(c, 0, by, bs * 0.26, 0.3, '#ffffff'); c.restore(); }
     if (k > 0) { c.save(); c.globalAlpha = k; const hs = 0.95 * R * (0.7 + 0.3 * k) * (1 + 0.08 * Math.sin(now * 9)); heartPath(c, 0, by, hs); c.fillStyle = '#ff5e94'; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.lineJoin = 'round'; c.stroke(); c.restore(); }
   }
+  if (o.fx === 'paper') {   // the drawing it holds: a sheet with a little crayon friend on it, growing as it is held out
+    const hp = (sd, A) => { const ex = sd * 0.84 * R + Math.cos(A[0]) * 0.6 * R, ey = 0.2 * R + Math.sin(A[0]) * 0.6 * R; return [ex + Math.cos(A[1]) * 0.68 * R, ey + Math.sin(A[1]) * 0.68 * R]; };
+    const a = hp(-1, PAL.aL), b = hp(1, PAL.aR), k = o.hk || 0, pw = Math.max(1.25 * R, b[0] - a[0] + 0.1 * R), ph = pw * 0.64, q = ph * 0.27;
+    c.save(); c.translate((a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + 0.25 * R); c.rotate(-0.05 + 0.03 * Math.sin(t * 3));
+    c.shadowColor = 'rgba(20,50,120,0.45)'; c.shadowBlur = R * 0.18; c.fillStyle = '#ffffff'; rrect(c, -pw / 2, -ph / 2, pw, ph, pw * 0.035); c.fill(); c.shadowBlur = 0; c.shadowColor = 'transparent';
+    c.strokeStyle = '#b9d3ee'; c.lineWidth = R * 0.035; c.stroke();
+    c.lineWidth = Math.max(1.5, q * 0.17); c.strokeStyle = '#7a4fd6'; c.fillStyle = '#ffd35c'; c.lineJoin = 'round';
+    c.beginPath(); c.moveTo(-q * 0.8, -q * 0.6); c.lineTo(-q * 0.75, -q * 1.45); c.lineTo(-q * 0.2, -q * 0.95); c.moveTo(q * 0.8, -q * 0.6); c.lineTo(q * 0.75, -q * 1.45); c.lineTo(q * 0.2, -q * 0.95); c.stroke();
+    c.beginPath(); c.arc(0, 0, q, 0, TAU); c.fill(); c.stroke();
+    c.fillStyle = '#2a2350'; for (const sd of [-1, 1]) { c.beginPath(); c.arc(sd * q * 0.36, -q * 0.15, q * 0.12, 0, TAU); c.fill(); }
+    c.strokeStyle = '#e8427a'; c.beginPath(); c.arc(0, q * 0.12, q * 0.42, Math.PI * 0.15, Math.PI * 0.85); c.stroke();
+    if (k > 0.85) for (let i = 0; i < 6; i++) { const an = i / 6 * TAU + now * 1.6, rr = pw * (0.36 + 0.06 * Math.sin(now * 5 + i)); c.globalAlpha = 0.6 + 0.4 * Math.sin(now * 7 + i * 2); drawStar(c, Math.cos(an) * rr, Math.sin(an) * rr * 0.62, R * 0.13, now + i); }
+    c.globalAlpha = 1; c.restore();
+  }
   // arms + mittens
   const hand = {};
   for (const [key, sd, A] of [['L', -1, PAL.aL], ['R', 1, PAL.aR]]) {
@@ -4119,7 +4643,7 @@ function ntBegin() {
 }
 function ntTuck(e) {
   e.asleep = true; e.sleepT = now; e.pokeT = now; NT.lastTuck = now; if (NT.help && NT.help.e === e) NT.help = null;
-  if (e.kind === 'animal') { e.tx = e.x; e.moving = false; }
+  if (e.kind === 'animal' || e.kind === 'friend') { e.tx = e.x; e.moving = false; }
   const u = KD.u;
   ntChime([NT_LULL[NT.note++ % NT_LULL.length]], 0, 0.1, 1.6);   // every one she tucks in plays the next note of the lullaby
   parts.push({ type: 'text', text: '💤', x: e.x, y: e.y - e.hh - u, vx: 0, vy: -7 * u, g: 0, drag: 1, r: 0, rot: 0, vr: 0, life: 1.6, max: 1.6, col: '#cfe6ff', size: 3.4 * u });
@@ -4395,7 +4919,7 @@ function dnTracks() { return dnCam() && now - poseT < 0.6 ? DN.map.filter(Boolea
 function startDance() {
   Object.assign(DN, { ph: 'dance', t: 0, round: 0, dur: 8.5, e: 0, pt: -9, tr: [], map: [], hold: 0, ice: 0, cold: 0, lowT: 0, starT: 0, noteT: 0, crackT: 0, beat: 0, bpm: 126, shots: [], pol: null, snap: false, snapped: false, kick: 0, step: 0 });
   // the animals she rescued come to the party (two friends at least)
-  const mine = [...new Set(KD.animals)], types = [...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, Math.max(2, Math.min(4, mine.length)));
+  const drawn = drTypes(2), mine = [...new Set(KD.animals)], types = [...drawn, ...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, Math.max(2, Math.min(4, mine.length + drawn.length)));   // (the friends she drew herself come first)
   DN.friends = types.map((type, i) => ({ type, fx: [0.16, 0.87, 0.055, 0.955][i], ph: i * 0.5 }));
   dnPlay(true, S.voice);
 }
@@ -4691,7 +5215,7 @@ function hgAnyFrozen() { return HG.friends.some(f => f.frozen) || HG.ppl.some(T 
 function startHug() {
   Object.assign(HG, { on: true, hearts: 0, ppl: [], map: [], pt: -9, said: false, shot: null, shotKind: '', snapAt: 0, snapKind: '', fin: 0, pop: [], beams: [] }); HG.pair.clear();
   // two of the animals she rescued come to play (a penguin and a bunny if she has none yet)
-  const mine = [...new Set(KD.animals)].reverse(), types = [...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, 2);
+  const mine = [...new Set(KD.animals)].reverse(), types = [...drTypes(2), ...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, 2);   // (the friends she drew herself come first: one each for two sisters)
   HG.friends = types.map((type, i) => ({ type, side: i ? 1 : -1, x: W * (i ? 0.72 : 0.28), y: H * 0.72, s: 15 * U, ice: 0, iv: 0, frozen: false, ft: 0, immune: 1.5, hit: -9, hug: 0, joy: 0, ph: i * 1.7 }));
 }
 function hgOff() { HG.on = false; HG.ppl = []; HG.map = []; HG.friends = []; HG.beams = []; HG.snapAt = 0; HG.shot = null; HG.pair.clear(); }
@@ -5002,7 +5526,7 @@ function hgCard() {
 //      It can also be watched from the hall (🎬), and a grown-up can save it as a video file. Everything stays in this browser. ----
 const MV = { clips: [], ring: [], cap: null, cc: null, lastCap: -9, fps: 12, cw: 640, cost: 0, pend: null, lastEnd: -99, gameT0: 0, gameN: 0, play: null, a: 0, fresh: false, dbp: null, btnKey: '', exp: null, ids: 0, last: null };
 const MV_PRE = 3, MV_LEN = 4.8, MV_MAX = 12, MV_SHOW = 6, MV_HEAD = 2.4, MV_TAIL = 3.4;
-const MV_ICON = { sprites: '🔥', town: '🏘️', boss: '🌋', castle: '🏰', snowman: '⛄', free: '❄️', runner: '🏃‍♀️', dance: '💃', hug: '🤗' };
+const MV_ICON = { draw: '🎨', sprites: '🔥', town: '🏘️', boss: '🌋', castle: '🏰', snowman: '⛄', free: '❄️', runner: '🏃‍♀️', dance: '💃', hug: '🤗' };
 const MV_FONT = (px, wt) => `${wt || 800} ${px}px "PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif`;
 function mvOn() { return S.movie !== false && !IS_TV; }
 function mvHas() { return mvOn() && MV.clips.length > 0; }
@@ -5418,7 +5942,7 @@ function frScene() {
   const s = frKey();
   if (s === 'panel') return FR_PANEL;
   if (s === 'hall') return W / H >= 1.6 ? FR_HALL : [FR_HALL[0], 0.45];   // (4:3 / phone: the bubbles are in two or three rows, there is no free band)
-  return s === 'dance' || s === 'hug' || s === 'free' ? FR_ROOM : FR_GAME;
+  return s === 'dance' || s === 'hug' || s === 'free' || s === 'draw' ? FR_ROOM : FR_GAME;
 }
 function frWin(z) {   // how much of the camera picture is on screen at zoom z (as fractions of its width / height)
   const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, [bw, bh] = frBox(), sc = Math.max(bw / vw, bh / vh) * z;
@@ -5435,6 +5959,7 @@ function frLocked() {   // 2 = the picture must not move at all · 1 = only to k
   for (const p of DW.p.values()) if (p > 0.15) return 2;              // she is choosing something: her hand must stay where it is
   const s = SC();
   if (s === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return 2;   // she is holding still on purpose
+  if (s === 'draw' && (DR.ph === 'count' || DR.ph === 'alive')) return 2;    // three, two, one — her drawing is being taken: hold the picture
   if (s === 'free' && irOn() && IR.any && !topOverlay()) return 1;    // the ice sits on the real room: moving the picture would slide the room out from under it
                                                                       // (not while her photo is up: the "continue" button has to come within reach)
   return 0;
@@ -5573,7 +6098,7 @@ function onPoses(all, fdt) {
     const nose = lm[0], lw = lm[15], rw = lm[16];
     const up = vis(lw) > 0.6 && vis(rw) > 0.6 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
     armsUp[i] = up ? (armsUp[i] || 0) + fdt : 0;
-    if (armsUp[i] > 0.3) { if (ntActive()) { ntArmsUp(); armsUp[i] = -2; } else if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if (SC() === 'dance' && DN.ph !== 'dance') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }
+    if (armsUp[i] > 0.3) { if (ntActive()) { ntArmsUp(); armsUp[i] = -2; } else if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if ((SC() === 'dance' && DN.ph !== 'dance') || SC() === 'draw') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }   // (holding a drawing up high is not a blizzard)
   });
 }
 
@@ -5619,6 +6144,7 @@ function frame(tms) {
   else if (sc === 'runner') updateRunner(dt);
   else if (sc === 'dance') updateDance(dt);
   else if (sc === 'hug') updateHug(dt);
+  else if (sc === 'draw') updateDraw(dt);
   else if (sc === 'castle' || sc === 'snowman') updateItems(dt);
   if (S.mode === 'adventure') updateAdventure(dt);
   updatePhoto(dt);
@@ -5629,7 +6155,8 @@ function frame(tms) {
   updateShards(dt); updateFlyStars(dt);
   musicTick();
   // status
-  if (S.mode !== 'menu' && S.input === 'camera') {
+  if (S.mode === 'draw' && camState !== 'loading') setStatus('');   // (close up with a sheet in front of her nobody is "found", and that is fine)
+  else if (S.mode !== 'menu' && S.input === 'camera') {
     if (camState === 'loading') setStatus(tr('camLoading'));
     else if (camState === 'on') {
       if (now - lastPoseSeen > 1.2) { setStatus(tr('camLooking')); foundAt = 0; }
@@ -5646,6 +6173,7 @@ function frame(tms) {
   drawDress();
   if (SC() === 'dance') drawDanceBack();
   if (SC() === 'hug') drawHugBack();
+  if (SC() === 'draw') drawDrawBack();
   if (S.mode === 'menu') { drawNightSky(); drawKingdom(); mvDraw(dt); }
   if (SC() === 'runner') drawRunner();
   ctx.save();
@@ -5667,6 +6195,7 @@ function frame(tms) {
   for (const f of flyStars) { drawStar(ctx, f.x, f.y, 3 * U * (1 + 0.3 * Math.sin(f.t * 12)), f.t * 6); }
   if (SC() === 'dance') { if (DN.snap) dnSnap(); drawDanceHud(); }
   if (SC() === 'hug') { drawHugHud(); if (HG.snapAt && now >= HG.snapAt) hgSnap(); }
+  if (SC() === 'draw') drawDrawFront();
   if (flash > 0) { ctx.fillStyle = `rgba(220,240,255,${flash * 0.55})`; ctx.fillRect(0, 0, W, H); flash = Math.max(0, flash - dt * 1.6); }
   if (celebrateT > 0) {
     celebrateT -= dt; const k = 2.8 - celebrateT;
@@ -5699,6 +6228,7 @@ function startMode(m) {
   if (m === 'adventure') { startAdventure(); return; }
   $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none';
   if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); palIntro(); setTimeout(() => say(tr('introRun'), true), 300); return; }
+  if (m === 'draw') { S.mode = 'draw'; S.stage = ''; clearScene(); startDraw(); showHint(tr(S.input !== 'camera' ? 'hintDrawPtr' : 'hintDraw'), 14); palIntro(); setTimeout(() => say(tr('introDraw'), true), 300); return; }
   if (m === 'hug') { S.mode = 'hug'; S.stage = ''; clearScene(); startHug(); showHint(tr(S.input !== 'camera' ? 'hintHugPtr' : 'hintHug'), 10); palIntro(); setTimeout(() => say(tr('introHug'), true), 300); return; }
   if (m === 'dance') { S.mode = 'dance'; S.stage = ''; clearScene(); startDance(); showHint(tr(S.input !== 'camera' ? 'hintDancePtr' : 'hintDance'), 9); setTimeout(() => say(tr('introDance'), true), 300); return; }
   S.mode = m; S.stage = '';
@@ -5717,7 +6247,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { FR.force = true; $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { FR.force = true; $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); drOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', () => { if (MV.play && S.mode === 'menu') mvClose(); else goMenu(); });
@@ -5734,11 +6264,15 @@ $('#btnNightNow').addEventListener('click', () => { $('#parentPanel').style.disp
   for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) b.addEventListener(ev, stop);
 }
 $('#btnWardrobe').addEventListener('click', openWardrobe);
-$('#btnParent').addEventListener('click', () => { $('#parentPanel').style.display = 'flex'; });
+$('#btnParent').addEventListener('click', () => { drRow(); $('#parentPanel').style.display = 'flex'; });
 $('#parentClose').addEventListener('click', () => { $('#parentPanel').style.display = 'none'; });
 document.addEventListener('pointerdown', ensureAudio, true);
 $('#wDone').addEventListener('click', closeWardrobe);
-$('#btnPhoto').addEventListener('click', () => startPhoto(false));
+$('#btnPhoto').addEventListener('click', () => { if (SC() === 'draw') drManual(); else startPhoto(false); });   // (at the easel 📸 takes the drawing)
+$('#btnDraw').addEventListener('click', () => startMode('draw'));
+$('#btnPickBig').addEventListener('click', () => $('#drFile').click());
+$('#drFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; drFile(f); });
+{ const b = document.createElement('button'); b.className = 'iconBtn'; b.id = 'btnPick'; b.title = '选一张画的照片 / choose a photo of a drawing'; b.textContent = '🖼️'; b.addEventListener('click', () => { if (DR.ph === 'scan') $('#drFile').click(); }); $('#topBtns').prepend(b); }
 $('#photoClose').addEventListener('click', closePhoto);
 $('#btnGallery').addEventListener('click', openGallery);
 $('#galClose').addEventListener('click', () => { $('#gallery').style.display = 'none'; });
@@ -5793,10 +6327,10 @@ window.addEventListener('keydown', e => {
   }
   if (e.key === 'n' || e.key === 'N') { if (ntActive()) ntWake(); else ntAsk(); return; }
   if (e.key === 'Escape') { if (MV.play && S.mode === 'menu' && !ntActive()) mvClose(); else goMenu(); }
-  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else blizzard(); }
-  else if (e.key === 'p' || e.key === 'P') startPhoto(false);
+  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else if (SC() === 'draw') drManual(); else blizzard(); }
+  else if (e.key === 'p' || e.key === 'P') { if (SC() === 'draw') drManual(); else startPhoto(false); }
   else if (e.key === 'm' || e.key === 'M') { S.showVideo = !S.showVideo; $('#togVideo').classList.toggle('on', S.showVideo); savePrefs(); }
-  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7', '8'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance', 'hug'][+e.key - 1]);
+  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && !(e.key === '9' && IS_TV)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance', 'hug', 'draw'][+e.key - 1]);
 });
 window.addEventListener('resize', resize);
 if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = fillVoiceSel; fillVoiceSel(); setTimeout(fillVoiceSel, 500); }
@@ -5805,11 +6339,12 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 
 // camera already allowed on an earlier visit: open it right away so the child can pick a game with her hands
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
-if (IS_TV) { $('#togMovie').style.display = 'none'; $('#togFrame').style.display = 'none'; }
+if (IS_TV) { $('#togMovie').style.display = 'none'; $('#togFrame').style.display = 'none'; $('#btnDraw').style.display = 'none'; }
+drRow();
 mvLoad();
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { FR, frReset, frIdeal, fitRect, videoRect, onPoses, MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { DR, drFindPaper, drCut, drSame, drTake, drAlive, drAdd, drRemove, drManual, drFile, drScan, drGuideCam, FR, frReset, frIdeal, fitRect, videoRect, onPoses, MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

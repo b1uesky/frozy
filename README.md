@@ -10,7 +10,7 @@ A wave-to-freeze motion game for little kids — **for one child or two playing 
   - Wave over things to freeze them · fast wave = ice shards · **both hands up = blizzard** · **clap = ice shockwave**
   - Two people can play together
   - **The mirror finds them** — the laptop does not have to be aimed: the picture re-frames itself around the child, or around both children (centred, and big enough that their arms reach every bubble and the 🏠), see below.
-  - **Kids drive it themselves** — the home screen is a hall of eight floating bubbles: hold a hand on a bubble for a moment to enter that game; in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
+  - **Kids drive it themselves** — the home screen is a hall of eight floating bubbles: hold a hand on a bubble for a moment to enter that game (and on 🎨 to bring a drawing to life, see below); in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
 - **Mouse / touch** — move to freeze, click/tap = homing ice magic, double-click = blizzard
 - **TV browser (LG webOS etc.)** — arrow keys + OK = homing ice magic, color keys = blizzard
 
@@ -91,6 +91,19 @@ Camera mode only for the coaching; switch it off with 🤍 雪团团 in 家长�
 ## Her ice kingdom / 我的冰雪王国
 
 The bottom of the hall is the child's own kingdom, and it remembers what she did: every finished adventure adds an **ice castle**, every frozen town an **ice house**, every snowman she builds stands there, every **rescued animal** moves in and wanders about, and every 30 stars grows a **crystal tree**. New things pop in one by one when she comes back from a game. Empty spots show a dashed outline with the bubble icon of the game that fills them. Everything reacts to a hand (or mouse/finger): animals hop, crystal trees ring like a xylophone, the castle sets off fireworks. Saved in this browser only.
+
+## Drawings come alive / 🎨 画的小伙伴活了
+
+Everything else in the game was drawn by the game. Here the child draws a friend **on paper**, holds the sheet up to the computer — and it comes off the paper, comes alive, and moves into her kingdom.
+
+- **How.** Hold a hand on **🎨 画画** in the hall (next to the wardrobe). The screen becomes a patient mirror with a dashed frame; Snowy holds up a little drawing of its own to show what to do. Hold the sheet up a step or two from the camera: its outline lights up, **3-2-1**, a flash — the drawing is cut out like a sticker (white edge, the paper's shadows and the lamp's colour taken out), turns round to face her, and hops. *“✨ 活啦！”*
+- **It waits.** Nothing happens until a drawing shows up, however long the drawing takes. One child or two: each sister brings her own sheet (two sheets in view are taken one after the other), and the same drawing is only taken once per visit. About 14 s after the last one the game goes back to the hall by itself.
+- **Where the friends go.** They live in the kingdom (rocking and hopping at the front, a little bigger than the animals; touch one: a heart and its own little voice; they are tucked in at night like everyone else). The two newest come to the **freeze dance** and are the ones to freeze and hug in **freeze hug** — one each for two sisters. Up to 8 are kept; the oldest goes home when a ninth arrives.
+- **How it finds a sheet.** No new recognition of the child: the finder looks for *something bright that was not in the room a moment ago, four-sided, with something drawn inside it* (so a pale wall, a white sofa or a picture on the wall are not sheets). A blank sheet is refused; a sheet too far away gets “closer”, one pressed against the lens gets “a step back”. A white T-shirt with a print is told apart when the camera sees her shoulders and hips inside the patch.
+- **For grown-ups (when it is not found):** **📸** top right (or the space bar) takes whatever is inside the dashed frame after 3-2-1 — a page coloured in edge to edge, dark paper or a toy becomes a little framed card instead of a cut-out; **🖼️** takes a photo from a file. Without a camera (mouse / touch / phone) 🎨 shows one big “choose a photo of a drawing” button — on a phone that is its camera.
+- **Privacy.** The cut-outs are small pictures kept in this browser only (`localStorage` `iceMagicFriends`), never uploaded. ⚙️ 家长设置 lists them: tap one to send it home.
+- Works best with white paper and thick markers / crayons. Not on TV browsers (no camera, no files).
+- Tunables: `DR_BIG` (how much of the picture the sheet must fill), `DR_NEW` (how different from the remembered room), `DR_INK`, `DR_SAT`, `DR_KEEP` (8), `DR_SHOW` (length of the “alive” moment). Code: `drFindPaper` / `drCut` (pure pixel functions), `drScan`, `drTake`, `drAlive`, `updateDraw`, `drawDrawBack` / `drawDrawFront`, `drFriendDraw`.
 
 ## Good night, Ice Kingdom / 晚安，冰雪王国
 
