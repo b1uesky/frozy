@@ -236,7 +236,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
       <button data-v="pointer">🖱️ 鼠标 / 触屏</button>
     </div>
     <button class="tog on" id="togVideo">🪞 显示我自己</button>
-    <button class="tog on" id="togFrame"><span data-t="frT">🔍 自动对准她</span></button>
+    <button class="tog on" id="togFrame"><span data-t="frT">🔍 自动对准孩子</span></button>
     <button class="tog on" id="togDress"><span data-t="dressT">👑 变身</span></button>
     <button class="tog on" id="togPal"><span data-t="palT">🤍 雪团团</span></button>
     <button class="tog on" id="togMovie"><span data-t="mvT">🎬 魔法电影</span></button>
@@ -260,7 +260,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     <span id="voiceRow" style="display:none;align-items:center;gap:1vh">🗣️ <select id="voiceSel"></select> <button class="tog" id="voiceTest">▶️ 试听</button></span></div>
   <div class="tips" id="tips">
     用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
-    让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<b>电脑不用摆得很准：画面会自己对准她，把她放到中间、放大到伸手够得着</b>（“🔍 自动对准她”）。<br>
+    让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<b>电脑不用摆得很准：画面会自己对准孩子（两个孩子就对准两个人中间），放到中间、放大到伸手够得着</b>（“🔍 自动对准孩子”）。<br>
     <b>孩子可以自己选游戏：把手放在泡泡上停一下就进去；游戏里把手放在右上角 🏠 上停 2 秒 = 回大厅</b><br>
     <b>🤍 雪团团</b>是会学她动作的小伙伴：大厅里跟在她身边、她举手它也举手；它会把手放在泡泡上示范怎么选游戏，游戏里用动作示范怎么玩（挥手 / 原地跑 / 跳 / 歪身体 / 接雪花），她停下来不知道做什么时会再示范一次——不用识字，也不说话<br>
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
@@ -354,7 +354,7 @@ const T = {
     m7: '冰冻抱抱', introHug: '挥挥手，把小动物冻住！再抱一抱它，冰就化啦！爸爸妈妈也可以冻住哦！', hugSay: '冻住啦！快抱一抱，冰就化啦！', hugDone: '抱抱最温暖！',
     hintHug: '❄️ 挥手 / 伸手指着 = 冻住小动物，还有身边的人！ · 🤗 抱一抱 = 冰化啦', hintHugPtr: '👆 点两下小动物（或在它身上晃一晃）= 冻住 · 再点一下 = 抱抱，冰化啦',
     m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
-    palT: '🤍 雪团团', frT: '🔍 自动对准她', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
+    palT: '🤍 雪团团', frT: '🔍 自动对准孩子', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
     ntTitle: '🌙 晚安，冰雪王国', ntTuck: '<b>✋</b>天黑啦！摸一摸亮着的小灯，哄大家睡觉', ntSky: '<b>🙌</b>大家都睡着啦！举起双手，点亮极光', ntSkyPtr: '<b>👆</b>大家都睡着啦！点一下天空，点亮极光', ntSleep: '🌙 晚安！明天再来玩',
     ntSay: '天黑啦！摸一摸亮着的小灯，哄大家睡觉吧。', ntSkySay: '大家都睡着啦！举起双手，点亮极光！', ntSkySayPtr: '大家都睡着啦！点一下天空，点亮极光！', ntBye: '晚安，冰雪王国！明天再来玩！',
     ntRise: '🌙 月亮出来啦，再玩一小会儿就说晚安', ntRiseSay: '月亮出来啦！再玩一小会儿，就要说晚安啦。',
@@ -5397,7 +5397,7 @@ async function listCameras() {
 $('#camSel').addEventListener('change', e => { camState = 'off'; startCamera(e.target.value); });
 function vis(p) { return p.visibility == null ? 1 : p.visibility; }
 // ======================================================================
-// ---- 🪞 魔法镜子自己对准她 (the mirror finds her): the camera sees a whole room, and the child is a small part of it —
+// ---- 🪞 魔法镜子自己对准孩子 (the mirror finds them — one child, or two sisters): the camera sees a whole room, and the child is a small part of it —
 //      off to one side, low in the picture (a laptop looks UP at a small child), far away. But everything she can touch
 //      is laid out for the screen, not for where she happens to stand: bubbles from edge to edge, the 🏠 in the top corner.
 //      So the picture is re-framed around her: she is in the middle, and big enough that her arms reach all of it,
@@ -5408,14 +5408,15 @@ const FR_MAX = 2.2;       // never closer than this (the picture gets soft)
 // per scene: [how big — her shoulders as a share of the screen width, where — her shoulders as a share of the screen height]
 const FR_GAME = [0.10, 0.42];    // games: her arms span almost half the screen from one spot; a raised hand reaches the 🏠, a lowered one the rooftops
 const FR_ROOM = [0.08, 0.40];    // games that want more room around her (freeze dance: feet in view · freeze & hug · freeze my home)
-const FR_HALL = [0.085, 0.65];   // the hall: her face in the free band under the bubbles, her body standing in her kingdom;
-                                 // also the wardrobe / a photo: the "done" button is then at the height of her waist
+const FR_HALL = [0.085, 0.65];   // the hall: her face in the free band under the bubbles, her body standing in her kingdom
+const FR_PANEL = [0.115, 0.61];  // the wardrobe / a photo is up: closer, so that from one spot a raised hand reaches the top row
+                                 // and a hand at waist height the "done" button at the bottom (two sisters of different heights too)
 const FR_HOLD = { find: 0.5, scene: 0, wide: 0.6, tight: 2.5, side: 2, height: 2 };   // how long a reason must last before the picture moves
 function frBox() { return SC() === 'runner' ? [4, 3] : [W, H]; }   // (the run shows her in a small 4:3 window)
 function frKey() { return topOverlay() ? 'panel' : S.mode === 'menu' ? 'hall' : SC(); }
 function frScene() {
   const s = frKey();
-  if (s === 'panel') return FR_HALL;
+  if (s === 'panel') return FR_PANEL;
   if (s === 'hall') return W / H >= 1.6 ? FR_HALL : [FR_HALL[0], 0.45];   // (4:3 / phone: the bubbles are in two or three rows, there is no free band)
   return s === 'dance' || s === 'hug' || s === 'free' ? FR_ROOM : FR_GAME;
 }
@@ -5438,19 +5439,27 @@ function frLocked() {   // 2 = the picture must not move at all · 1 = only to k
                                                                       // (not while her photo is up: the "continue" button has to come within reach)
   return 0;
 }
+// who the picture is framed for: the child — or both children, when two of about the same size are there (sisters of
+// different heights: the middle between them) — but not a grown-up standing next to them (much bigger), who is only kept in view
+function frKid(pp) {
+  const m = pp.reduce((a, b) => b.u < a.u ? b : a).u, kk = pp.filter(p => p.u <= m * 1.35), o = { x: 0, y: 0, u: 0 };
+  for (const p of kk) { o.x += p.x / kk.length; o.y += p.y / kk.length; o.u += p.u / kk.length; }
+  return o;
+}
 // the best framing for the people the camera sees ({x, y}: middle of the shoulders, u: body size in camera pixels)
 function frIdeal(pp) {
   const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, [bw, bh] = frBox(), sc0 = Math.max(bw / vw, bh / vh);
-  const kid = pp.reduce((a, b) => b.u < a.u ? b : a), [size, ys] = frScene();
-  let z = size * Math.min(bw, bh * 16 / 9) / (kid.u * sc0);
+  const kid = frKid(pp), sn = frScene(), size = sn[0]; let ys = sn[1];
+  let z = clamp(size * Math.min(bw, bh * 16 / 9) / (kid.u * sc0), 1, FR_MAX);
+  // low in the picture: come closer until there is room to slide down to them, so a raised hand reaches what it should
+  z = Math.max(z, bh / (sc0 * vh) * (0.93 - ys) / Math.max(0.05, 1 - kid.y));
+  // a panel is open and they are high in the picture: come closer until there is room to slide up, so the "done" button is at waist height, not below their reach
+  if (frKey() === 'panel') z = Math.max(z, Math.min(1.5 * z, bh / (sc0 * vh) * (ys - 0.02) / Math.max(0.05, kid.y)));
   let x0 = 1, x1 = 0, y0 = 1, y1 = 0;
   for (const p of pp) { const ux = p.u / vw, uy = p.u / vh; x0 = Math.min(x0, p.x - 1.4 * ux); x1 = Math.max(x1, p.x + 1.4 * ux); y0 = Math.min(y0, p.y - 1.9 * uy); y1 = Math.max(y1, p.y + 1.6 * uy); }
-  if (pp.length > 1) z = Math.min(z, bw / (sc0 * vw) / (x1 - x0 + 0.04), bh / (sc0 * vh) / (y1 - y0 + 0.02));   // everybody stays in the picture
+  if (pp.length > 1) z = Math.min(z, bw / (sc0 * vw) / (x1 - x0 + 0.04), bh / (sc0 * vh) / (y1 - y0 + 0.02));   // but everybody stays in the picture
   z = clamp(z, 1, FR_MAX);
-  // low in the picture: come closer until there is room to slide down to her, so a raised hand reaches what it should
-  if (pp.length === 1) z = clamp(Math.max(z, bh / (sc0 * vh) * (0.93 - ys) / Math.max(0.05, 1 - kid.y)), 1, FR_MAX);
-  // a panel is open and she is high in the picture: come closer until there is room to slide up, so the "done" button is at her waist, not below her reach
-  if (pp.length === 1 && frKey() === 'panel') z = clamp(Math.max(z, Math.min(1.5 * z, bh / (sc0 * vh) * (ys - 0.07) / Math.max(0.05, kid.y))), 1, FR_MAX);
+  if (frKey() === 'panel') ys = clamp(0.855 - 1.25 * kid.u * sc0 * z / bh, 0.55, 0.72);   // whatever size they end up: a hand at waist height is on the "done" button
   const [ww, wh] = frWin(z);
   let cx = (x0 + x1) / 2, cy = kid.y + (0.5 - ys) * wh;
   if (pp.length > 1) cy = Math.min(cy, y0 + wh / 2 - 0.01);            // the tallest head stays in
@@ -5475,7 +5484,7 @@ function frObserve(lms, fdt) {
   const I = frIdeal(pp), k = FR.ideal ? Math.min(1, fdt / 0.35) : 1;
   if (!FR.ideal) FR.ideal = I; else { const J = FR.ideal; J.z += (I.z - J.z) * k; J.cx += (I.cx - J.cx) * k; J.cy += (I.cy - J.cy) * k; J.ys = I.ys; }
   const lk = frLocked(); if (lk === 2) { FR.bad = 0; return; }
-  const J = FR.ideal, C = FR.b || FR, [ww, wh] = frWin(C.z), kid = pp.reduce((a, b) => b.u < a.u ? b : a);
+  const J = FR.ideal, C = FR.b || FR, [ww, wh] = frWin(C.z), kid = frKid(pp);
   const sx = 0.5 + (kid.x - C.cx) / ww, sy = 0.5 + (kid.y - C.cy) / wh, r = J.z / C.z;
   let why = '';
   if (!FR.framed) why = 'find';
