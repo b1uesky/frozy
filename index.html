@@ -86,10 +86,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .tog{border-radius:5vmin;border:.3vmin solid rgba(255,255,255,.55)}
 .seg button.on,.tog.on{background:rgba(140,210,255,.55)}
 select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44vmin;font-family:inherit}
-.tips{font-size:2.2vmin;opacity:.82;max-width:120vmin;text-align:center;line-height:1.7}
+.tips{font-size:2.2vmin;opacity:.82;max-width:124vmin;text-align:center;line-height:1.55}
 #camRow{display:none}
 .overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(5,15,40,.78)}
-.panel{background:linear-gradient(160deg,rgba(45,95,175,.97),rgba(15,40,100,.97));border:.4vmin solid rgba(255,255,255,.7);border-radius:3vmin;padding:2.5vmin 4vmin;max-width:94vw;max-height:94vmin;overflow:auto;display:flex;flex-direction:column;align-items:center;box-shadow:0 0 5vmin rgba(120,200,255,.5)}
+.panel{background:linear-gradient(160deg,rgba(45,95,175,.97),rgba(15,40,100,.97));border:.4vmin solid rgba(255,255,255,.7);border-radius:3vmin;padding:2vmin 4vmin;max-width:94vw;max-height:96vmin;overflow:auto;display:flex;flex-direction:column;align-items:center;box-shadow:0 0 5vmin rgba(120,200,255,.5)}
 .ptitle{font-size:5vmin;font-weight:800;margin-bottom:1vmin}
 .ptitle #wTotal{font-size:3.4vmin;margin-left:2vmin;opacity:.9}
 .wsec{font-size:3vmin;font-weight:700;margin:1vmin 0 .4vmin;align-self:flex-start}
@@ -105,6 +105,16 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
 #galleryGrid{display:flex;flex-wrap:wrap;justify-content:center;max-width:90vw}
 #galleryGrid img{width:30vmin;margin:1vmin;border-radius:1vmin;cursor:pointer;border:.3vmin solid rgba(255,255,255,.6)}
 #toast{top:21vmin;left:50%;transform:translateX(-50%) scale(.8);font-size:4.4vmin;font-weight:800;padding:1.6vmin 4.4vmin;border-radius:6vmin;background:linear-gradient(90deg,rgba(255,205,240,.95),rgba(165,225,255,.95));color:#1d2d6b;opacity:0;transition:all .4s;white-space:nowrap;z-index:15;box-shadow:0 0 4vmin rgba(255,255,255,.6)}
+#menu.night #hall,#menu.night #hallBottom{display:none}
+#menu.night{background:none}
+#menu.night h1{font-size:6.6vmin;letter-spacing:.3vmin;text-shadow:0 0 3vmin #ffdf8a,0 0 1vmin #fff}
+#nightDim{position:fixed;top:0;left:0;right:0;bottom:0;z-index:13;background:#020514;opacity:0;pointer-events:none;transition:opacity 1.5s}
+body.asleep #nightDim{opacity:.5;transition:opacity 40s linear 12s}
+#nightBox{position:fixed;left:50%;bottom:1.8vmin;transform:translateX(-50%);z-index:14;display:none;flex-direction:column;align-items:center}
+body.night #nightBox{display:flex}
+#nightSum{display:none;font-size:2.3vmin;margin-bottom:1vmin;padding:.5vmin 2.2vmin;border-radius:4vmin;background:rgba(10,30,80,.6);white-space:nowrap}
+body.asleep #nightSum:not(:empty){display:block}
+#btnWake{font-size:2.3vmin;opacity:.75;background-color:rgba(10,30,80,.65);white-space:nowrap}
 .badge{display:inline-block;background:#ff5e7e;border-radius:3vmin;padding:0 1vmin;font-size:2vmin;margin-left:.6vmin}
 
 @media (max-aspect-ratio: 1/1) {
@@ -138,6 +148,8 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
   .bigbtn{font-size:4.6vmin}
   #photoImg{max-width:88vw;max-height:60vh}
   #galleryGrid img{width:40vmin}
+  #nightSum,#btnWake{font-size:3.4vmin}
+  #menu.night h1{font-size:8vmin}
 }
 </style>
 </head>
@@ -167,6 +179,7 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
 <div class="hud" id="hint" style="opacity:0"></div>
 <div class="hud" id="topBtns">
   <button class="iconBtn" id="btnPhoto" title="拍照" style="display:none">📸</button>
+  <button class="iconBtn" id="btnNight" title="晚安 Good night (N)" style="display:none">🌙</button>
   <button class="iconBtn" id="btnFull" title="全屏">⛶</button>
   <button class="iconBtn" id="btnHome" title="回到菜单" style="display:none">🏠</button>
 </div>
@@ -212,6 +225,15 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
       <button data-v="zh" class="on">中文</button>
       <button data-v="en">English</button>
     </div>
+    <span data-t="ntLen">🌙 玩多久</span>
+    <div class="seg" id="napSeg">
+      <button data-v="0" class="on"><span data-t="ntOff">不限</span></button>
+      <button data-v="10">10<span data-t="ntMin"> 分钟</span></button>
+      <button data-v="15">15<span data-t="ntMin"> 分钟</span></button>
+      <button data-v="20">20<span data-t="ntMin"> 分钟</span></button>
+      <button data-v="30">30<span data-t="ntMin"> 分钟</span></button>
+    </div>
+    <button class="tog" id="btnNightNow">🌙 <span data-t="ntNow">现在说晚安</span></button>
   </div>
   <div class="opts"><span id="camRow" style="align-items:center;gap:1vh">📷 <select id="camSel"></select></span>
     <span id="voiceRow" style="display:none;align-items:center;gap:1vh">🗣️ <select id="voiceSel"></select> <button class="tog" id="voiceTest">▶️ 试听</button></span></div>
@@ -224,11 +246,14 @@ select{font-size:2.3vmin;padding:.9vmin 1.2vmin;border-radius:1vmin;max-width:44
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
     <b>💃 冰雕舞会</b>：音乐响就跳舞，音乐一停就不动——冰会从脚往上爬，把她变成冰雕，咔嚓拍一张；5 张冰雕照拼成一张，存进相册（两个人、大人一起跳也行）<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
-    快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单
+    <b>🌙 晚安</b>：该休息时点右上角 🌙（或按 N）——月亮先升起来提醒她，然后大厅变成夜晚：她摸一摸亮着的小灯，哄王国里的大家睡觉，再举起双手点亮极光。选了“玩多久”，到时间月亮会自己升起。想再玩：按住“☀️ 再玩一会儿”或再按 N<br>
+    快捷键：空格 = 暴风雪，P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单，N = 晚安
   </div>
   <button class="bigbtn" id="parentClose"><span data-t="wDone">✨ 好了</span></button>
 </div></div>
 <canvas id="pal"></canvas>
+<div id="nightDim"></div>
+<div id="nightBox"><div id="nightSum"></div><button class="tog" id="btnWake">☀️ <span data-t="ntWake">按住这里 · 再玩一会儿</span></button></div>
 <div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div><div class="wand"><i>❄️</i></div>
 
 <script type="module">
@@ -247,11 +272,11 @@ let now = 0;
 
 const S = {
   mode: 'menu', stars: 0, input: 'camera',
-  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara', pal: true,
+  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara', pal: true, playMin: '0',
 };
 try { const saved = JSON.parse(localStorage.getItem('iceMagicPrefs') || '{}'); Object.assign(S, saved, { mode: 'menu', stars: 0 }); } catch (e) {}
 if (IS_TV) { S.input = 'pointer'; S.showVideo = false; }
-function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown, pal: S.pal })); } catch (e) {} }
+function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown, pal: S.pal, playMin: S.playMin })); } catch (e) {} }
 
 // ---------- text ----------
 const T = {
@@ -302,6 +327,10 @@ const T = {
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
     m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
     palT: '🤍 雪团团', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
+    ntTitle: '🌙 晚安，冰雪王国', ntTuck: '<b>✋</b>天黑啦！摸一摸亮着的小灯，哄大家睡觉', ntSky: '<b>🙌</b>大家都睡着啦！举起双手，点亮极光', ntSkyPtr: '<b>👆</b>大家都睡着啦！点一下天空，点亮极光', ntSleep: '🌙 晚安！明天再来玩',
+    ntSay: '天黑啦！摸一摸亮着的小灯，哄大家睡觉吧。', ntSkySay: '大家都睡着啦！举起双手，点亮极光！', ntSkySayPtr: '大家都睡着啦！点一下天空，点亮极光！', ntBye: '晚安，冰雪王国！明天再来玩！',
+    ntRise: '🌙 月亮出来啦，再玩一小会儿就说晚安', ntRiseSay: '月亮出来啦！再玩一小会儿，就要说晚安啦。',
+    ntWake: '按住这里 · 再玩一会儿', ntMore: '☀️ 再玩一会儿！', ntMorn: '☀️ 早上好！冰雪王国醒啦！', ntLen: '🌙 玩多久', ntOff: '不限', ntMin: ' 分钟', ntNow: '现在说晚安', ntSum: (m, n) => `今天玩了 ${m} 分钟 · ⭐ ${n}`,
   },
   en: {
     sub: 'Wave your hands and freeze everything!', m1: 'Fire Imps', m2: 'Frozen Town', m3: 'Ice Painting', m0: 'Ice Adventure', m4: 'Snowman',
@@ -350,6 +379,10 @@ const T = {
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
     m6: 'Freeze Dance', introDance: 'When the music plays, dance! When it stops, freeze like an ice statue!', hintDance: '💃 Music = dance · 🧊 Music stops = hold still and turn into an ice statue!', hintDancePtr: '💃 Music = move the mouse / finger · 🧊 Music stops = hold still!', danceDone: 'Ice statue party!', stripT: 'Freeze Dance', danceStop: 'The music stopped! Freeze like a statue!',
     palT: '🤍 Snowy', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
+    ntTitle: '🌙 Good night, Ice Kingdom', ntTuck: '<b>✋</b>It is dark! Touch the little lights to tuck everyone in', ntSky: '<b>🙌</b>Everyone is asleep! Both hands up to light the aurora', ntSkyPtr: '<b>👆</b>Everyone is asleep! Tap the sky to light the aurora', ntSleep: '🌙 Good night! See you tomorrow',
+    ntSay: 'It is dark! Touch the little lights and tuck everyone in.', ntSkySay: 'Everyone is asleep! Put both hands up and light the aurora!', ntSkySayPtr: 'Everyone is asleep! Tap the sky and light the aurora!', ntBye: 'Good night, Ice Kingdom! See you tomorrow!',
+    ntRise: '🌙 The moon is up — a little more play, then good night', ntRiseSay: 'The moon is up! A little more play, and then it is time to say good night.',
+    ntWake: 'Hold here · play a little longer', ntMore: '☀️ A little longer!', ntMorn: '☀️ Good morning! The kingdom is awake!', ntLen: '🌙 Play time', ntOff: 'No limit', ntMin: ' min', ntNow: 'Good night now', ntSum: (m, n) => `Played ${m} min today · ⭐ ${n}`,
   }
 };
 const tr = k => T[S.lang][k];
@@ -2130,7 +2163,7 @@ function drawBackground() {
     }
     ctx.restore();
   }
-  drawMoon();
+  if (NT.alt < 0.33) { ctx.globalAlpha = 1 - NT.alt * 3; drawMoon(); ctx.globalAlpha = 1; }
   if (sc !== 'town' && sc !== 'castle' && sc !== 'snowman' && sc !== 'runner') drawHills();
 }
 function drawCastle(kx, ky) {
@@ -2885,11 +2918,12 @@ function drawFireball(o, dz) {
   const p = rproj(o.x, dz, 0.55 + Math.abs(Math.sin(o.t * 6)) * 0.3);
   drawSprite(Object.assign({}, o.sp, { x: p.x, y: p.y, r: 0.55 * p.s * p.PX, state: o.state === 'frozen' ? 'frozen' : 'alive', frost: o.state === 'frozen' ? 1 : 0, t: o.state === 'frozen' ? Math.min(o.t, 0.9) : 0 }));
 }
+let animSleep = false;
 function drawAnimal(type, x, y, s, t, happy) {
   ctx.save(); ctx.translate(x, y);
   const hop = happy ? -Math.abs(Math.sin(t * 7)) * 0.25 * s : 0;
   ctx.translate(0, hop);
-  const eye = (ex, ey, r) => { ctx.fillStyle = '#1d1d2b'; ctx.beginPath(); ctx.arc(ex, ey, r, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ex - r * 0.3, ey - r * 0.3, r * 0.35, 0, Math.PI * 2); ctx.fill(); };
+  const eye = (ex, ey, r) => { if (animSleep) { ctx.strokeStyle = '#1d1d2b'; ctx.lineWidth = r * 0.55; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(ex, ey - r * 0.5, r, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); return; } ctx.fillStyle = '#1d1d2b'; ctx.beginPath(); ctx.arc(ex, ey, r, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ex - r * 0.3, ey - r * 0.3, r * 0.35, 0, Math.PI * 2); ctx.fill(); };
   const blush = (bx, by, r) => { ctx.fillStyle = 'rgba(255,130,160,0.5)'; ctx.beginPath(); ctx.ellipse(bx, by, r, r * 0.6, 0, 0, Math.PI * 2); ctx.fill(); };
   if (type === 'penguin') {
     ctx.fillStyle = '#ff9f1a'; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sd * 0.16 * s, -0.02 * s, 0.12 * s, 0.05 * s, 0, 0, Math.PI * 2); ctx.fill(); }
@@ -3296,8 +3330,9 @@ function kdBuild() {
   const put = (kind, i, total, shown, seenN, e) => {
     const g = total - shown + i; e.kind = kind; e.id = kind + g; e.pokeT = -9; e.born = -9; e.popped = true;
     const o = old.get(e.id);
-    if (o) { e.born = o.born; e.popped = o.popped; e.popT = o.popT; if (o.b) e.b = o.b; if (kind === 'animal') { e.x = e.tx = clamp(o.x, W * e.z0, W * e.z1); e.dir = o.dir; } }
+    if (o) { e.born = o.born; e.popped = o.popped; e.popT = o.popT; e.asleep = o.asleep; e.sleepT = o.sleepT; e.wakeAt = o.wakeAt; if (o.b) e.b = o.b; if (kind === 'animal') { e.x = e.tx = clamp(o.x, W * e.z0, W * e.z1); e.dir = o.dir; } }
     else if (g >= (seenN || 0)) { e.popped = false; fresh.push(e); }
+    if (!o && (NT.ph === 'aurora' || NT.ph === 'sleep')) e.asleep = true;   // anything that turns up after lights-out is asleep too
     ents.push(e);
   };
   const ghost = (of, icon, mode, x, y, hw, hh) => ents.push({ kind: 'ghost', id: 'ghost-' + of, of, icon, mode, x, y, hw, hh, cool: 1.2, pokeT: -9, born: -9, popped: true });
@@ -3340,6 +3375,7 @@ function kdToast(msg) {
 }
 function kdReact(e) {
   e.pokeT = now; const u = KD.u, top = e.y - e.hh, t = AC ? AC.currentTime : 0;
+  if (ntActive() || e.asleep) { ntTouch(e); return; }
   if (e.kind === 'animal') {
     parts.push({ type: 'text', text: '💗', x: e.x, y: top - u, vx: 0, vy: -10 * u, g: 0, drag: 1.2, r: 0, rot: 0, vr: 0, life: 1.1, max: 1.1, col: '#ff8fb0', size: 3.6 * u });
     e.tx = e.x; e.wait = 1.5;
@@ -3366,7 +3402,7 @@ function kdPoke(x, y) {
   const u = KD.u;
   for (let i = KD.ents.length - 1; i >= 0; i--) {
     const e = KD.ents[i];
-    if (!e.popped || now - e.pokeT < e.cool) continue;
+    if (!e.popped || now - e.pokeT < e.cool || (e.kind === 'ghost' && NT.k > 0.3)) continue;
     if (Math.abs(x - e.x) < e.hw + 1.5 * u && y > e.y - e.hh - 1.5 * u && y < e.y + 2 * u) { kdReact(e); return true; }
   }
   return false;
@@ -3390,13 +3426,13 @@ function updateKingdom(dt) {
       if (AC) { const f = KD_NOTES[KD.popN++ % KD_NOTES.length]; tone(f, AC.currentTime, 0.5, 'triangle', 0.11); tone(f * 2, AC.currentTime + 0.05, 0.35, 'sine', 0.05); }
       if (big) { sfx.celebrate(); flash = Math.max(flash, 0.3); }
     }
-    if (e.kind === 'animal') {
+    if (e.kind === 'animal' && !e.asleep) {
       const dx = e.tx - e.x;
       if (Math.abs(dx) > 0.3 * u) { e.dir = dx < 0 ? -1 : 1; e.x += e.dir * Math.min(Math.abs(dx), 3.2 * u * dt); e.moving = true; }
       else { e.moving = false; e.wait -= dt; if (e.wait <= 0) { e.tx = W * rand(e.z0, e.z1); e.wait = rand(1.5, 5); } }
     }
   }
-  if (!ov && camState === 'on') for (const [k, h] of hands) if (k[0] === 'p' && h.speed > 6 * U) kdPoke(h.x, h.y);
+  if (!ov && camState === 'on') for (const [k, h] of hands) if (k[0] === 'p' && h.speed > (ntActive() ? 2 : 6) * U) kdPoke(h.x, h.y);   // tucking in is a gentle touch
 }
 const kdBack = t => 1 + 2.7 * Math.pow(t - 1, 3) + 1.7 * Math.pow(t - 1, 2);
 function kdTree(h, tint, i) {
@@ -3453,12 +3489,16 @@ function drawKingdom() {
     }
     else if (e.kind === 'tree') kdTree(e.th, KD_TINTS[e.i % 6], e.i);
     else if (e.kind === 'snowman') drawSnowman(0, 0, 0.3 * KD.k, 20, e.col, false);
-    else if (e.kind === 'animal') { if (e.moving) ctx.translate(0, -Math.abs(Math.sin(now * 9 + e.ph)) * 0.35 * u); ctx.scale(e.dir, 1); drawAnimal(e.type, 0, 0, e.s, now + e.ph, pa < 1.2); }
-    else kdGhost(e);
+    else if (e.kind === 'animal') {
+      if (e.asleep) { ctx.scale(e.dir * 1.07, 0.8 + 0.025 * Math.sin(now * 1.6 + e.ph)); animSleep = true; drawAnimal(e.type, 0, 0, e.s, 0, false); animSleep = false; }
+      else { if (e.moving) ctx.translate(0, -Math.abs(Math.sin(now * 9 + e.ph)) * 0.35 * u); ctx.scale(e.dir, 1); drawAnimal(e.type, 0, 0, e.s, now + e.ph, pa < 1.2); }
+    }
+    else if (NT.k < 0.3) kdGhost(e);
     ctx.restore();
   }
+  drawKingdomNight();
 }
-{ const m = $('#menu'), f = e => { palPoke(e.clientX * DPR, e.clientY * DPR); if (e.target.closest && e.target.closest('button')) return; kdPoke(e.clientX * DPR, e.clientY * DPR); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
+{ const m = $('#menu'), f = e => { palPoke(e.clientX * DPR, e.clientY * DPR); if (e.target.closest && e.target.closest('button')) return; const hit = kdPoke(e.clientX * DPR, e.clientY * DPR); if (!hit && e.type === 'pointerdown' && ntActive()) ntArmsUp(); }; m.addEventListener('pointerdown', f); m.addEventListener('pointermove', f); }
 
 // ======================================================================
 // ---- 雪团团 (Snowy), a snow buddy — she cannot read the hints, so the buddy SHOWS her instead of telling her:
@@ -3510,6 +3550,8 @@ function palGesture(g, t) {
   else if (g === 'paint') { const u = t % 4.2; if (u < 2) { const a = -45 + 34 * s(u * 3.4); o.R = [a, a + 10 * s(u * 3.4 - 0.6)]; o.fx = 'R'; } else { o.R = [-30, -22]; o.fx = 'grow'; } o.L = [126, 108]; }
   else if (g === 'dance') { const p = t * 6.6, k = s(p); o.R = [-35 + 55 * k, -80 + 45 * k]; o.L = [215 + 55 * k, 260 + 45 * k]; o.dy = -0.32 * Math.abs(s(p)); o.feet = s(p); o.lean = 0.16 * s(p / 2); o.dx = 0.3 * s(p / 2); o.mouth = 1; o.fx = 'both'; }
   else if (g === 'statue') { const q = [[[-70, -100], [160, 110], 0.12], [[-15, -75], [195, 255], 0], [[60, 150], [120, 30], -0.06]][DN.round % 3]; o.R = q[0]; o.L = q[1]; o.lean = q[2]; }
+  else if (g === 'yawn') { const u = t % 4, on = u > 0.5 && u < 2.9, k = on ? s((u - 0.5) / 2.4 * Math.PI) : 0; if (on) { o.R = [120, -133]; o.L = [-118, -100 + 6 * s(t * 3)]; o.mouth = 2; o.shut = k > 0.35; } o.sq = -0.07 * k; o.lean = -0.07 * k; }
+  else if (g === 'sleep') { o.R = [80, 100]; o.L = [100, 80]; o.shut = true; o.cap = true; o.sq = 0.05 + 0.035 * s(t * 1.5); o.lean = 0.1; o.fx = 'zzz'; }
   else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
   return o;
 }
@@ -3589,6 +3631,16 @@ function updatePal(dt) {
     }
     if (PAL.cheerT > 0 && !PAL.demo) g = 'cheer';
     if (now - PAL.pokeT < 0.9) g = 'cheer';
+    if (NT.ph === 'rise') g = 'yawn';
+    else if (ntActive()) {
+      palDemoEnd(); const h = NT.help;
+      if (NT.ph === 'tuck' && h) {   // it flies over and puts its mitten on a little light: "like this"
+        const e = h.e, sd = e.x > W * 0.5 ? -1 : 1, ey = e.y - e.hh * 0.5;
+        tx = clamp(e.x + sd * (e.hw + 5 * VM), 8 * VM, W - 8 * VM); ty = ey - 8 * VM; ts = 0.55; g = 'point'; PAL.pa = Math.atan2(ey - PAL.y, e.x - PAL.x) / D2R; look = [e.x > PAL.x ? 0.7 : -0.7, 0.7];
+      }
+      else if (NT.ph === 'aurora') { if (NT.auT >= 0 || (!(mir && mir.up) && NT.t % 4.5 > 1.4)) g = 'up'; }
+      else if (NT.ph === 'sleep') { g = 'sleep'; look = [0, 0]; }
+    }
   } else {
     if (PAL.demo) palDemoEnd();
     if (camIn) {
@@ -3610,6 +3662,8 @@ function updatePal(dt) {
         }
       }
     } else PAL.coach = null;
+    // the moon is rising: it yawns and stretches — "it is getting late"
+    if (NT.ph === 'rise' && !PAL.coach) { want = true; back = 1; ts = 1; tx = Math.max(20 * VM, W * 0.13); ty = H * (SC() === 'runner' ? 0.52 : 0.6); g = 'yawn'; }
     // freeze dance: it is her dance partner the whole time — it dances while the music plays, and turns into an ice statue the moment it stops
     if (SC() === 'dance' && DN.ph !== 'off' && !(PAL.coach && PAL.coach.seq[PAL.coach.i][0] === 'home')) {
       want = true; back = 0.7; ts = 0.95; tx = Math.max(20 * VM, W * 0.13); ty = H * 0.58;
@@ -3657,14 +3711,20 @@ function drawPal(o) {
   c.strokeStyle = '#ff8fc0'; c.lineWidth = R * 0.14; c.beginPath(); c.arc(0, -0.04 * R, 1.08 * R, Math.PI * 1.13, Math.PI * 1.87); c.stroke();
   for (const sd of [-1, 1]) { const mg = c.createRadialGradient(sd * 0.98 * R - 0.08 * R, -0.2 * R, R * 0.03, sd * 1.02 * R, -0.1 * R, R * 0.32); mg.addColorStop(0, '#ffd3e8'); mg.addColorStop(1, '#f2619f'); c.fillStyle = mg; c.beginPath(); c.arc(sd * 1.02 * R, -0.1 * R, 0.31 * R, 0, TAU); c.fill(); }
   drawFlake(c, 0, -1.2 * R, 0.2 * R, now * 0.6, '#ffffff');
+  if (o.cap) {   // a nightcap
+    c.fillStyle = '#7fb4ff'; c.beginPath(); c.moveTo(-0.62 * R, -0.86 * R); c.quadraticCurveTo(0.2 * R, -2.05 * R, 1.22 * R, -1.2 * R); c.quadraticCurveTo(0.55 * R, -1.25 * R, 0.62 * R, -0.86 * R); c.closePath(); c.fill();
+    c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.2; c.beginPath(); c.arc(0, 0, R * 1.06, Math.PI * 1.3, Math.PI * 1.7); c.stroke();
+    c.fillStyle = '#ffffff'; c.beginPath(); c.arc(1.24 * R, -1.18 * R, 0.2 * R, 0, TAU); c.fill();
+  }
   // face
-  const lx = PAL.look[0] * 0.06 * R, ly = PAL.look[1] * 0.05 * R, bl = PAL.blink > 0 ? 0.12 : 1;
+  const lx = PAL.look[0] * 0.06 * R, ly = PAL.look[1] * 0.05 * R, bl = PAL.blink > 0 || o.shut ? 0.12 : 1;
   c.fillStyle = 'rgba(255,135,180,0.5)'; for (const sd of [-1, 1]) { c.beginPath(); c.ellipse(sd * 0.6 * R, 0.17 * R, 0.17 * R, 0.1 * R, 0, 0, TAU); c.fill(); }
   for (const sd of [-1, 1]) {
     c.fillStyle = '#1b2a66'; c.beginPath(); c.ellipse(sd * 0.34 * R + lx, -0.1 * R + ly, 0.14 * R, 0.17 * R * bl, 0, 0, TAU); c.fill();
     if (bl === 1) { c.fillStyle = '#ffffff'; c.beginPath(); c.arc(sd * 0.34 * R + lx - 0.045 * R, -0.16 * R + ly, 0.05 * R, 0, TAU); c.fill(); }
   }
-  if (o.mouth) { c.fillStyle = '#d94a7c'; c.beginPath(); c.arc(lx * 0.5, 0.2 * R, 0.17 * R, 0, Math.PI); c.closePath(); c.fill(); }
+  if (o.mouth === 2) { c.fillStyle = '#d94a7c'; c.beginPath(); c.ellipse(lx * 0.5, 0.26 * R, 0.14 * R, 0.19 * R, 0, 0, TAU); c.fill(); }
+  else if (o.mouth) { c.fillStyle = '#d94a7c'; c.beginPath(); c.arc(lx * 0.5, 0.2 * R, 0.17 * R, 0, Math.PI); c.closePath(); c.fill(); }
   else { c.strokeStyle = '#1b2a66'; c.lineWidth = R * 0.055; c.beginPath(); c.arc(lx * 0.5, 0.15 * R, 0.15 * R, Math.PI * 0.18, Math.PI * 0.82); c.stroke(); }
   // arms + mittens
   const hand = {};
@@ -3693,6 +3753,10 @@ function drawPal(o) {
   } else if (fx === 'grow') {
     const [hx, hy] = hand.R, k = clamp(((t % 4.2) - 2) / 1.5, 0, 1);
     drawCrystal(c, hx + 0.1 * R, hy - 0.55 * R, 0.75 * R, 0.3, k);
+  } else if (fx === 'zzz') {
+    c.fillStyle = '#e6f2ff'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    for (let i = 0; i < 3; i++) { const ph = (now * 0.4 + i / 3) % 1; c.globalAlpha = Math.sin(ph * Math.PI); c.font = `800 ${(0.32 + ph * 0.36) * R}px sans-serif`; c.fillText('z', (0.9 + ph * 0.9) * R, (-1.5 - ph * 0.75) * R); }
+    c.globalAlpha = 1;
   }
   if (PAL.g === 'statue') {   // an ice block climbs up around it
     const k = dnPalIce();
@@ -3708,6 +3772,224 @@ function drawPal(o) {
     }
   }
   c.restore();
+}
+
+// ======================================================================
+// ---- 晚安，冰雪王国 (good night): every game is built to keep a child playing — this part helps her stop.
+//      When it is time (a grown-up taps 🌙 / presses N, or the play timer runs out) a sleepy moon rises over whatever she is playing: "a little more".
+//      Then the hall turns to night and SHE puts her own kingdom to bed: every animal, house, snowman, tree and castle has a little light —
+//      touch it, it goes out, and the one inside falls asleep. Both hands up lights the aurora, everyone sleeps, and there is nothing left to do.
+//      Nothing can be failed, and Snowy keeps helping, so it always finishes. Next time the page opens, the kingdom wakes up. ----
+const NT = { ph: 'off', t: 0, k: 0, alt: 0, riseDur: 40, waitT: 0, playT: 0, started: false, bonus: false, sessT: 0, au: 0, auT: -9, lastTuck: -9, help: null, note: 0, shoot: null, btn: null, mornPending: false, mornToast: 0, mornKey: '' };
+const NT_LULL = [783.99, 659.25, 587.33, 523.25, 440, 523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 587.33, 440, 392, 523.25];
+try { if (localStorage.getItem('iceMagicNight')) { localStorage.removeItem('iceMagicNight'); NT.k = 1; NT.mornPending = true; } } catch (e) {}
+function ntActive() { return NT.ph === 'tuck' || NT.ph === 'aurora' || NT.ph === 'sleep'; }
+function ntLimit() { return NT.bonus ? 300 : (+S.playMin || 0) * 60; }
+function ntSleepers() { return KD.ents.filter(e => e.kind !== 'ghost'); }
+function ntChime(fs, gap, vol, dur) { if (!AC) return; const t = AC.currentTime; vol = vol || 0.08; dur = dur || 1.4; fs.forEach((f, i) => { tone(f, t + i * gap, dur, 'sine', vol); tone(f / 2, t + i * gap, dur * 1.3, 'sine', vol * 0.4); }); }
+function ntAsk() {   // a grown-up says it is bedtime
+  ensureAudio();
+  if (ntActive()) return;
+  if (NT.ph === 'rise' || S.mode === 'menu') ntBegin(); else ntRise(12);
+}
+function ntRise(dur) {
+  NT.ph = 'rise'; NT.t = 0; NT.riseDur = dur; NT.waitT = 0;
+  ntChime([783.99, 659.25, 523.25], 0.38, 0.09);
+  if (S.mode !== 'menu') { showHint(tr('ntRise'), Math.min(dur, 10)); say(tr('ntRiseSay'), true); }
+}
+function ntBegin() {
+  for (const id of ['#photoModal', '#gallery', '#parentPanel']) $(id).style.display = 'none';
+  if (wardrobeOpen) closeWardrobe();
+  if (S.mode !== 'menu') goMenu();
+  Object.assign(NT, { ph: 'tuck', t: 0, au: 0, auT: -9, help: null, note: 0, lastTuck: now, shoot: null, mornPending: false, mornToast: 0, said: false });
+  for (const e of KD.ents) { e.asleep = false; e.sleepT = -9; e.wakeAt = 0; }
+  $('#menu').classList.add('night'); document.body.classList.add('night'); document.body.classList.remove('asleep');
+  $('#nightSum').textContent = '';
+  dwellClear(); palDemoEnd(); PAL.cheerT = 0;
+  ntChime([523.25, 659.25, 783.99, 1046.5], 0.3, 0.07);
+}
+function ntTuck(e) {
+  e.asleep = true; e.sleepT = now; e.pokeT = now; NT.lastTuck = now; if (NT.help && NT.help.e === e) NT.help = null;
+  if (e.kind === 'animal') { e.tx = e.x; e.moving = false; }
+  const u = KD.u;
+  ntChime([NT_LULL[NT.note++ % NT_LULL.length]], 0, 0.1, 1.6);   // every one she tucks in plays the next note of the lullaby
+  parts.push({ type: 'text', text: '💤', x: e.x, y: e.y - e.hh - u, vx: 0, vy: -7 * u, g: 0, drag: 1, r: 0, rot: 0, vr: 0, life: 1.6, max: 1.6, col: '#cfe6ff', size: 3.4 * u });
+  for (let k = 0; k < 7; k++) addParticle({ type: 'spark', x: e.x + rand(-1, 1) * e.hw, y: e.y - rand(0.2, 1) * e.hh, vx: rand(-3, 3) * u, vy: -rand(3, 9) * u, g: 0, drag: 1, r: rand(0.4, 0.9) * u, rot: 0, vr: 0, life: 0.9, max: 0.9, col: '#ffe9a8' });
+}
+function ntTouch(e) {   // her hand (or the pointer) on something in the kingdom at night
+  if (!e.asleep && NT.ph === 'tuck') ntTuck(e);
+  else if (AC) tone(1046.5, AC.currentTime, 0.5, 'sine', 0.025);
+}
+function ntArmsUp() {   // both hands up (or a tap on the sky): the aurora
+  if (NT.ph === 'aurora' && NT.auT < 0) { NT.auT = now; NT.shoot = { t: 0 }; ntChime([523.25, 659.25, 783.99, 1046.5, 1318.5, 1568], 0.16, 0.07, 2.2); }
+  else if (NT.ph === 'sleep' && now - NT.auT > 5) { NT.auT = now; NT.shoot = { t: 0 }; ntChime([1046.5, 1318.5, 1568], 0.2, 0.03, 2); }
+}
+function ntSleep() {
+  NT.ph = 'sleep'; NT.t = 0; NT.help = null;
+  document.body.classList.add('asleep');
+  $('#nightSum').textContent = NT.sessT > 30 ? tr('ntSum')(Math.max(1, Math.round(NT.sessT / 60)), S.stars) : '';
+  try { localStorage.setItem('iceMagicNight', String(Date.now())); } catch (e) {}
+  ntChime([783.99, 659.25, 587.33, 523.25, 440, 523.25, 392], 0.62, 0.07, 2.2);
+  if (AC) { const t = AC.currentTime + 0.62 * 7; [261.63, 329.63, 392, 523.25].forEach(f => tone(f, t, 4, 'sine', 0.035)); }
+  setTimeout(() => { if (NT.ph === 'sleep') say(tr('ntBye'), true); }, 600);
+}
+function ntWake() {   // a grown-up: "a little longer"
+  if (!ntActive() && NT.ph !== 'rise') return;
+  const was = NT.ph;
+  Object.assign(NT, { ph: 'off', t: 0, help: null, playT: 0, bonus: +S.playMin > 0, waitT: 0 });
+  $('#menu').classList.remove('night'); document.body.classList.remove('night', 'asleep');
+  try { localStorage.removeItem('iceMagicNight'); speechSynthesis.cancel(); } catch (e) {}
+  DW.cool = 1.5;
+  if (was !== 'rise') ntMorning('ntMore');
+}
+function ntMorning(key) {   // the kingdom wakes up, one after another
+  NT.k = Math.max(NT.k, 0.9); NT.mornKey = key; NT.mornToast = now + 1.2; NT.note = 0;
+  ntSleepers().forEach((e, i) => { e.asleep = true; e.sleepT = -9; e.wakeAt = now + 0.8 + i * 0.13; });
+}
+function updateNight(dt) {
+  const menu = S.mode === 'menu';
+  if (NT.mornPending && menu && KD.ents.length) { NT.mornPending = false; ntMorning('ntMorn'); }
+  for (const e of KD.ents) if (e.wakeAt && now >= e.wakeAt) {
+    e.wakeAt = 0; e.asleep = false; e.pokeT = now;
+    if (AC && menu) tone(KD_NOTES[NT.note++ % KD_NOTES.length], AC.currentTime, 0.3, 'triangle', 0.05);
+    for (let k = 0; k < 4; k++) addParticle({ type: 'spark', x: e.x + rand(-1, 1) * e.hw, y: e.y - rand(0.3, 1) * e.hh, vx: rand(-4, 4) * KD.u, vy: -rand(5, 12) * KD.u, g: 0, drag: 1, r: rand(0.4, 0.9) * KD.u, rot: 0, vr: 0, life: 0.7, max: 0.7, col: '#fff3b8' });
+  }
+  if (NT.mornToast && now >= NT.mornToast) { NT.mornToast = 0; if (menu && !ntActive()) kdToast(tr(NT.mornKey)); }
+  if (NT.ph === 'off') {
+    if (!menu) NT.sessT += dt;
+    if (NT.started) NT.playT += dt;
+    const lim = ntLimit();
+    if (lim && NT.started && NT.playT >= lim) ntRise(menu ? 12 : 40);   // the play timer ran out
+  } else if (NT.ph === 'rise') {
+    if (!menu) NT.sessT += dt;
+    if (NT.t < NT.riseDur) NT.t = Math.min(NT.riseDur, NT.t + dt * (menu ? 2.5 : 1));
+    else {
+      // a game that is about to end by itself may finish (the last adventure level, a dance, a photo) — but not for long
+      const busy = (S.mode === 'adventure' && ADV.idx === 3) || SC() === 'dance' || photoT > 0 || celebrateT > 0 || !!topOverlay();
+      NT.waitT += dt;
+      if (!busy || NT.waitT > 80) ntBegin();
+    }
+  } else {
+    NT.t += dt;
+    const all = ntSleepers(), awake = all.filter(e => e.popped && !e.asleep), pend = all.some(e => !e.popped);
+    if (NT.ph === 'tuck') {
+      if (!NT.said && NT.t > 0.8) { NT.said = true; if (all.length) say(tr('ntSay'), true); }
+      if (!awake.length && !pend && NT.t > (all.length ? 1.5 : 0.8) && now - NT.lastTuck > (all.length ? 1.3 : 0.8)) {   // (an empty kingdom has nobody to tuck in)
+        NT.ph = 'aurora'; NT.t = 0; NT.help = null; ntChime([659.25, 783.99], 0.3, 0.07);
+        say(tr(S.input === 'camera' && camState === 'on' ? 'ntSkySay' : 'ntSkySayPtr'), true);
+      } else if (awake.length) {
+        // Snowy helps: it shows her how on the first one, and carries on whenever she pauses — so bedtime always finishes
+        const hurry = NT.t > 55, gap = hurry ? 0.15 : clamp(30 / all.length, 0.7, 3);
+        if (NT.help && (NT.help.e.asleep || !KD.ents.includes(NT.help.e))) NT.help = null;
+        if (!NT.help && NT.t > 3.2 && now - NT.lastTuck > gap) NT.help = { e: awake.reduce((a, b) => Math.abs(b.x - PAL.x) < Math.abs(a.x - PAL.x) ? b : a), t: 0 };
+        if (NT.help) { NT.help.t += dt; if (NT.help.t > (hurry ? 0.1 : palOn() && PAL.vis ? 1.5 : 0.5)) ntTuck(NT.help.e); }
+      }
+    } else if (NT.ph === 'aurora') {
+      if (NT.auT < 0 && NT.t > 12) ntArmsUp();   // in the end it lights up by itself
+      if (NT.auT >= 0 && now - NT.auT > 7) ntSleep();
+    }
+    // her hands stir little sparks in the dark
+    if (camState === 'on') for (const [k, h] of hands) if (k[0] === 'p' && Math.random() < Math.min(1, h.speed / (50 * U)) * 0.5) addParticle({ type: 'spark', x: h.x + rand(-2, 2) * U, y: h.y + rand(-2, 2) * U, vx: rand(-5, 5) * U, vy: rand(-9, 2) * U, g: 6 * U, drag: 1.5, r: rand(0.4, 1) * U, rot: 0, vr: 0, life: rand(0.5, 1), max: 1, col: NT.au > 0.3 ? pick(['#a8ffea', '#cfe0ff', '#f0c8ff']) : '#fff3b8' });
+  }
+  // how dark it is, how high the moon is, how bright the aurora is
+  const p = NT.ph === 'rise' ? NT.t / NT.riseDur : 0, on = ntActive();
+  const kT = on ? 1 : 0.35 * p, aT = on ? 1 : p, auT = NT.ph === 'aurora' && NT.auT >= 0 ? 1 : NT.ph === 'sleep' ? 0.5 + 0.5 * clamp(1 - (now - NT.auT) / 7, 0, 1) : 0;
+  NT.k += (kT - NT.k) * Math.min(1, dt * (kT > NT.k ? 1.4 : 0.8)); if (NT.k < 0.004 && !kT) NT.k = 0;
+  NT.alt += (aT - NT.alt) * Math.min(1, dt * (on ? 2.2 : NT.ph === 'rise' ? 6 : 1)); if (NT.alt < 0.004 && !aT) NT.alt = 0;
+  NT.au += (auT - NT.au) * Math.min(1, dt * 1.3);
+  if (NT.shoot) { NT.shoot.t += dt; if (NT.shoot.t > 1.3) NT.shoot = null; }
+  const showBtn = S.input === 'camera' && !IS_TV && !on;
+  if (showBtn !== NT.btn) { NT.btn = showBtn; $('#btnNight').style.display = showBtn ? '' : 'none'; }
+}
+function ntMoonAt() { const a = clamp(NT.alt, 0, 1), e = a * a * (3 - 2 * a); return [W * (-0.08 + 0.24 * e), H * (0.44 - 0.2 * e), 6.2 * U]; }
+function drawSleepyMoon() {
+  if (NT.alt < 0.02) return;
+  const [x, y, r] = ntMoonAt(), c = ctx, TAU = Math.PI * 2, wob = Math.sin(now * 1.3) * 0.06 * r;
+  c.save();
+  const g = c.createRadialGradient(x, y, r * 0.6, x, y, r * 3.6); g.addColorStop(0, 'rgba(255,244,190,0.42)'); g.addColorStop(1, 'rgba(255,244,190,0)');
+  c.fillStyle = g; c.beginPath(); c.arc(x, y, r * 3.6, 0, TAU); c.fill();
+  c.translate(x, y); c.rotate(Math.sin(now * 0.7) * 0.05);
+  const mg = c.createRadialGradient(-r * 0.3, -r * 0.35, r * 0.1, 0, 0, r); mg.addColorStop(0, '#fffdf0'); mg.addColorStop(1, '#ffe59a');
+  c.fillStyle = mg; c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fill();
+  c.fillStyle = 'rgba(232,196,110,0.4)'; for (const [dx, dy, rr] of [[-0.55, 0.5, 0.15], [0.62, -0.3, 0.1], [0.42, 0.62, 0.13]]) { c.beginPath(); c.arc(dx * r, dy * r, rr * r, 0, TAU); c.fill(); }
+  // a sleeping face
+  c.strokeStyle = '#8a5a2b'; c.lineWidth = r * 0.07; c.lineCap = 'round';
+  for (const sd of [-1, 1]) { c.beginPath(); c.arc(sd * 0.34 * r, -0.04 * r, 0.17 * r, 0.15 * Math.PI, 0.85 * Math.PI); c.stroke(); }
+  c.beginPath(); c.arc(0, 0.3 * r, 0.13 * r, 0.1 * Math.PI, 0.9 * Math.PI); c.stroke();
+  c.fillStyle = 'rgba(255,150,150,0.45)'; for (const sd of [-1, 1]) { c.beginPath(); c.ellipse(sd * 0.6 * r, 0.24 * r, 0.14 * r, 0.09 * r, 0, 0, TAU); c.fill(); }
+  // a nightcap
+  c.fillStyle = '#7fb4ff'; c.beginPath(); c.moveTo(-0.78 * r, -0.62 * r); c.quadraticCurveTo(0.1 * r, -1.8 * r, 1.15 * r, -1.05 * r + wob); c.quadraticCurveTo(0.5 * r, -1.05 * r, 0.62 * r, -0.78 * r); c.closePath(); c.fill();
+  c.strokeStyle = '#ffffff'; c.lineWidth = r * 0.2; c.beginPath(); c.arc(0, 0, r * 0.99, Math.PI * 1.22, Math.PI * 1.715); c.stroke();
+  c.fillStyle = '#ffffff'; c.beginPath(); c.arc(1.17 * r, -1.03 * r + wob, 0.2 * r, 0, TAU); c.fill();
+  c.fillStyle = '#fff6cf'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  for (let i = 0; i < 3; i++) { const ph = (now * 0.3 + i / 3) % 1; c.globalAlpha = Math.sin(ph * Math.PI) * 0.9; c.font = `800 ${(0.3 + ph * 0.4) * r}px sans-serif`; c.fillText('z', (1.1 + ph * 0.9) * r, (-0.1 - ph * 1.1) * r); }
+  c.restore();
+}
+function drawNightSky() {   // the hall at night (and the sunrise when it wakes)
+  const k = NT.k; if (k < 0.01 && NT.alt < 0.02) return;
+  const vid = videoShown();
+  ctx.fillStyle = `rgba(5,10,42,${(vid ? 0.6 : 0.42) * k})`; ctx.fillRect(0, 0, W, H);
+  if (vid) { ctx.fillStyle = '#ffffff'; for (const s of bgStars) { ctx.globalAlpha = k * (0.3 + 0.6 * Math.sin(now * 1.5 + s.p) ** 2); ctx.beginPath(); ctx.arc(s.x * W, s.y * H * 0.8, s.r * U, 0, Math.PI * 2); ctx.fill(); } ctx.globalAlpha = 1; }
+  if (NT.au > 0.01) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    // curtains of light: soft above, brightest near a wavy hem, cut into thin rays that flicker
+    const cols = [[110, 255, 200], [140, 190, 255], [215, 150, 255]], n = LITE ? 2 : 3, N = LITE ? 20 : 48;
+    for (let b = 0; b < n; b++) {
+      const sp = 0.5 + b * 0.13, a = NT.au * (0.44 - b * 0.07), [r, g, bl] = cols[b], span = H * (0.27 + b * 0.03), tail = H * 0.06;
+      for (let i = 0; i < N; i++) {
+        const x0 = Math.round(i * W / N), x1 = Math.round((i + 1) * W / N), q = (i + 0.5) / N;
+        const yc = H * (0.35 + b * 0.085) + Math.sin(q * 5 + now * sp + b * 2) * H * 0.055 + Math.sin(q * 11 - now * 0.3 + b) * H * 0.02;
+        const fl = a * (0.72 + 0.28 * Math.sin(q * 31 + now * 1.1 + b * 3));
+        const ag = ctx.createLinearGradient(0, yc - span, 0, yc + tail); ag.addColorStop(0, `rgba(${r},${g},${bl},0)`); ag.addColorStop(0.8, `rgba(${r},${g},${bl},${fl})`); ag.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+        ctx.fillStyle = ag; ctx.fillRect(x0, yc - span, x1 - x0, span + tail);
+      }
+    }
+    ctx.restore();
+  }
+  if (NT.shoot) {
+    const q = NT.shoot.t / 1.1, x = W * (0.82 - 0.42 * q), y = H * (0.07 + 0.2 * q), a = Math.sin(clamp(q, 0, 1) * Math.PI);
+    const sg = ctx.createLinearGradient(x, y, x + W * 0.1, y - H * 0.048); sg.addColorStop(0, `rgba(255,255,255,${a})`); sg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.strokeStyle = sg; ctx.lineWidth = U * 0.5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + W * 0.1, y - H * 0.048); ctx.stroke();
+    ctx.globalAlpha = a; drawStar(ctx, x, y, 1.3 * U, now * 3); ctx.globalAlpha = 1;
+  }
+  drawSleepyMoon();
+}
+function drawNightOver() {   // in a game: dusk falls and the moon climbs — "a little more, then good night"
+  if (NT.k < 0.01 && NT.alt < 0.02) return;
+  ctx.fillStyle = `rgba(5,10,42,${0.8 * NT.k})`; ctx.fillRect(0, 0, W, H);
+  drawSleepyMoon();
+}
+function drawKingdomNight() {
+  const k = NT.k, u = KD.u, on = ntActive();
+  if (k > 0.01) {
+    const g = ctx.createLinearGradient(0, H - 46 * u, 0, H - 14 * u); g.addColorStop(0, 'rgba(8,16,60,0)'); g.addColorStop(1, `rgba(8,16,60,${0.52 * k})`);
+    ctx.fillStyle = g; ctx.fillRect(0, H - 46 * u, W, 46 * u);
+  }
+  ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const e of KD.ents) {
+    if (e.kind === 'ghost' || !e.popped) continue;
+    const st = now - (e.sleepT == null ? -9 : e.sleepT), lit = on ? (e.asleep ? Math.max(0, 1 - st / 0.45) : 1) * k : 0;
+    if (lit > 0.01) {   // a little night light: touch it and it goes out
+      const cy = e.y - e.hh * 0.5, R = Math.max(e.hw, 3.2 * u) * (1.5 + 0.12 * Math.sin(now * 3 + e.x)) * (0.4 + 0.6 * lit);
+      ctx.globalCompositeOperation = 'lighter';
+      const lg = ctx.createRadialGradient(e.x, cy, 0, e.x, cy, R); lg.addColorStop(0, `rgba(255,214,120,${0.55 * lit})`); lg.addColorStop(0.5, `rgba(255,190,90,${0.24 * lit})`); lg.addColorStop(1, 'rgba(255,190,90,0)');
+      ctx.fillStyle = lg; ctx.beginPath(); ctx.arc(e.x, cy, R, 0, Math.PI * 2); ctx.fill();
+      const ly = e.y - e.hh - 2.8 * u + Math.sin(now * 2.2 + e.x) * 0.45 * u, lr = 1.25 * u * (0.5 + 0.5 * lit) * (1 + 0.12 * Math.sin(now * 5 + e.x));
+      const og = ctx.createRadialGradient(e.x, ly, 0, e.x, ly, lr * 3); og.addColorStop(0, `rgba(255,236,170,${0.9 * lit})`); og.addColorStop(1, 'rgba(255,220,130,0)');
+      ctx.fillStyle = og; ctx.beginPath(); ctx.arc(e.x, ly, lr * 3, 0, Math.PI * 2); ctx.fill();
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = lit;
+      ctx.fillStyle = '#fffbe6'; ctx.beginPath(); ctx.arc(e.x, ly, lr, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ffe9a8'; ctx.lineWidth = Math.max(1, u * 0.22); ctx.lineCap = 'round'; ctx.beginPath();
+      for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2 + now * 0.8; ctx.moveTo(e.x + Math.cos(a) * lr * 1.5, ly + Math.sin(a) * lr * 1.5); ctx.lineTo(e.x + Math.cos(a) * lr * 2.3, ly + Math.sin(a) * lr * 2.3); }
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+    if (e.asleep && st > 0.35) {
+      ctx.fillStyle = '#d6e8ff';
+      for (let i = 0; i < 2; i++) { const ph = (now * 0.4 + e.x * 0.013 + i * 0.5) % 1; ctx.globalAlpha = Math.sin(ph * Math.PI) * 0.9; ctx.font = `800 ${(1.5 + ph * 1.5) * u}px sans-serif`; ctx.fillText('z', e.x + (0.8 + ph * 2.2) * u, e.y - e.hh - (0.3 + ph * 3.6) * u); }
+      ctx.globalAlpha = 1;
+    }
+  }
+  ctx.restore();
 }
 
 // ======================================================================
@@ -4127,7 +4409,7 @@ function topOverlay() { for (const id of ['#photoModal', '#gallery', '#wardrobe'
 function dwellTargets() {
   const ov = topOverlay();
   if (ov) return ov.id === 'parentPanel' ? [] : [...ov.querySelectorAll('[data-dwell]')];
-  if (S.mode === 'menu') return [...$('#menu').querySelectorAll('[data-dwell]')];
+  if (S.mode === 'menu') return ntActive() ? [] : [...$('#menu').querySelectorAll('[data-dwell]')];
   if (SC() === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return [];   // she is holding still on purpose
   return [$('#btnHome')];
 }
@@ -4168,7 +4450,7 @@ function updateDwell(dt) {
     DW.p.set(el, p); el.style.setProperty('--p', p.toFixed(3));
   }
 }
-let hallText = '', soundTipOn = null;
+let hallText = '', soundTipOn = null, hallTitle = '';
 function updateHall() {
   let k = 'hallTap';
   if (S.input === 'camera' && !IS_TV) {
@@ -4177,6 +4459,8 @@ function updateHall() {
     else if (camState === 'fail') k = 'camFail';
     else k = 'hallTapCam';
   }
+  if (ntActive()) k = NT.ph === 'tuck' ? 'ntTuck' : NT.ph === 'sleep' ? 'ntSleep' : k === 'hallCam' ? 'ntSky' : 'ntSkyPtr';
+  const ttl = ntActive() ? tr('ntTitle') : '❄️ 冰雪魔法 ❄️'; if (ttl !== hallTitle) { hallTitle = ttl; $('#menu h1').textContent = ttl; }
   const t = tr(k) + S.lang; if (t !== hallText) { hallText = t; $('#hallHint').innerHTML = tr(k); }
   if (k === 'hallCam' && !DW.said && !topOverlay()) { DW.said = true; say(tr('hallSay'), true); }
   const st = !(AC && AC.state === 'running'); if (st !== soundTipOn) { soundTipOn = st; $('#soundTip').style.display = st ? 'block' : 'none'; }
@@ -4290,7 +4574,7 @@ function detectPose() {
     const nose = lm[0], lw = lm[15], rw = lm[16];
     const up = vis(lw) > 0.6 && vis(rw) > 0.6 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
     armsUp[i] = up ? (armsUp[i] || 0) + fdt : 0;
-    if (armsUp[i] > 0.3) { if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if (SC() === 'dance' && DN.ph !== 'dance') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }
+    if (armsUp[i] > 0.3) { if (ntActive()) { ntArmsUp(); armsUp[i] = -2; } else if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if (SC() === 'dance' && DN.ph !== 'dance') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }
   });
 }
 
@@ -4327,7 +4611,7 @@ let lastT = performance.now(), foundAt = 0, lastPhBtn = null;
 function frame(tms) {
   const dt = Math.min(0.05, Math.max(0, (tms - lastT) / 1000)); lastT = tms; now += dt;
   detectPose();
-  updateHands(dt); updateParticles(dt); updateDwell(dt);
+  updateHands(dt); updateParticles(dt); updateDwell(dt); updateNight(dt);
   const sc = SC();
   if (sc === 'sprites' || sc === 'boss') updateSprites(dt);
   if (sc === 'town') updateTown(dt);
@@ -4360,7 +4644,7 @@ function frame(tms) {
   drawBackground();
   drawDress();
   if (SC() === 'dance') drawDanceBack();
-  if (S.mode === 'menu') drawKingdom();
+  if (S.mode === 'menu') { drawNightSky(); drawKingdom(); }
   if (SC() === 'runner') drawRunner();
   ctx.save();
   if (shake) ctx.translate(rand(-1, 1) * shake, rand(-1, 1) * shake);
@@ -4390,6 +4674,7 @@ function frame(tms) {
     ctx.fillStyle = '#ffffff'; ctx.shadowColor = '#8fdcff'; ctx.shadowBlur = 4 * U; ctx.fillText(celebrateText, 0, 0);
     ctx.restore();
   }
+  if (S.mode !== 'menu') drawNightOver();
   drawTitle(dt);
   drawPhotoCountdown();
   requestAnimationFrame(frame);
@@ -4397,6 +4682,8 @@ function frame(tms) {
 
 // ---------- mode control ----------
 function startMode(m) {
+  if (ntActive()) return;   // everyone is asleep
+  NT.started = true;
   ensureAudio(); dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = '';
   if (S.input === 'camera' && !IS_TV && !DW.homeTip) { DW.homeTip = true; setTimeout(() => { if (S.mode !== 'menu' && camState === 'on') { showHint(tr('homeHint'), 7); palCoach([['home', 5]]); } }, 12000); }
   $('#menu').classList.add('hide'); titleT = 0; comboN = 0;
@@ -4427,6 +4714,15 @@ function goMenu() { dnOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach =
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
+$('#btnNight').addEventListener('click', ntAsk);
+$('#btnNightNow').addEventListener('click', () => { $('#parentPanel').style.display = 'none'; ntAsk(); });
+{ // "play a little longer" has to be held — a grown-up's button, not something a small finger taps by accident
+  const b = $('#btnWake'); let t0 = 0;
+  const stop = () => { t0 = 0; b.classList.remove('aim'); b.style.removeProperty('--p'); };
+  const tick = () => { if (!t0) return; const p = (performance.now() - t0) / 1100; if (p >= 1) { stop(); ntWake(); return; } b.style.setProperty('--p', p.toFixed(3)); requestAnimationFrame(tick); };
+  b.addEventListener('pointerdown', () => { t0 = performance.now(); b.classList.add('aim'); tick(); });
+  for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) b.addEventListener(ev, stop);
+}
 $('#btnWardrobe').addEventListener('click', openWardrobe);
 $('#btnParent').addEventListener('click', () => { $('#parentPanel').style.display = 'flex'; });
 $('#parentClose').addEventListener('click', () => { $('#parentPanel').style.display = 'none'; });
@@ -4458,6 +4754,7 @@ function applyLang() {
 }
 segBind('#inputSeg', 'input', () => { if (S.input === 'camera') { ensureAudio(); startCamera(); } });
 segBind('#langSeg', 'lang', () => { S.voiceName = ''; savePrefs(); applyLang(); fillVoiceSel(); });
+segBind('#napSeg', 'playMin', () => { NT.bonus = false; });
 togBind('#togVideo', 'showVideo'); togBind('#togDress', 'dress'); togBind('#togMusic', 'music'); togBind('#togPal', 'pal'); togBind('#togVoice', 'voice');
 applyLang();
 if (IS_TV) {
@@ -4483,8 +4780,9 @@ window.addEventListener('keydown', e => {
     let hx = W / 2, hy = H / 2; for (const [k, h] of hands) if (k[0] === 'm') { hx = h.x; hy = h.y; }
     iceBlast(hx, hy); return;
   }
+  if (e.key === 'n' || e.key === 'N') { if (ntActive()) ntWake(); else ntAsk(); return; }
   if (e.key === 'Escape') goMenu();
-  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); blizzard(); }
+  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else blizzard(); }
   else if (e.key === 'p' || e.key === 'P') startPhoto(false);
   else if (e.key === 'm' || e.key === 'M') { S.showVideo = !S.showVideo; $('#togVideo').classList.toggle('on', S.showVideo); savePrefs(); }
   else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance'][+e.key - 1]);
@@ -4498,7 +4796,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

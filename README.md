@@ -53,6 +53,18 @@ Camera mode only for the coaching; switch it off with 🤍 雪团团 in 家长�
 
 The bottom of the hall is the child's own kingdom, and it remembers what she did: every finished adventure adds an **ice castle**, every frozen town an **ice house**, every snowman she builds stands there, every **rescued animal** moves in and wanders about, and every 30 stars grows a **crystal tree**. New things pop in one by one when she comes back from a game. Empty spots show a dashed outline with the bubble icon of the game that fills them. Everything reacts to a hand (or mouse/finger): animals hop, crystal trees ring like a xylophone, the castle sets off fireworks. Saved in this browser only.
 
+## Good night, Ice Kingdom / 晚安，冰雪王国
+
+Games are built to keep a child playing. This part helps her **stop** — and makes stopping something she does herself, not something that is done to her.
+
+- **A grown-up decides when**: click 🌙 (top right, camera mode) or press **N**, or pick a play time (10 / 15 / 20 / 30 min) in ⚙️ 家长设置.
+- **A sleepy moon rises** over whatever she is playing and the screen slowly dims — "a little more, then good night". Snowy yawns and stretches. (About 40 s on the timer, 12 s when a grown-up asks; ask again = right now. A dance or the last adventure level may finish first.)
+- **The hall turns to night.** The game bubbles are gone; every animal, house, snowman, crystal tree and castle in her kingdom has a little light. **She touches a light, it goes out, and the one inside falls asleep** — each one plays the next note of a lullaby.
+- It can't be failed and it always finishes: Snowy shows how on the first one and keeps tucking them in whenever she pauses.
+- **Both hands up → the aurora** (tap the sky or Space without a camera; it lights by itself after a while). Then everyone sleeps, Snowy puts on a nightcap, the screen dims, and there is nothing left to do. A small line tells the grown-up how long she played.
+- **A little longer?** Hold "☀️ 再玩一会儿" at the bottom (or press N). With a play time set, that gives 5 more minutes.
+- **Next time the page opens, the kingdom wakes up** — a sunrise, and everyone hops awake one after another.
+
 ## Extras
 
 - 👑 **Dress-up** — with the camera on, she wears an ice crown and a cape that flows *behind* her
