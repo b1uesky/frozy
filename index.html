@@ -38,7 +38,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .mode.aim .orb::after{opacity:1}
 .mode:hover .orb,.mode:focus .orb,.mode.aim .orb{animation:none;transform:scale(1.12);box-shadow:inset 0 -2.2vmin 4vmin rgba(10,40,130,.35),inset 0 1vmin 2vmin rgba(255,255,255,.5),0 0 6vmin #fff}
 .mode .lbl{position:relative;z-index:1;margin-top:1.9vmin;padding:.5vmin 1.8vmin;border-radius:4vmin;background:rgba(10,30,80,.6);white-space:nowrap;text-shadow:0 .2vmin .8vmin rgba(0,0,40,.8)}
-.mode:nth-child(2) .orb{animation-delay:-.7s}.mode:nth-child(3) .orb{animation-delay:-1.9s}.mode:nth-child(4) .orb{animation-delay:-3.1s}.mode:nth-child(5) .orb{animation-delay:-1.2s}.mode:nth-child(6) .orb{animation-delay:-2.6s}.mode:nth-child(7) .orb{animation-delay:-3.7s}
+.mode:nth-child(2) .orb{animation-delay:-.7s}.mode:nth-child(3) .orb{animation-delay:-1.9s}.mode:nth-child(4) .orb{animation-delay:-3.1s}.mode:nth-child(5) .orb{animation-delay:-1.2s}.mode:nth-child(6) .orb{animation-delay:-2.6s}.mode:nth-child(7) .orb{animation-delay:-3.7s}.mode:nth-child(8) .orb{animation-delay:-.4s}
 .m-adventure{--c1:rgba(255,232,140,.8);--c2:rgba(214,125,40,.55);--glow:rgba(255,220,120,.75)}
 .m-runner{--c1:rgba(255,180,222,.78);--c2:rgba(190,70,165,.52);--glow:rgba(255,160,220,.7)}
 .m-sprites{--c1:rgba(255,186,130,.78);--c2:rgba(205,66,66,.52);--glow:rgba(255,150,110,.7)}
@@ -46,6 +46,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .m-snowman{--c1:rgba(225,243,255,.78);--c2:rgba(70,120,215,.52);--glow:rgba(170,220,255,.75)}
 .m-free{--c1:rgba(208,190,255,.78);--c2:rgba(100,72,205,.52);--glow:rgba(190,165,255,.7)}
 .m-dance{--c1:rgba(170,255,240,.8);--c2:rgba(60,150,230,.55);--glow:rgba(150,245,255,.8)}
+.m-hug{--c1:rgba(255,214,224,.85);--c2:rgba(240,90,130,.55);--glow:rgba(255,170,200,.8)}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.7vmin)}}
 @keyframes palm{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.18)}}
 #hallHint{max-width:96vw;margin-top:.8vmin;font-size:3.1vmin;font-weight:700;padding:.9vmin 3.2vmin;border-radius:5vmin;background:rgba(10,30,80,.66);text-align:center;border:.25vmin solid rgba(255,255,255,.35)}
@@ -60,16 +61,20 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .wand{position:fixed;left:0;top:0;z-index:40;pointer-events:none;display:none;width:0;height:0}
 .wand i{position:absolute;left:-6vmin;top:-6vmin;width:12vmin;height:12vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,230,255,.55) 34%,rgba(90,170,255,0) 70%);display:flex;align-items:center;justify-content:center;font-size:5vmin;font-style:normal}
 @media (min-aspect-ratio: 8/5) {
-  /* seven bubbles in one arc: four small + three big (1.2x) always fill the width, whatever the screen shape */
-  .modes{flex-wrap:nowrap;max-width:none;--bw:min(24vmin,calc((100vw - 18vmin) / 7.6))}
+  /* eight bubbles in one arc: four small + four big (1.2x) always fill the width, whatever the screen shape */
+  .modes{flex-wrap:nowrap;max-width:none;--bw:min(24vmin,calc((100vw - 19vmin) / 8.8))}
   .mode{width:var(--bw);margin:1vmin .8vmin}
   .orb{width:calc(var(--bw) - 2vmin);height:calc(var(--bw) - 2vmin);font-size:calc(var(--bw) / 2 - 1vmin)}
   .mode.big{width:calc(var(--bw) * 1.2)}
   .mode.big .orb{width:calc(var(--bw) * 1.2 - 2vmin);height:calc(var(--bw) * 1.2 - 2vmin);font-size:calc(var(--bw) * .6 - 1vmin)}
-  .mode.big .lbl{font-size:3.4vmin}
+  /* the names shrink with the bubbles so neighbours never overlap; English names may take two lines */
+  .mode .lbl{font-size:min(3.2vmin,calc((var(--bw) - 2.6vmin) / 5));max-width:calc(var(--bw) + 1.2vmin);white-space:normal;word-break:keep-all;line-height:1.15;text-align:center}
+  .mode.big .lbl{font-size:min(3.4vmin,calc((var(--bw) * 1.2 - 2.6vmin) / 5));max-width:calc(var(--bw) * 1.2 + 1.2vmin)}
+  body.en .mode .lbl{font-size:min(2.9vmin,calc((var(--bw) - 2.6vmin) / 5.4))}
+  body.en .mode.big .lbl{font-size:min(3.1vmin,calc((var(--bw) * 1.2 - 2.6vmin) / 5.4))}
   #btnParent{position:absolute;left:2.5vmin;bottom:2vmin;margin:0}
-  .mode:nth-child(1),.mode:nth-child(7){margin-top:11vmin}
-  .mode:nth-child(2),.mode:nth-child(6){margin-top:5vmin}
+  .mode:nth-child(1),.mode:nth-child(8){margin-top:11vmin}
+  .mode:nth-child(2),.mode:nth-child(7){margin-top:5vmin}
 }
 @media (min-aspect-ratio: 16/9) {
   .mode{font-size:3.2vmin}
@@ -195,6 +200,7 @@ body.asleep #nightSum:not(:empty){display:block}
     <button class="mode m-town" data-mode="town" data-dwell><span class="orb">🏘️</span><span class="lbl" data-t="m2">冰封小镇</span></button>
     <button class="mode big m-adventure" data-mode="adventure" data-dwell><span class="orb">🗺️</span><span class="lbl" data-t="m0">冰雪大冒险</span></button>
     <button class="mode big m-dance" data-mode="dance" data-dwell><span class="orb">💃</span><span class="lbl" data-t="m6">冰雕舞会</span></button>
+    <button class="mode big m-hug" data-mode="hug" data-dwell><span class="orb">🤗</span><span class="lbl" data-t="m7">冰冻抱抱</span></button>
     <button class="mode big m-runner" data-mode="runner" data-dwell><span class="orb">🏃‍♀️</span><span class="lbl" data-t="m5">冰雪奔跑</span></button>
     <button class="mode m-snowman" data-mode="snowman" data-dwell><span class="orb">⛄</span><span class="lbl" data-t="m4">堆雪人</span></button>
     <button class="mode m-free" data-mode="free" data-dwell><span class="orb">❄️</span><span class="lbl" data-t="m3">画冰花</span></button>
@@ -244,6 +250,7 @@ body.asleep #nightSum:not(:empty){display:block}
     <b>🤍 雪团团</b>是会学她动作的小伙伴：大厅里跟在她身边、她举手它也举手；它会把手放在泡泡上示范怎么选游戏，游戏里用动作示范怎么玩（挥手 / 原地跑 / 跳 / 歪身体 / 接雪花），她停下来不知道做什么时会再示范一次——不用识字，也不说话<br>
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
+    <b>🤗 冰冻抱抱（可以全家一起玩）</b>：挥手把小动物冻住，再抱一抱它（两只手围住它，或一只手放在它身上停一下），冰就化了，得一颗爱心。<b>大人站到她旁边（并排站，别站在她正后面）：她伸手指着你、碰到你、或朝你快速挥手发冰晶，冰就会从脚往上爬把你冻住——她走过来抱住你，冰才会化</b>（没人抱的话约 10 秒自己化）。你也可以冻住她。集满 5 颗爱心，最后一个抱抱会变成照片存进相册<br>
     <b>💃 冰雕舞会</b>：音乐响就跳舞，音乐一停就不动——冰会从脚往上爬，把她变成冰雕，咔嚓拍一张；5 张冰雕照拼成一张，存进相册（两个人、大人一起跳也行）<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     <b>🌙 晚安</b>：该休息时点右上角 🌙（或按 N）——月亮先升起来提醒她，然后大厅变成夜晚：她摸一摸亮着的小灯，哄王国里的大家睡觉，再举起双手点亮极光。选了“玩多久”，到时间月亮会自己升起。想再玩：按住“☀️ 再玩一会儿”或再按 N<br>
@@ -325,6 +332,8 @@ const T = {
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
+    m7: '冰冻抱抱', introHug: '挥挥手，把小动物冻住！再抱一抱它，冰就化啦！爸爸妈妈也可以冻住哦！', hugSay: '冻住啦！快抱一抱，冰就化啦！', hugDone: '抱抱最温暖！',
+    hintHug: '❄️ 挥手 / 伸手指着 = 冻住小动物，还有身边的人！ · 🤗 抱一抱 = 冰化啦', hintHugPtr: '👆 点两下小动物（或在它身上晃一晃）= 冻住 · 再点一下 = 抱抱，冰化啦',
     m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
     palT: '🤍 雪团团', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
     ntTitle: '🌙 晚安，冰雪王国', ntTuck: '<b>✋</b>天黑啦！摸一摸亮着的小灯，哄大家睡觉', ntSky: '<b>🙌</b>大家都睡着啦！举起双手，点亮极光', ntSkyPtr: '<b>👆</b>大家都睡着啦！点一下天空，点亮极光', ntSleep: '🌙 晚安！明天再来玩',
@@ -377,6 +386,8 @@ const T = {
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
+    m7: 'Freeze Hug', introHug: 'Wave to freeze your animal friends! Then give them a hug, and the ice melts! You can freeze Mum and Dad too!', hugSay: 'Frozen! Quick, a hug melts the ice!', hugDone: 'Hugs are the warmest!',
+    hintHug: '❄️ Wave or point = freeze the animals — and the people next to you! · 🤗 A hug = the ice melts', hintHugPtr: '👆 Tap an animal twice (or wiggle over it) = freeze · tap again = a hug, the ice melts',
     m6: 'Freeze Dance', introDance: 'When the music plays, dance! When it stops, freeze like an ice statue!', hintDance: '💃 Music = dance · 🧊 Music stops = hold still and turn into an ice statue!', hintDancePtr: '💃 Music = move the mouse / finger · 🧊 Music stops = hold still!', danceDone: 'Ice statue party!', stripT: 'Freeze Dance', danceStop: 'The music stopped! Freeze like a statue!',
     palT: '🤍 Snowy', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
     ntTitle: '🌙 Good night, Ice Kingdom', ntTuck: '<b>✋</b>It is dark! Touch the little lights to tuck everyone in', ntSky: '<b>🙌</b>Everyone is asleep! Both hands up to light the aurora', ntSkyPtr: '<b>👆</b>Everyone is asleep! Tap the sky to light the aurora', ntSleep: '🌙 Good night! See you tomorrow',
@@ -821,6 +832,7 @@ function iceBlast(x, y, big) {
       if (dist(x, y, cx, cy) < R) addFrostB(b, 0.4, x, y); else cands.push(b);
     }
   } else if (SC() === 'free') { addFlower(x, y, !!big); return; }
+  else if (SC() === 'hug') { hgBlast(x, y, R); return; }
   else if (SC() === 'boss') {
     for (const s of sprites) if (s.state === 'alive') { if (dist(x, y, s.x, s.y) < R + s.r) { s.frost += 0.7 / (s.tough || 1); if (s.frost >= 1) freezeSprite(s); } else cands.push(s); }
     if (boss && boss.state === 'alive') { if (dist(x, y, boss.x, boss.y) < R + boss.r) bossHit(big ? 0.1 : 0.05); else cands.unshift(boss); }
@@ -835,10 +847,11 @@ function iceBlast(x, y, big) {
 }
 
 // ---- shards (ice bolts from fast waves) ----
-function spawnShard(h) {
+function spawnShard(h, key) {
   const sp = Math.hypot(h.vx, h.vy) || 1;
   const dx = h.vx / sp, dy = h.vy / sp;
-  shards.push({ x: h.x, y: h.y, vx: dx * 150 * U, vy: dy * 150 * U, life: 0.7, ang: Math.atan2(dy, dx) });
+  const own = key && key[0] === 'p' && SC() === 'hug' ? HG.map[+key[1]] || null : null;   // whose hand threw it (the hug game: a bolt never freezes its thrower)
+  shards.push({ x: h.x, y: h.y, vx: dx * 150 * U, vy: dy * 150 * U, life: 0.7, ang: Math.atan2(dy, dx), own });
   sfx.shard();
 }
 function updateShards(dt) {
@@ -862,7 +875,7 @@ function updateShards(dt) {
       for (const it of items) if (it.state === 'free' && dist(sh.x, sh.y, it.x, it.y) < it.r + 2 * U) { collectItem(it); sh.life = 0; break; }
     } else if (SC() === 'free') {
       if (Math.random() < 0.25) { fctx.save(); fctx.globalAlpha = 0.35; drawFlake(fctx, sh.x, sh.y, rand(0.6, 1.3) * U, rand(0, 6), '#e8f7ff'); fctx.restore(); }
-    }
+    } else if (SC() === 'hug') hgShard(sh);
     if (sh.x < -10 * U || sh.x > W + 10 * U || sh.y < -10 * U || sh.y > H + 10 * U) sh.life = 0;
   }
   shards = shards.filter(s => s.life > 0);
@@ -1417,6 +1430,7 @@ function blizzard() {
     runnerFreezeAll();
   }
   else if (SC() === 'dance') { }
+  else if (SC() === 'hug') hgBlizzard();
   else for (let i = 0; i < 5; i++) setTimeout(() => addFlower(rand(0.1, 0.9) * W, rand(0.15, 0.85) * H, true), i * 180);
 }
 
@@ -3509,8 +3523,8 @@ const palCv = $('#pal'), pcx = palCv.getContext('2d');
 const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init: false, g: 'idle', gt: 0, aL: [118 * D2R, 98 * D2R], aR: [62 * D2R, 82 * D2R], lean: 0, dx: 0, dy: 0, sq: 0, blink: 0, nextBlink: 2, look: [0, 0], coach: null, cheerT: 0, pokeT: -9, prog: 0, lastCoach: -9, seenFor: 0, demo: null, demoN: 0, idleT: 0, learned: false, side: 1, hallY: 0, hallCd: 0, back: 0, pa: 0, homeEl: null };
 try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
 // what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
-const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]] };
-const PAL_DEMO = ['adventure', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
+const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]] };
+const PAL_DEMO = ['adventure', 'hug', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
 function palOn() { return S.pal !== false && !IS_TV; }
 function palCoach(seq) {
   if (!palOn() || S.input !== 'camera' || S.mode === 'menu' || !seq || !seq.length) return;
@@ -3525,6 +3539,7 @@ function palContext() {   // the one move she needs right now
     if (RUN.sled) return [['run', 2], ['lean', 3.4]];
     return [['run', 3.4]];
   }
+  if (sc === 'hug') return [[hgAnyFrozen() ? 'hug' : 'wave', 4.4]];   // something is frozen: show the hug
   return (PAL_INTRO[sc] || []).slice(0, 1);
 }
 function palIntro() { PAL.prog = now; palCoach(PAL_INTRO[SC()]); }
@@ -3552,6 +3567,10 @@ function palGesture(g, t) {
   else if (g === 'statue') { const q = [[[-70, -100], [160, 110], 0.12], [[-15, -75], [195, 255], 0], [[60, 150], [120, 30], -0.06]][DN.round % 3]; o.R = q[0]; o.L = q[1]; o.lean = q[2]; }
   else if (g === 'yawn') { const u = t % 4, on = u > 0.5 && u < 2.9, k = on ? s((u - 0.5) / 2.4 * Math.PI) : 0; if (on) { o.R = [120, -133]; o.L = [-118, -100 + 6 * s(t * 3)]; o.mouth = 2; o.shut = k > 0.35; } o.sq = -0.07 * k; o.lean = -0.07 * k; }
   else if (g === 'sleep') { o.R = [80, 100]; o.L = [100, 80]; o.shut = true; o.cap = true; o.sq = 0.05 + 0.035 * s(t * 1.5); o.lean = 0.1; o.fx = 'zzz'; }
+  else if (g === 'hug') {   // arms wide — then they close round a little ice block, which melts into a heart
+    const u = t % 2.2, k = u < 0.6 ? 0 : u < 0.9 ? (u - 0.6) / 0.3 : u < 1.95 ? 1 : 1 - (u - 1.95) / 0.25, L = (a, b) => a + (b - a) * k;
+    o.R = [L(8, 62), L(28, 205)]; o.L = [L(172, 118), L(152, -25)]; o.sq = 0.09 * k * (1 + 0.35 * s(t * 10)); o.shut = k > 0.6; o.mouth = k > 0.6 ? 0 : 1; o.fx = 'hug'; o.hk = k;
+  }
   else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
   return o;
 }
@@ -3726,6 +3745,11 @@ function drawPal(o) {
   if (o.mouth === 2) { c.fillStyle = '#d94a7c'; c.beginPath(); c.ellipse(lx * 0.5, 0.26 * R, 0.14 * R, 0.19 * R, 0, 0, TAU); c.fill(); }
   else if (o.mouth) { c.fillStyle = '#d94a7c'; c.beginPath(); c.arc(lx * 0.5, 0.2 * R, 0.17 * R, 0, Math.PI); c.closePath(); c.fill(); }
   else { c.strokeStyle = '#1b2a66'; c.lineWidth = R * 0.055; c.beginPath(); c.arc(lx * 0.5, 0.15 * R, 0.15 * R, Math.PI * 0.18, Math.PI * 0.82); c.stroke(); }
+  if (o.fx === 'hug') {   // what it hugs: an ice block (arms open) that turns into a heart (arms closed)
+    const k = o.hk || 0, by = 0.5 * R, bs = 0.86 * R;
+    if (k < 1) { c.save(); c.globalAlpha = 1 - k; rrect(c, -bs / 2, by - bs / 2, bs, bs, bs * 0.18); const ig = c.createLinearGradient(-bs / 2, by - bs / 2, bs / 2, by + bs / 2); ig.addColorStop(0, 'rgba(240,251,255,0.95)'); ig.addColorStop(1, 'rgba(120,190,250,0.9)'); c.fillStyle = ig; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.stroke(); drawFlake(c, 0, by, bs * 0.26, 0.3, '#ffffff'); c.restore(); }
+    if (k > 0) { c.save(); c.globalAlpha = k; const hs = 0.95 * R * (0.7 + 0.3 * k) * (1 + 0.08 * Math.sin(now * 9)); heartPath(c, 0, by, hs); c.fillStyle = '#ff5e94'; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.lineJoin = 'round'; c.stroke(); c.restore(); }
+  }
   // arms + mittens
   const hand = {};
   for (const [key, sd, A] of [['L', -1, PAL.aL], ['R', 1, PAL.aR]]) {
@@ -3753,6 +3777,10 @@ function drawPal(o) {
   } else if (fx === 'grow') {
     const [hx, hy] = hand.R, k = clamp(((t % 4.2) - 2) / 1.5, 0, 1);
     drawCrystal(c, hx + 0.1 * R, hy - 0.55 * R, 0.75 * R, 0.3, k);
+  } else if (fx === 'hug') {
+    const k = o.hk || 0;
+    if (k > 0.5) for (let i = 0; i < 3; i++) { const ph = (now * 0.9 + i / 3) % 1; c.globalAlpha = Math.sin(ph * Math.PI) * (k - 0.5) * 2; heartPath(c, (i - 1) * 0.75 * R + Math.sin(now * 3 + i) * 0.1 * R, (-1.5 - ph * 0.9) * R, (0.3 + ph * 0.16) * R); c.fillStyle = '#ff7fae'; c.fill(); }
+    c.globalAlpha = 1;
   } else if (fx === 'zzz') {
     c.fillStyle = '#e6f2ff'; c.textAlign = 'center'; c.textBaseline = 'middle';
     for (let i = 0; i < 3; i++) { const ph = (now * 0.4 + i / 3) % 1; c.globalAlpha = Math.sin(ph * Math.PI); c.font = `800 ${(0.32 + ph * 0.36) * R}px sans-serif`; c.fillText('z', (0.9 + ph * 0.9) * R, (-1.5 - ph * 0.75) * R); }
@@ -4227,50 +4255,38 @@ function drawDanceBack() {
     }
   }
 }
-function drawDanceIce() {
-  const frozen = DN.ph === 'frozen', stop = DN.ph === 'stop';
-  if (!(dnCam() && now - poseT < 0.6 && poseScr.length)) {
-    const ice = DN.ice; if (ice < 0.012) return;
-    // mouse / touch / remote: a big ice crystal grows where the pointer rests
-    const a = dnAnchor(); ctx.save(); ctx.globalAlpha = 0.9; drawCrystal(ctx, a[0], a[1], 20 * U, 0.2, ice); ctx.restore();
-    return;
-  }
-  if (!DN.layer || DN.layer.width !== W || DN.layer.height !== H) { for (const k of ['layer', 'mask']) { DN[k] = document.createElement('canvas'); DN[k].width = W; DN[k].height = H; } DN.lx = DN.layer.getContext('2d'); DN.mx = DN.mask.getContext('2d'); }
-  const c = DN.lx, m = DN.mx; c.clearRect(0, 0, W, H);
-  const joints = [], rings = []; let any = false;
-  poseScr.forEach((P, pi) => {
-    if (!P.ls.v || !P.rs.v) return;
-    const T = DN.map[pi]; let ice = DN.ice;
-    if (T) { T.ice += ((frozen ? 1 : stop ? T.h : 0) - T.ice) * 0.3; ice = T.ice; }
-    if (ice < 0.012) return;
-    any = true; const k = 1 - Math.pow(1 - ice, 1.6);
-    const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y); if (sw < 3 * U) return;
-    const cx = (P.ls.x + P.rs.x) / 2;
-    let top = Math.min(P.ls.y, P.rs.y) - sw * 1.2; for (const q of [P.nose, P.lw, P.rw, P.le2, P.re2]) if (q && q.v) top = Math.min(top, q.y - sw * 0.6);
-    const yTop = H - (H - top) * k;   // the ice climbs from the floor to above her head
-    c.save();
-    c.beginPath(); c.moveTo(cx - sw * 5, H + 2);
-    for (let i = 0; i <= 28; i++) { const x = cx - sw * 5 + i * sw * 10 / 28; c.lineTo(x, yTop + (i % 2 ? -1 : 1) * sw * 0.13 + Math.sin(i * 1.7) * sw * 0.07); }
-    c.lineTo(cx + sw * 5, H + 2); c.closePath(); c.clip();
-    c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.fillStyle = c.strokeStyle = '#ffffff'; dnBody(c, P, sw, sw * 0.09);
-    // thin the inside so she shows through, leaving a bright rim (done through a mask so overlapping limbs are not thinned twice)
-    m.clearRect(0, 0, W, H); m.fillStyle = m.strokeStyle = '#000000'; dnBody(m, P, sw, 0);
-    c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.52; c.drawImage(DN.mask, 0, 0);
-    c.globalCompositeOperation = 'source-atop'; c.globalAlpha = 0.72;
-    const g = c.createLinearGradient(0, top, 0, H); g.addColorStop(0, '#eefaff'); g.addColorStop(0.5, '#a9dcff'); g.addColorStop(1, '#6fb6f2'); c.fillStyle = g; c.fillRect(cx - sw * 5, top - sw, sw * 10, H - top + sw * 2);
-    // glints: slanted bands of light inside the ice; one sweeps across when the statue is done
-    c.globalAlpha = 0.5; c.fillStyle = '#ffffff';
-    const sweep = frozen ? ((DN.t * 0.9) % 1.4 - 0.2) * sw * 8 - sw * 4 : null;
-    for (const off of [-1.9, -0.6, 0.9, 2.1].map(o => o * sw).concat(sweep == null ? [] : [sweep])) { c.beginPath(); c.moveTo(cx + off, top - sw); c.lineTo(cx + off + sw * 0.22, top - sw); c.lineTo(cx + off - sw * 1.4, H); c.lineTo(cx + off - sw * 1.62, H); c.closePath(); c.fill(); }
-    // frost inside the ice, so it does not look like her cape
-    c.globalAlpha = 0.8; for (let i = 0; i < 16; i++) drawFlake(c, cx + (((i * 0.618) % 1) - 0.5) * sw * 3.4, top + ((i * 0.377 + 0.13) % 1) * (H - top), sw * (0.1 + (i % 3) * 0.04), i, '#ffffff');
-    if (P.nose.v) { c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.5; c.fillStyle = '#000000'; c.beginPath(); c.ellipse(P.nose.x, P.nose.y - sw * 0.06, sw * 0.34, sw * 0.44, 0, 0, Math.PI * 2); c.fill(); }   // clearer ice over her face, so the photo is still her
-    c.restore();
-    if (ice < 0.985) rings.push([cx, yTop, sw]);
-    for (const q of [P.lw, P.rw, P.le2, P.re2]) if (q && q.v && q.y > yTop) joints.push([q.x, q.y, sw * 0.75, ice]);
-    if (P.nose.v && P.nose.y - sw * 0.8 > yTop) joints.push([P.nose.x, P.nose.y - sw * 0.95, sw * 1.1, ice]);
-  });
-  if (!any) return;
+function iceLayers() { if (!DN.layer || DN.layer.width !== W || DN.layer.height !== H) { for (const k of ['layer', 'mask']) { DN[k] = document.createElement('canvas'); DN[k].width = W; DN[k].height = H; } DN.lx = DN.layer.getContext('2d'); DN.mx = DN.mask.getContext('2d'); } }
+// ice on one person, painted into the shared layer: it climbs from the floor to above the head as `ice` goes 0 → 1.
+// sweepT = seconds since it became solid (a glint sweeps across), or null while it is still climbing. Used by the dance and by the hug game.
+function icePaint(P, ice, sweepT, joints, rings) {
+  const c = DN.lx, m = DN.mx, k = 1 - Math.pow(1 - ice, 1.6);
+  const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y); if (sw < 3 * U) return;
+  const cx = (P.ls.x + P.rs.x) / 2;
+  let top = Math.min(P.ls.y, P.rs.y) - sw * 1.2; for (const q of [P.nose, P.lw, P.rw, P.le2, P.re2]) if (q && q.v) top = Math.min(top, q.y - sw * 0.6);
+  const yTop = H - (H - top) * k;   // the ice climbs from the floor to above her head
+  c.save();
+  c.beginPath(); c.moveTo(cx - sw * 5, H + 2);
+  for (let i = 0; i <= 28; i++) { const x = cx - sw * 5 + i * sw * 10 / 28; c.lineTo(x, yTop + (i % 2 ? -1 : 1) * sw * 0.13 + Math.sin(i * 1.7) * sw * 0.07); }
+  c.lineTo(cx + sw * 5, H + 2); c.closePath(); c.clip();
+  c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.fillStyle = c.strokeStyle = '#ffffff'; dnBody(c, P, sw, sw * 0.09);
+  // thin the inside so she shows through, leaving a bright rim (done through a mask so overlapping limbs are not thinned twice)
+  m.clearRect(0, 0, W, H); m.fillStyle = m.strokeStyle = '#000000'; dnBody(m, P, sw, 0);
+  c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.52; c.drawImage(DN.mask, 0, 0);
+  c.globalCompositeOperation = 'source-atop'; c.globalAlpha = 0.72;
+  const g = c.createLinearGradient(0, top, 0, H); g.addColorStop(0, '#eefaff'); g.addColorStop(0.5, '#a9dcff'); g.addColorStop(1, '#6fb6f2'); c.fillStyle = g; c.fillRect(cx - sw * 5, top - sw, sw * 10, H - top + sw * 2);
+  // glints: slanted bands of light inside the ice; one sweeps across when the statue is done
+  c.globalAlpha = 0.5; c.fillStyle = '#ffffff';
+  const sweep = sweepT != null ? ((sweepT * 0.9) % 1.4 - 0.2) * sw * 8 - sw * 4 : null;
+  for (const off of [-1.9, -0.6, 0.9, 2.1].map(o => o * sw).concat(sweep == null ? [] : [sweep])) { c.beginPath(); c.moveTo(cx + off, top - sw); c.lineTo(cx + off + sw * 0.22, top - sw); c.lineTo(cx + off - sw * 1.4, H); c.lineTo(cx + off - sw * 1.62, H); c.closePath(); c.fill(); }
+  // frost inside the ice, so it does not look like her cape
+  c.globalAlpha = 0.8; for (let i = 0; i < 16; i++) drawFlake(c, cx + (((i * 0.618) % 1) - 0.5) * sw * 3.4, top + ((i * 0.377 + 0.13) % 1) * (H - top), sw * (0.1 + (i % 3) * 0.04), i, '#ffffff');
+  if (P.nose.v) { c.globalCompositeOperation = 'destination-out'; c.globalAlpha = 0.5; c.fillStyle = '#000000'; c.beginPath(); c.ellipse(P.nose.x, P.nose.y - sw * 0.06, sw * 0.34, sw * 0.44, 0, 0, Math.PI * 2); c.fill(); }   // clearer ice over her face, so the photo is still her
+  c.restore();
+  if (ice < 0.985) rings.push([cx, yTop, sw]);
+  for (const q of [P.lw, P.rw, P.le2, P.re2]) if (q && q.v && q.y > yTop) joints.push([q.x, q.y, sw * 0.75, ice]);
+  if (P.nose.v && P.nose.y - sw * 0.8 > yTop) joints.push([P.nose.x, P.nose.y - sw * 0.95, sw * 1.1, ice]);
+}
+function iceFlush(joints, rings, sparkle) {
   ctx.save(); ctx.globalAlpha = 0.94; if (!LITE) { ctx.shadowColor = 'rgba(190,235,255,0.9)'; ctx.shadowBlur = 2.2 * U; } ctx.drawImage(DN.layer, 0, 0); ctx.restore();
   joints.forEach(([x, y, sw, ice], i) => { ctx.save(); ctx.globalAlpha = 0.9; drawCrystal(ctx, x, y, sw * 0.42, i * 0.5, clamp(ice * 1.3, 0, 1)); ctx.restore(); });
   // the freeze line: a glowing ring of snowflakes that rises around her with the ice, so she can see how far it has climbed
@@ -4280,7 +4296,27 @@ function drawDanceIce() {
     for (let i = 0; i < 6; i++) { const a = now * 2.2 + i * Math.PI / 3; drawFlake(ctx, x + Math.cos(a) * sw * 1.5, y + Math.sin(a) * sw * 0.25, sw * 0.14, a, '#ffffff'); }
     ctx.restore();
   }
-  if (frozen && joints.length && Math.random() < 0.6) { const j = pick(joints); addParticle({ type: 'spark', x: j[0] + rand(-1, 1) * j[2], y: j[1] + rand(-1, 1) * j[2], vx: 0, vy: -3 * U, g: 0, drag: 0, r: rand(0.7, 1.6) * U, rot: 0, vr: 0, life: 0.6, max: 0.6, col: pick(['#ffffff', '#dff6ff', '#ffe680']) }); }
+  if (sparkle && joints.length && Math.random() < 0.6) { const j = pick(joints); addParticle({ type: 'spark', x: j[0] + rand(-1, 1) * j[2], y: j[1] + rand(-1, 1) * j[2], vx: 0, vy: -3 * U, g: 0, drag: 0, r: rand(0.7, 1.6) * U, rot: 0, vr: 0, life: 0.6, max: 0.6, col: pick(['#ffffff', '#dff6ff', '#ffe680']) }); }
+}
+function drawDanceIce() {
+  const frozen = DN.ph === 'frozen', stop = DN.ph === 'stop';
+  if (!(dnCam() && now - poseT < 0.6 && poseScr.length)) {
+    const ice = DN.ice; if (ice < 0.012) return;
+    // mouse / touch / remote: a big ice crystal grows where the pointer rests
+    const a = dnAnchor(); ctx.save(); ctx.globalAlpha = 0.9; drawCrystal(ctx, a[0], a[1], 20 * U, 0.2, ice); ctx.restore();
+    return;
+  }
+  iceLayers(); DN.lx.clearRect(0, 0, W, H);
+  const joints = [], rings = []; let any = false;
+  poseScr.forEach((P, pi) => {
+    if (!P.ls.v || !P.rs.v) return;
+    const T = DN.map[pi]; let ice = DN.ice;
+    if (T) { T.ice += ((frozen ? 1 : stop ? T.h : 0) - T.ice) * 0.3; ice = T.ice; }
+    if (ice < 0.012) return;
+    any = true; icePaint(P, ice, frozen ? DN.t : null, joints, rings);
+  });
+  if (!any) return;
+  iceFlush(joints, rings, frozen);
 }
 // where she is in the picture: a square around her (or around both children) for the statue photo
 function dnBox() {
@@ -4358,6 +4394,324 @@ function dnStrip() {
 
 // ======================================================================
 
+// ======================================================================
+// ---- 冰冻抱抱 (freeze & hug): every other game is her and the screen — this one is her and the people next to her.
+//      Wave = freeze: the animals she rescued, and whoever is standing beside her (dad, mum, a little sister).
+//      A hug = the ice melts. The game cannot do that part for her: to thaw dad she has to walk over and put her arms round him.
+//      Five thaws fill the hearts, and the last hug becomes a photo in her album. Nobody can lose — ice melts by itself after a while. ----
+const HG = { on: false, hearts: 0, need: 5, ppl: [], map: [], pair: new Map(), ids: 0, pt: -9, friends: [], said: false, shot: null, shotKind: '', snapAt: 0, snapKind: '', fin: 0, pop: [], beams: [] };
+const HG_TOUCH = 0.9;    // seconds of a hand on somebody to freeze them
+const HG_BEAM = 1.3;     // seconds of an arm stretched out towards somebody (the stream of ice) to freeze them
+const HG_AUTO = 10;      // a frozen person thaws alone after this long (no heart) — nobody stays stuck
+function hgCam() { return S.input === 'camera' && camState === 'on' && now - poseT < 0.6 && poseScr.length > 0; }
+function hgLive(T) { return now - T.seen < 0.3; }
+function hgAnyFrozen() { return HG.friends.some(f => f.frozen) || HG.ppl.some(T => T.frozen); }
+function startHug() {
+  Object.assign(HG, { on: true, hearts: 0, ppl: [], map: [], pt: -9, said: false, shot: null, shotKind: '', snapAt: 0, snapKind: '', fin: 0, pop: [], beams: [] }); HG.pair.clear();
+  // two of the animals she rescued come to play (a penguin and a bunny if she has none yet)
+  const mine = [...new Set(KD.animals)].reverse(), types = [...mine, ...KD_ANIMALS.filter(a => !mine.includes(a))].slice(0, 2);
+  HG.friends = types.map((type, i) => ({ type, side: i ? 1 : -1, x: W * (i ? 0.72 : 0.28), y: H * 0.72, s: 15 * U, ice: 0, iv: 0, frozen: false, ft: 0, immune: 1.5, hit: -9, hug: 0, joy: 0, ph: i * 1.7 }));
+}
+function hgOff() { HG.on = false; HG.ppl = []; HG.map = []; HG.friends = []; HG.beams = []; HG.snapAt = 0; HG.shot = null; HG.pair.clear(); }
+// where a hand is: a little past the wrist, the same spot as the snowflake she sees
+function hgHand(P, right) {
+  const w = right ? P.rw : P.lw, e = right ? P.re2 : P.le2; if (!w || !w.v) return null;
+  return e && e.v ? { x: w.x + (w.x - e.x) * 0.3, y: w.y + (w.y - e.y) * 0.3 } : { x: w.x, y: w.y };
+}
+// follow each person from frame to frame (the nearest one we already knew), so the ice stays on the right body
+function hgTrack() {
+  if (!hgCam()) { HG.map = []; return; }
+  if (poseT === HG.pt) return; HG.pt = poseT;
+  const free = HG.ppl.slice(); HG.map = [];
+  poseScr.forEach((P, i) => {
+    if (!P.ls.v || !P.rs.v) return;
+    const sw = Math.max(2 * U, dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y)), x = (P.ls.x + P.rs.x) / 2, y = (P.ls.y + P.rs.y) / 2;
+    let T = null, bd = Math.max(W * 0.22, sw * 2.2);
+    for (const q of free) { const d = dist(q.x, q.y, x, y); if (d < bd) { bd = d; T = q; } }
+    if (T) free.splice(free.indexOf(T), 1); else { T = { id: ++HG.ids, ice: 0, iv: 0, frozen: false, ft: 0, immune: 1, hit: -9, born: now }; HG.ppl.push(T); }
+    T.x = x; T.y = y; T.sw = sw; T.P = P; T.seen = now; HG.map[i] = T;
+  });
+}
+function hgInBody(T, x, y) {
+  const P = T.P, sw = T.sw, hip = P.lh.v && P.rh.v ? (P.lh.y + P.rh.y) / 2 : T.y + sw * 1.5;
+  if (P.nose.v && dist(x, y, P.nose.x, P.nose.y - sw * 0.1) < sw * 0.62) return true;
+  return Math.abs(x - T.x) < sw * 0.72 && y > T.y - sw * 0.3 && y < hip + sw * 2;
+}
+// a hand that is doing something: stretched out to the side, or lifted — an arm hanging by her side is not a spell (and not a hug)
+function hgActive(T, h) { return Math.abs(h.x - T.x) > T.sw * 0.85 || h.y < T.y + T.sw * 1.15; }
+// the hands that can touch the animals right now: every pointer, and every active hand of somebody who is not frozen
+function hgHands() {
+  const out = [];
+  for (const [k, h] of hands) {
+    if (k[0] === 'p') { const T = HG.map[+k[1]]; if (!T || T.frozen || !hgLive(T) || !hgActive(T, h)) continue; }
+    out.push(h);
+  }
+  return out;
+}
+function hgApart(A, B) { return Math.abs(A.x - B.x) > Math.max(A.sw, B.sw) * 0.95; }   // side by side, not one in front of the other
+function hgHearts(x, y, n) {
+  for (let i = 0; i < n; i++) parts.push({ type: 'text', text: pick(['💗', '💖', '💕']), x: x + rand(-9, 9) * U, y: y + rand(-6, 6) * U, vx: rand(-9, 9) * U, vy: -rand(10, 24) * U, g: 0, drag: 0.9, r: 0, rot: 0, vr: 0, life: rand(1, 1.7), max: 1.7, col: '#ff8fb0', size: rand(3.4, 6) * U });
+}
+function hgWarm() { if (AC) { const t = AC.currentTime; [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => { tone(f, t + i * 0.09, 0.6, 'sine', 0.11); tone(f * 2, t + i * 0.09, 0.35, 'triangle', 0.035); }); } }
+function hgFirst() {   // the first time anything is frozen: the buddy shows the hug, and it is said once
+  if (HG.said) return; HG.said = true;
+  palCoach([['hug', 4.4]]); setTimeout(() => { if (SC() === 'hug') say(tr('hugSay'), true); }, 350);
+}
+function hgFrost(T, amt, x, y) {
+  T.ice = Math.min(1, T.ice + amt); T.hit = now; PAL.prog = now;
+  if (Math.random() < 0.5) addParticle({ type: 'flake', x: x + rand(-3, 3) * U, y: y + rand(-3, 3) * U, vx: rand(-12, 12) * U, vy: rand(-12, 6) * U, g: 20 * U, drag: 1.2, r: rand(0.6, 1.4) * U, rot: rand(0, 6), vr: rand(-4, 4), life: 0.7, max: 0.7, col: '#dff6ff' });
+  sfx.tick();
+  if (T.ice >= 1) { T.frozen = true; T.ft = 0; sfx.freeze(); flash = Math.max(flash, 0.4); addShake(1.2 * U); ring(T.x, T.y, T.sw * 1.6); burst(T.x, T.y, 40, { power: 1.6, col: '#dff6ff' }); addFlyStar(T.x, T.y - T.sw); registerFreeze(T.x, T.y); hgFirst(); }
+}
+function hgGot(kind, x, y) {   // a hug melted the ice: one more heart
+  HG.pop[HG.hearts] = now; HG.hearts++; PAL.prog = now; PAL.cheerT = 1.6;
+  hgHearts(x, y, kind === 'person' ? 14 : 8); hgWarm(); flash = Math.max(flash, 0.2);
+  for (let i = 0; i < 3; i++) setTimeout(() => { if (SC() === 'hug') addFlyStar(x + rand(-6, 6) * U, y - 4 * U); }, 250 + i * 150);
+  if (!(HG.snapAt && HG.snapKind === 'person')) { HG.snapAt = now + 0.35; HG.snapKind = kind; }
+  if (HG.hearts >= HG.need && !HG.fin) hgFinale();
+}
+function hgThaw(T, hugged, x, y) {
+  T.frozen = false; T.ice = 0; T.immune = 3;
+  const P = T.P;
+  if (P && hgLive(T)) { for (const k of ['nose', 'ls', 'rs', 'lw', 'rw', 'lh', 'rh']) if (P[k] && P[k].v) burst(P[k].x, P[k].y, 10, { power: 1.2, col: '#cfeeff' }); }
+  else burst(T.x, T.y, 30, { power: 1.4, col: '#cfeeff' });
+  sfx.shard();
+  if (hugged) hgGot('person', x, y);
+}
+function hgFreezeFriend(f) {
+  f.frozen = true; f.ft = 0; f.hug = 0; f.ice = 1; const cy = f.y - f.s * 0.42;
+  sfx.freeze(); flash = Math.max(flash, 0.25); ring(f.x, cy, f.s * 0.9); burst(f.x, cy, 26, { power: 1.2, col: '#dff6ff' }); addFlyStar(f.x, cy); registerFreeze(f.x, cy); PAL.prog = now; hgFirst();
+}
+function hgThawFriend(f, hugged) {
+  f.frozen = false; f.ice = 0; f.hug = 0; f.immune = 3.2; f.joy = hugged ? 2.4 : 0.8; const cy = f.y - f.s * 0.42;
+  if (hugged) f.side = -f.side;   // then it hops round to her other side — she turns (or steps) to play again
+  burst(f.x, cy, 22, { power: 1.1, col: '#cfeeff' }); sfx.shard();
+  if (hugged) hgGot('friend', f.x, cy);
+}
+function hgFinale() {
+  HG.fin = now; celebrate(tr('hugDone'));
+  for (const f of HG.friends) if (f.frozen) { f.frozen = false; f.ice = 0; f.hug = 0; }
+  for (const T of HG.ppl) if (T.frozen) { T.frozen = false; T.ice = 0; }
+  for (let i = 0; i < 6; i++) setTimeout(() => { if (SC() !== 'hug') return; hgHearts(rand(0.15, 0.85) * W, rand(0.3, 0.7) * H, 4); sfx.star(); }, i * 380);
+  const tok = ADV.token, has = videoShown();
+  setTimeout(() => { if (SC() === 'hug' && tok === ADV.token && HG.shot) hgCard(); }, 3400);
+  setTimeout(() => { if (SC() === 'hug' && tok === ADV.token) goMenu(); }, has ? 13000 : 7500);
+}
+// the animals keep within her reach: beside her on their side (two on the same side: the second a step further out)
+function hgAnchors(live) {
+  const m = 8 * U, out = [], n = { '-1': 0, 1: 0 };
+  let L = null, R = null; for (const T of live) { if (!L || T.x < L.x) L = T; if (!R || T.x > R.x) R = T; }
+  for (const f of HG.friends) {
+    if (!L) { const k = n[f.side]++; out.push([W * (0.5 + f.side * (0.22 + k * 0.15)), H * 0.72, 15 * U]); continue; }
+    const at = sd => { const T = sd < 0 ? L : R; return T.x + sd * T.sw * (1.75 + n[sd] * 1.5); };
+    let x = at(f.side);
+    if (x < m || x > W - m) { const x2 = at(-f.side); if (x2 >= m && x2 <= W - m) { f.side = -f.side; x = x2; } }   // no room on that side (she is at the edge of the picture): come round
+    n[f.side]++;
+    const T = f.side < 0 ? L : R, s = clamp(T.sw * 1.25, 10 * U, 22 * U);
+    out.push([clamp(x, m, W - m), clamp(T.y + T.sw + s * 0.42, 18 * U, H - 3 * U), s]);
+  }
+  return out;
+}
+function updateHug(dt) {
+  hgTrack();
+  const cam = hgCam(), live = cam ? HG.ppl.filter(hgLive) : [], play = !HG.fin;
+  HG.ppl = HG.ppl.filter(T => now - T.seen < 2.5);
+  // --- casting: a hand on somebody = frost climbs up them; an arm stretched out towards somebody (or an animal) = a stream of ice from the hand
+  HG.beams.length = 0;
+  if (play) for (const A of live) {
+    if (A.frozen || now - A.born < 0.6) continue;
+    for (const side of [0, 1]) {
+      const h = hgHand(A.P, side); if (!h) continue;
+      if (!(Math.abs(h.x - A.x) > A.sw * 0.85 || h.y < A.y - A.sw * 0.1)) continue;   // an arm hanging at her side is not a spell
+      const can = B => B !== A && !B.frozen && B.immune <= 0 && hgApart(A, B);
+      let touched = false;
+      for (const B of live) if (can(B) && hgInBody(B, h.x, h.y)) { hgFrost(B, dt / HG_TOUCH, h.x, h.y); touched = true; }
+      if (touched) continue;
+      const e = side ? A.P.re2 : A.P.le2, w = side ? A.P.rw : A.P.lw; if (!e || !e.v) continue;
+      const vx = w.x - e.x, vy = w.y - e.y, len = Math.hypot(vx, vy);
+      // the arm has to point sideways across the picture: an arm pointing at the camera has no direction we can trust
+      if (len < A.sw * 0.4 || Math.abs(h.x - A.x) < A.sw * 1.05 || Math.abs(vy) > Math.abs(vx) * 1.2) continue;
+      const ux = vx / len, uy = vy / len; let hit = null;
+      for (let d = A.sw * 0.3; d < A.sw * 7 && !hit; d += A.sw * 0.25) {
+        const x = h.x + ux * d, y = h.y + uy * d; if (x < 0 || x > W || y < 0 || y > H) break;
+        for (const B of live) if (B !== A && hgApart(A, B) && hgInBody(B, x, y)) { hit = { B, x, y }; break; }   // the stream stops at the first one in its way
+        if (!hit) for (const f of HG.friends) if (dist(x, y, f.x, f.y - f.s * 0.42) < f.s * 0.62) { hit = { f, x, y }; break; }
+      }
+      if (!hit) continue;
+      HG.beams.push([h.x, h.y, hit.x, hit.y]);
+      if (hit.B) { if (can(hit.B)) hgFrost(hit.B, dt / HG_BEAM, hit.x, hit.y); }
+      else { const f = hit.f; if (!f.frozen && f.immune <= 0) { f.ice = Math.min(1, f.ice + dt / HG_BEAM); f.hit = now; PAL.prog = now; sfx.tick(); if (f.ice >= 1) hgFreezeFriend(f); } }
+    }
+  }
+  for (const T of HG.ppl) {
+    T.immune -= dt;
+    if (T.frozen) { T.ft += dt; if (T.ft > HG_AUTO) hgThaw(T, false); }
+    else if (now - T.hit > 0.7) T.ice = Math.max(0, T.ice - dt * 0.3);
+  }
+  // --- a hug: two people so close that one is in the other's arms — or so close that the camera can no longer tell them apart
+  if (cam || HG.ppl.length > 1) {
+    const P = HG.ppl, seenKeys = new Set();
+    for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
+      const A = P[i], B = P[j], big = Math.max(A.sw, B.sw), la = hgLive(A), lb = hgLive(B), dx = Math.abs(A.x - B.x), dy = Math.abs(A.y - B.y), key = A.id + '-' + B.id;
+      let near;
+      if (la && lb) near = dx < big * 0.8 && dy < big * 2.6;
+      else near = dx < big * 1.6 && dy < big * 3 && [A, B].every(T => hgLive(T) || (now - T.seen < 2 && T.x > W * 0.06 && T.x < W * 0.94));
+      const st = HG.pair.get(key) || { t: 0, done: false }; HG.pair.set(key, st); seenKeys.add(key);
+      st.t = clamp(st.t + (near ? dt : -dt * 2), 0, 0.6); if (st.t <= 0) st.done = false;
+      if (st.t > 0.3 && play) {
+        const x = (A.x + B.x) / 2, y = (A.y + B.y) / 2; let n = 0;
+        for (const T of [A, B]) if (T.frozen && T.ft > 0.6) { hgThaw(T, true, x, y); n++; }
+        if (n) { A.immune = B.immune = 3; st.done = true; }
+        else if (!st.done && !A.frozen && !B.frozen) { st.done = true; hgHearts(x, y, 5); if (AC) tone(1046.5, AC.currentTime, 0.4, 'sine', 0.06); }   // a hug for no reason is still a hug (once each time they come together)
+      }
+    }
+    for (const k of HG.pair.keys()) if (!seenKeys.has(k)) HG.pair.delete(k);
+  }
+  // --- the animal friends
+  const anchors = hgAnchors(live), hs = hgHands();
+  HG.friends.forEach((f, i) => {
+    f.immune -= dt; f.joy = Math.max(0, f.joy - dt);
+    // they keep beside her — unless frozen: an ice block cannot walk, she has to come to it
+    if (!f.frozen) { const [tx, ty, ts] = anchors[i], k = 1 - Math.exp(-dt * 2.2); f.x += (tx - f.x) * k; f.y += (ty - f.y) * k; f.s += (ts - f.s) * k; }
+    const cx = f.x, cy = f.y - f.s * 0.42, R = f.s * 0.74;
+    if (f.frozen) {
+      f.ft += dt; let rate = 0;
+      if (f.ft > 0.7 && play) {
+        for (const T of live) { if (T.frozen) continue; const a = hgHand(T.P, 0), b = hgHand(T.P, 1); if (!a || !b || !hgActive(T, a) || !hgActive(T, b)) continue; const da = dist(a.x, a.y, cx, cy), db = dist(b.x, b.y, cx, cy); if (Math.min(da, db) < f.s * 0.9 && Math.max(da, db) < f.s * 1.35) rate = 1 / 0.45; }   // both arms round it
+        if (!rate) for (const h of hs) if (dist(h.x, h.y, cx, cy) < R && h.speed < 14 * U) rate = h.ptr ? 1 / 0.8 : 1 / 2;   // or one warm hand resting on it (slower)
+      }
+      const before = f.hug; f.hug = clamp(f.hug + (rate ? rate * dt : -dt * 1.5), 0, 1);
+      if (rate) PAL.prog = now;
+      if (Math.floor(f.hug * 4) > Math.floor(before * 4) && AC) tone(523.25 * Math.pow(2, Math.floor(f.hug * 4) / 6), AC.currentTime, 0.18, 'sine', 0.07);
+      if (f.hug >= 1) hgThawFriend(f, true); else if (f.ft > HG_AUTO + 5 && !rate) hgThawFriend(f, false);
+    } else if (f.immune <= 0 && play) {
+      let hit = null;
+      for (const h of hs) if (dist(h.x, h.y, cx, cy) < R && (!h.ptr || h.speed > 7 * U)) hit = h;   // her hand on it (a mouse has to wiggle: resting is the hug)
+      if (hit) {
+        f.ice = Math.min(1, f.ice + dt / 0.55); f.hit = now; PAL.prog = now; sfx.tick();
+        if (Math.random() < 0.5) addParticle({ type: 'flake', x: hit.x + rand(-3, 3) * U, y: hit.y + rand(-3, 3) * U, vx: rand(-12, 12) * U, vy: rand(-12, 6) * U, g: 20 * U, drag: 1.2, r: rand(0.6, 1.4) * U, rot: rand(0, 6), vr: rand(-4, 4), life: 0.7, max: 0.7, col: '#dff6ff' });
+        if (f.ice >= 1) hgFreezeFriend(f);
+      } else if (now - f.hit > 0.6) f.ice = Math.max(0, f.ice - dt * 0.4);
+    }
+  });
+}
+// ice bolts from a fast wave: they freeze the animal or the person they hit (never the one who threw them)
+function hgShard(sh) {
+  if (HG.fin) return;
+  if (sh.own && sh.own.frozen) { sh.life = 0; return; }
+  for (const f of HG.friends) if (!f.frozen && f.immune <= 0 && dist(sh.x, sh.y, f.x, f.y - f.s * 0.42) < f.s * 0.62) {
+    f.ice = Math.min(1, f.ice + 0.4); f.hit = now; sh.life = 0; burst(sh.x, sh.y, 8, { power: 0.5 }); sfx.tick(); PAL.prog = now; if (f.ice >= 1) hgFreezeFriend(f); return;
+  }
+  if (!hgCam()) return;
+  for (const T of HG.ppl) if (T !== sh.own && !T.frozen && T.immune <= 0 && hgLive(T) && (!sh.own || hgApart(sh.own, T)) && hgInBody(T, sh.x, sh.y)) { sh.life = 0; burst(sh.x, sh.y, 8, { power: 0.5 }); hgFrost(T, 0.34, sh.x, sh.y); return; }
+}
+// a click / tap / OK on the remote
+function hgBlast(x, y, R) {
+  if (HG.fin) return;
+  for (const f of HG.friends) if (dist(x, y, f.x, f.y - f.s * 0.42) < R + f.s * 0.4) {
+    if (f.frozen) { if (f.ft > 0.4) hgThawFriend(f, true); }
+    else if (f.immune <= 0) { f.ice = Math.min(1, f.ice + 0.6); f.hit = now; if (f.ice >= 1) hgFreezeFriend(f); }
+  }
+}
+function hgBlizzard() { HG.friends.forEach((f, i) => setTimeout(() => { if (SC() === 'hug' && !HG.fin && !f.frozen) hgFreezeFriend(f); }, 350 + i * 450)); }
+// "hug me": a heart beating over whoever is frozen. p = how full (the hug so far)
+function hgCue(x, y, s, p) {
+  const beat = 1 + 0.16 * Math.pow(Math.sin(now * 4.2), 6) + 0.1 * Math.pow(Math.sin(now * 4.2 + 0.5), 6);
+  ctx.save(); ctx.translate(x, y + Math.sin(now * 2.6) * s * 0.08); ctx.scale(beat, beat);
+  if (!LITE) { ctx.shadowColor = 'rgba(255,110,165,0.95)'; ctx.shadowBlur = s * 0.6; }
+  heartPath(ctx, 0, 0, s); ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fill(); ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
+  if (p > 0) { ctx.save(); heartPath(ctx, 0, 0, s); ctx.clip(); ctx.fillStyle = '#ff5e94'; ctx.fillRect(-s, s * 0.44 - p * s * 0.9, s * 2, s); ctx.restore(); }
+  heartPath(ctx, 0, 0, s); ctx.lineWidth = s * 0.1; ctx.strokeStyle = '#ff7fae'; ctx.lineJoin = 'round'; ctx.stroke();
+  ctx.restore();
+}
+function drawHugBack() {
+  // the stream of ice from an outstretched hand
+  for (const [x0, y0, x1, y1] of HG.beams) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+    const g = ctx.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, 'rgba(190,235,255,0.2)'); g.addColorStop(1, 'rgba(235,250,255,0.8)');
+    ctx.strokeStyle = g; ctx.lineWidth = 2.4 * U; if (!LITE) { ctx.shadowColor = '#9fdcff'; ctx.shadowBlur = 3 * U; } ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+    ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.lineWidth = 0.6 * U; ctx.stroke();
+    for (let i = 0; i < 5; i++) { const ph = (now * 2.2 + i / 5) % 1; drawFlake(ctx, x0 + (x1 - x0) * ph, y0 + (y1 - y0) * ph + Math.sin(ph * 9 + i) * U, (0.9 + ph * 1.3) * U, now * 3 + i, '#ffffff'); }
+    ctx.restore();
+  }
+  // the people: ice climbs from the floor up whoever is being frozen, and stays on them until somebody hugs them
+  if (hgCam()) {
+    iceLayers(); DN.lx.clearRect(0, 0, W, H);
+    const joints = [], rings = []; let any = false, froz = false;
+    for (const T of HG.ppl) {
+      T.iv += ((T.frozen ? 1 : T.ice) - T.iv) * 0.3;
+      if (!hgLive(T) || T.iv < 0.012) continue;
+      any = true; froz = froz || T.frozen; icePaint(T.P, T.iv, T.frozen ? T.ft : null, joints, rings);
+    }
+    if (any) iceFlush(joints, rings, froz);
+    for (const T of HG.ppl) if (T.frozen && hgLive(T)) hgCue(T.x, Math.max(7 * U, (T.P.nose.v ? T.P.nose.y : T.y - T.sw * 0.7) - T.sw * 1.15), clamp(T.sw * 0.75, 7 * U, 14 * U), 1);
+  }
+  // the animal friends
+  for (const f of HG.friends) {
+    f.iv += ((f.frozen ? 1 : f.ice) - f.iv) * 0.3;
+    const s = f.s, shiver = f.frozen ? 0 : Math.sin(now * 42) * f.iv * 0.035 * s, x = f.x + shiver, y = f.y, happy = !f.frozen && (f.joy > 0 || !!HG.fin);
+    ctx.save(); ctx.fillStyle = 'rgba(8,24,70,0.28)'; ctx.beginPath(); ctx.ellipse(f.x, y + s * 0.02, s * 0.42, s * 0.09, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    drawAnimal(f.type, x, y, s, f.frozen ? f.ph : happy ? now * 1.25 + f.ph : now * 0.33 + f.ph, !f.frozen);
+    if (f.iv > 0.03) {
+      ctx.save(); ctx.globalAlpha = Math.min(1, f.iv * 1.1) * 0.82; const w = s * 0.98 * (0.75 + 0.25 * f.iv), h = s * 1.16 * (0.75 + 0.25 * f.iv), top = y - h + s * 0.07;
+      rrect(ctx, f.x - w / 2, top, w, h, s * 0.12); const g = ctx.createLinearGradient(f.x - w / 2, top, f.x + w / 2, y); g.addColorStop(0, 'rgba(240,251,255,0.78)'); g.addColorStop(0.5, 'rgba(150,212,255,0.45)'); g.addColorStop(1, 'rgba(120,190,250,0.62)');
+      ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.lineWidth = U * 0.45; ctx.stroke();
+      ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(f.x - w * 0.32, top + h * 0.22); ctx.lineTo(f.x - w * 0.1, top + h * 0.1); ctx.moveTo(f.x - w * 0.36, top + h * 0.4); ctx.lineTo(f.x - w * 0.02, top + h * 0.2); ctx.stroke();
+      if (f.frozen) drawFlake(ctx, f.x + w * 0.3, y - s * 0.12, s * 0.07, now, '#ffffff');
+      ctx.restore();
+    }
+    if (f.frozen) {
+      hgCue(f.x, Math.max(6 * U, y - s * 1.52), s * 0.46, f.hug);
+      // while she hugs it, warmth glows through the ice
+      if (f.hug > 0.02) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const R = s * (0.5 + 0.5 * f.hug), g = ctx.createRadialGradient(f.x, y - s * 0.42, 0, f.x, y - s * 0.42, R); g.addColorStop(0, `rgba(255,150,190,${0.55 * f.hug})`); g.addColorStop(1, 'rgba(255,150,190,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(f.x, y - s * 0.42, R, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
+    }
+  }
+}
+function drawHugHud() {   // five hearts at the top: one for every hug that melted the ice
+  const s = 6.4 * U, gap = 2 * U, n = HG.need, x0 = W / 2 - (n - 1) * (s + gap) / 2, y = (H > W ? 19 : 6.2) * U;   // on a tall phone screen the top row is full of buttons: the hearts go below it
+  for (let i = 0; i < n; i++) {
+    const got = i < HG.hearts, k = got ? clamp((now - (HG.pop[i] || -9)) / 0.55, 0, 1) : 0, sc = 1 + (got ? 0.6 * Math.sin(k * Math.PI) : 0);
+    ctx.save(); ctx.translate(x0 + i * (s + gap), y); ctx.scale(sc, sc); ctx.lineJoin = 'round';
+    heartPath(ctx, 0, 0, s);
+    if (got) {
+      if (!LITE) { ctx.shadowColor = 'rgba(255,120,170,0.9)'; ctx.shadowBlur = 1.6 * U; }
+      const g = ctx.createLinearGradient(0, -s * 0.5, 0, s * 0.45); g.addColorStop(0, '#ff9cc0'); g.addColorStop(1, '#ff4d86'); ctx.fillStyle = g; ctx.fill(); ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
+      ctx.lineWidth = U * 0.5; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.beginPath(); ctx.ellipse(-s * 0.2, -s * 0.2, s * 0.09, s * 0.06, -0.6, 0, Math.PI * 2); ctx.fill();
+    } else {
+      ctx.fillStyle = 'rgba(10,30,80,0.42)'; ctx.fill(); ctx.setLineDash([U * 1.1, U * 0.9]); ctx.lineWidth = U * 0.4;
+      ctx.strokeStyle = i === HG.hearts && !HG.fin ? `rgba(255,255,255,${0.6 + 0.4 * Math.sin(now * 5)})` : 'rgba(255,255,255,0.42)'; ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.restore();
+  }
+}
+// the picture of a hug, taken a moment after the ice melts (a hug with a person is kept over a hug with an animal)
+function hgSnap() {
+  const kind = HG.snapKind; HG.snapAt = 0;
+  if (!videoShown() || (HG.shotKind === 'person' && kind !== 'person')) return;
+  const c = document.createElement('canvas'); c.width = 960; c.height = Math.max(2, Math.round(960 * H / W));
+  try { c.getContext('2d').drawImage(cv, 0, 0, c.width, c.height); } catch (e) { return; }
+  HG.shot = c; HG.shotKind = kind;
+}
+function hgCard() {
+  const im = HG.shot, pw = 1280, ph = Math.round(pw * im.height / im.width), pc = document.createElement('canvas'); pc.width = pw; pc.height = ph; const p = pc.getContext('2d');
+  p.drawImage(im, 0, 0, pw, ph);
+  const bw = pw * 0.026;
+  p.strokeStyle = 'rgba(255,255,255,0.96)'; p.lineWidth = bw; p.strokeRect(bw / 2, bw / 2, pw - bw, ph - bw);
+  p.strokeStyle = 'rgba(255,140,185,0.95)'; p.lineWidth = bw * 0.26; p.strokeRect(bw * 1.2, bw * 1.2, pw - bw * 2.4, ph - bw * 2.4);
+  p.lineJoin = 'round';
+  for (const [x, y, r] of [[bw * 2.1, bw * 2.1, -0.25], [pw - bw * 2.1, bw * 2.1, 0.25], [bw * 2.1, ph - bw * 2.1, 0.2], [pw - bw * 2.1, ph - bw * 2.1, -0.2]]) {
+    p.save(); p.translate(x, y); p.rotate(r); heartPath(p, 0, 0, bw * 2.5); p.fillStyle = '#ff5e94'; p.fill(); p.lineWidth = bw * 0.22; p.strokeStyle = '#ffffff'; p.stroke(); p.restore();
+  }
+  const d = new Date(), ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  p.font = `800 ${ph * 0.05}px "PingFang SC","Microsoft YaHei",sans-serif`; p.textBaseline = 'bottom'; p.lineWidth = ph * 0.008; p.strokeStyle = 'rgba(150,30,90,0.75)'; p.fillStyle = '#ffffff';
+  p.textAlign = 'left'; p.strokeText('🤗 ' + tr('m7'), bw * 4.2, ph - bw * 1.6); p.fillText('🤗 ' + tr('m7'), bw * 4.2, ph - bw * 1.6);
+  p.textAlign = 'right'; p.strokeText('❄️ Frozy  ' + ds, pw - bw * 4.2, ph - bw * 1.6); p.fillText('❄️ Frozy  ' + ds, pw - bw * 4.2, ph - bw * 1.6);
+  let url = ''; try { url = pc.toDataURL('image/jpeg', 0.84); } catch (e) { return; }
+  if (AC) { noise(AC.currentTime, 0.12, 0.25, 'highpass', 2000, 6000, 0.7); tone(1568, AC.currentTime + 0.05, 0.3, 'sine', 0.08); }
+  savePhoto(url); showPhoto(url);
+}
+
 // ---------- input: hands ----------
 function feedHand(key, x, y) {
   let h = hands.get(key);
@@ -4380,7 +4734,7 @@ function updateHands(dt) {
     if (!h.ptr && age > 0.45) { hands.delete(k); continue; }
     if (t - h.lastS > 0.12) { h.vx *= 0.8; h.vy *= 0.8; h.speed *= 0.8; }
     h.cd -= dt;
-    if (S.mode !== 'menu' && SC() !== 'runner' && h.speed > 110 * U && h.cd <= 0) { spawnShard(h); h.cd = 0.11; }
+    if (S.mode !== 'menu' && SC() !== 'runner' && h.speed > 110 * U && h.cd <= 0) { spawnShard(h, k); h.cd = 0.11; }
     h.trail.push({ x: h.x, y: h.y, t: now }); while (h.trail.length > 14) h.trail.shift();
     if (S.mode !== 'menu' && SC() !== 'runner' && Math.random() < Math.min(1, h.speed / (60 * U)) * 0.9)
       addParticle({ type: (h.ptr || Math.random() < 0.5) ? 'spark' : 'flake', x: h.x + rand(-2, 2) * U, y: h.y + rand(-2, 2) * U, vx: rand(-8, 8) * U - h.vx * 0.08, vy: rand(-8, 8) * U - h.vy * 0.08, g: 10 * U, drag: 1.5, r: rand(0.5, 1.2) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(0.4, 0.8), max: 0.8, col: '#dff6ff' });
@@ -4619,6 +4973,7 @@ function frame(tms) {
   else if (sc === 'boss') updateBoss(dt);
   else if (sc === 'runner') updateRunner(dt);
   else if (sc === 'dance') updateDance(dt);
+  else if (sc === 'hug') updateHug(dt);
   else if (sc === 'castle' || sc === 'snowman') updateItems(dt);
   if (S.mode === 'adventure') updateAdventure(dt);
   updatePhoto(dt);
@@ -4644,6 +4999,7 @@ function frame(tms) {
   drawBackground();
   drawDress();
   if (SC() === 'dance') drawDanceBack();
+  if (SC() === 'hug') drawHugBack();
   if (S.mode === 'menu') { drawNightSky(); drawKingdom(); }
   if (SC() === 'runner') drawRunner();
   ctx.save();
@@ -4664,6 +5020,7 @@ function frame(tms) {
   for (const h of hands.values()) if (S.mode !== 'menu' && SC() !== 'runner') drawHand(h);
   for (const f of flyStars) { drawStar(ctx, f.x, f.y, 3 * U * (1 + 0.3 * Math.sin(f.t * 12)), f.t * 6); }
   if (SC() === 'dance') { if (DN.snap) dnSnap(); drawDanceHud(); }
+  if (SC() === 'hug') { drawHugHud(); if (HG.snapAt && now >= HG.snapAt) hgSnap(); }
   if (flash > 0) { ctx.fillStyle = `rgba(220,240,255,${flash * 0.55})`; ctx.fillRect(0, 0, W, H); flash = Math.max(0, flash - dt * 1.6); }
   if (celebrateT > 0) {
     celebrateT -= dt; const k = 2.8 - celebrateT;
@@ -4693,6 +5050,7 @@ function startMode(m) {
   if (m === 'adventure') { startAdventure(); return; }
   $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none';
   if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); palIntro(); setTimeout(() => say(tr('introRun'), true), 300); return; }
+  if (m === 'hug') { S.mode = 'hug'; S.stage = ''; clearScene(); startHug(); showHint(tr(S.input !== 'camera' ? 'hintHugPtr' : 'hintHug'), 10); palIntro(); setTimeout(() => say(tr('introHug'), true), 300); return; }
   if (m === 'dance') { S.mode = 'dance'; S.stage = ''; clearScene(); startDance(); showHint(tr(S.input !== 'camera' ? 'hintDancePtr' : 'hintDance'), 9); setTimeout(() => say(tr('introDance'), true), 300); return; }
   S.mode = m; S.stage = '';
   clearScene(); spawnTimer = 0;
@@ -4710,7 +5068,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { dnOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
@@ -4749,6 +5107,7 @@ function togBind(id, key, after) {
   el.addEventListener('click', () => { S[key] = !S[key]; sync(); savePrefs(); after && after(); }); sync();
 }
 function applyLang() {
+  document.body.classList.toggle('en', S.lang === 'en');
   $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
   document.querySelectorAll('[data-t]').forEach(e => e.textContent = tr(e.dataset.t));
 }
@@ -4785,7 +5144,7 @@ window.addEventListener('keydown', e => {
   else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else blizzard(); }
   else if (e.key === 'p' || e.key === 'P') startPhoto(false);
   else if (e.key === 'm' || e.key === 'M') { S.showVideo = !S.showVideo; $('#togVideo').classList.toggle('on', S.showVideo); savePrefs(); }
-  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance'][+e.key - 1]);
+  else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7', '8'].includes(e.key)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance', 'hug'][+e.key - 1]);
 });
 window.addEventListener('resize', resize);
 if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = fillVoiceSel; fillVoiceSel(); setTimeout(fillVoiceSel, 500); }
@@ -4796,7 +5155,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

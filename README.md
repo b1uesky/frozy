@@ -9,7 +9,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 - **Camera (best)** — open in Chrome on a laptop/tablet with a camera, choose 📷, stand 1.5–3 m away, and cast the screen to the TV (HDMI or AirPlay).
   - Wave over things to freeze them · fast wave = ice shards · **both hands up = blizzard** · **clap = ice shockwave**
   - Two people can play together
-  - **Kids drive it themselves** — the home screen is a hall of floating bubbles: hold a hand on a bubble for a moment to enter that game; in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
+  - **Kids drive it themselves** — the home screen is a hall of eight floating bubbles: hold a hand on a bubble for a moment to enter that game; in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
 - **Mouse / touch** — move to freeze, click/tap = homing ice magic, double-click = blizzard
 - **TV browser (LG webOS etc.)** — arrow keys + OK = homing ice magic, color keys = blizzard
 
@@ -18,6 +18,7 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | | |
 |---|---|
 | 🗺️ 冰雪大冒险 Ice Adventure | Fire imps → frozen town → the Fire King boss → build an ice castle |
+| 🤗 冰冻抱抱 Freeze Hug | Wave or point = freeze: the animals she rescued, **and the people standing next to her**. A hug = the ice melts — to thaw dad she has to walk over and put her arms round him. Five thaws fill the hearts; the last hug becomes a photo for the album. For the whole family, nobody can lose |
 | 💃 冰雕舞会 Freeze Dance | Music plays = dance; music stops = hold still and ice climbs up her body until she is an ice statue — click, a photo. Five statues make a photo strip for the album. Whole body, two can play, nobody can lose |
 | 🏃‍♀️ 冰雪奔跑 Snow Run | Endless street: run in place to run, wave left/right to freeze houses, freeze fire imps and rivers that block the way, jump over obstacles. Rescue trapped animals (they run along with you), sled downhill every 500 m (lean to steer), Fire King boss every 500 m, power-ups (👢 speed boots, 💎 big ice crystal, 🧲 star magnet), day/night and weather, and two players side by side when two people are on camera (each princess wears that child’s clothes colour, copies her arms, and has a matching heart over her in the camera window) |
 | 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
@@ -26,6 +27,19 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | ❄️ 画冰花 | Paint frost; hold still to grow ice flowers |
 
 Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
+
+## Freeze hug / 冰冻抱抱
+
+Every other game is her and the screen. This one is her and **the people next to her** — and it ends in a real hug.
+
+- **Freeze the animals.** Two of the animals she rescued stand beside her. A hand on one (or an arm stretched out towards it) freezes it into an ice block, and a heart starts beating over it: *hug me*.
+- **A hug melts the ice.** Both arms round the block (or one warm hand resting on it for a moment) — it thaws, hearts fly, one of the five hearts at the top fills, and the animal hops round to her other side.
+- **Freeze dad.** When someone else is in the picture next to her: stretch an arm out towards them and **a stream of ice flies from her hand** — or touch them, or throw ice bolts with a fast wave — and ice climbs from the floor up their body until they are frozen, with a heart beating over their head. Grown-ups can freeze her too.
+- **Only a hug thaws a person.** The game cannot do it for her: she has to walk over and hug them (the camera sees two people become one). No hug? The ice melts by itself after about 10 s — no heart, nobody is stuck.
+- **Five hearts** → the picture taken at the last hug (a hug with a person is kept over a hug with an animal) goes into 📷 相册 with a heart frame.
+- Snowy shows both moves without a word: a wave, then arms closing round a little ice block that turns into a heart.
+- Stand side by side, not one behind the other — from the camera, someone right behind her looks like someone hugging her, so nothing is frozen then.
+- Mouse / touch / TV remote: click an animal twice (or wiggle over it) = freeze, click again (or rest on it) = hug. Animals only; no photo without the camera.
 
 ## Freeze dance / 冰雕舞会
 
