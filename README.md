@@ -90,6 +90,16 @@ Games are built to keep a child playing. This part helps her **stop** — and ma
 - **A little longer?** Hold "☀️ 再玩一会儿" at the bottom (or press N). With a play time set, that gives 5 more minutes.
 - **Next time the page opens, the kingdom wakes up** — a sunrise, and everyone hops awake one after another.
 
+## The magic movie / 🎬 魔法电影
+
+Everything she does in the games happens once and is gone. This keeps it — and gives the best part of the day to the moment she stops.
+
+- **It records by itself.** While she plays with the camera on, the game quietly holds on to the last few seconds. When something good happens — a blizzard, an ice statue, a hug, the whole home frozen, a level won — those seconds become a clip (at most 12 are kept, the best ones from each game).
+- **Bedtime premiere.** In the good-night ritual, once she has lit the aurora, "today's movie" plays in the night sky: a title card, up to six clips of *her* doing magic, a music-box tune, an end card with today's stars (about half a minute). Then everyone sleeps. No clips → bedtime goes exactly as before.
+- **Any time, from the hall**: hold a hand on "🎬 电影" (it appears once there is a clip). Snowy sits beside the screen and watches too; a hand on 🏠 (top right) or Esc closes it, and it closes by itself at the end.
+- **For grown-ups: "💾 保存视频"** (bottom left while the movie plays, or "🎬 保存今天的电影" under the sleeping kingdom) saves it as a 1280×720 video file (MP4 where the browser can, otherwise WebM) to send to family.
+- **Private**: the clips live only in this browser (IndexedDB), nothing is uploaded, only the latest day is kept, and "🎬 魔法电影" in ⚙️ 家长设置 switches it off and deletes them. Camera mode only — nothing is recorded with mouse / touch / TV.
+
 ## Extras
 
 - 👑 **Dress-up** — with the camera on, she wears an ice crown and a cape that flows *behind* her
