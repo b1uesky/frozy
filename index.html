@@ -251,6 +251,7 @@ body.asleep #nightSum:not(:empty){display:block}
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
     手挥过目标 = 冰冻 · 快速挥手 = 发射冰晶 · <b>双手举过头顶 = 暴风雪！</b> · <b>拍手 = 冰冻冲击波</b> · 两个人可以一起玩<br>
     <b>🤗 冰冻抱抱（可以全家一起玩）</b>：挥手把小动物冻住，再抱一抱它（两只手围住它，或一只手放在它身上停一下），冰就化了，得一颗爱心。<b>大人站到她旁边（并排站，别站在她正后面）：她伸手指着你、碰到你、或朝你快速挥手发冰晶，冰就会从脚往上爬把你冻住——她走过来抱住你，冰才会化</b>（没人抱的话约 10 秒自己化）。你也可以冻住她。集满 5 颗爱心，最后一个抱抱会变成照片存进相册<br>
+    <b>❄️ 冰封我家</b>：把摄像头里真实的家冻住——手挥到哪里，哪里的沙发、墙、柜子就变成冰，冰还会自己沿着家具的边往外爬；人不会被冻住。够不到的角落：快速挥手把冰晶甩过去，或双手举高来一场暴风雪。左上角的小房子装满 = 整个家冻住了，会下雪、拍一张照片，然后冰化掉、换一种颜色再来（🧽 = 马上化掉）。没有摄像头画面时这个泡泡还是“画冰花”<br>
     <b>💃 冰雕舞会</b>：音乐响就跳舞，音乐一停就不动——冰会从脚往上爬，把她变成冰雕，咔嚓拍一张；5 张冰雕照拼成一张，存进相册（两个人、大人一起跳也行）<br>
     冰雪奔跑：原地跑步 = 前进 · 向左/右挥手 = 冻住那边的房子 · 跳起来或双手举高 = 跳（键盘：↑ 跳，← → 冻房子）<br>
     <b>🌙 晚安</b>：该休息时点右上角 🌙（或按 N）——月亮先升起来提醒她，然后大厅变成夜晚：她摸一摸亮着的小灯，哄王国里的大家睡觉，再举起双手点亮极光。选了“玩多久”，到时间月亮会自己升起。想再玩：按住“☀️ 再玩一会儿”或再按 N<br>
@@ -316,6 +317,7 @@ const T = {
     introSprites: '小火怪来捣乱啦！挥挥手，用冰冻魔法冻住它们！',
     introTown: '挥挥手，把小镇变成冰雪王国吧！',
     introFree: '挥挥手画冰霜，手停住不动，就会长出冰花哦！',
+    m3r: '冰封我家', introRoom: '挥挥手，把家里都冻住！把整个家变成冰雪宫殿！', hintRoom: '❄️ 挥挥手，把你的家冻住！', irDone: '整个家都冻住啦！', irPhoto: '整个家都冻住啦！拍一张！三，二，一！',
     hintSprites: '🔥 手挥过小火怪，把它冻住！',
     hintTown: '🏘️ 用手摸摸房子，把它冻成冰！',
     hintFree: '❄️ 挥手画冰霜 · 手停住长冰花',
@@ -370,6 +372,7 @@ const T = {
     introSprites: 'The fire imps are making mischief! Wave your hands to freeze them!',
     introTown: 'Wave your hands and turn the town into ice!',
     introFree: 'Wave to paint frost. Hold your hand still to grow an ice flower!',
+    m3r: 'Freeze Home', introRoom: 'Wave your hands and freeze your whole home! Turn it into an ice palace!', hintRoom: '❄️ Wave to freeze your home!', irDone: 'Your home is frozen!', irPhoto: 'Your whole home is frozen! Photo time! Three, two, one!',
     hintSprites: '🔥 Wave over the fire imps to freeze them!',
     hintTown: '🏘️ Touch the houses to freeze them!',
     hintFree: '❄️ Wave to paint · Hold still for ice flowers',
@@ -831,7 +834,7 @@ function iceBlast(x, y, big) {
       const r = bRect(b), cx = clamp(x, r.x, r.x + r.w), cy = clamp(y, r.top, r.bot);
       if (dist(x, y, cx, cy) < R) addFrostB(b, 0.4, x, y); else cands.push(b);
     }
-  } else if (SC() === 'free') { addFlower(x, y, !!big); return; }
+  } else if (SC() === 'free') { addFlower(x, y, !!big); irSeed(x, y, big ? 3 : 2, 1, 1); return; }
   else if (SC() === 'hug') { hgBlast(x, y, R); return; }
   else if (SC() === 'boss') {
     for (const s of sprites) if (s.state === 'alive') { if (dist(x, y, s.x, s.y) < R + s.r) { s.frost += 0.7 / (s.tough || 1); if (s.frost >= 1) freezeSprite(s); } else cands.push(s); }
@@ -874,6 +877,7 @@ function updateShards(dt) {
     } else if (SC() === 'castle' || SC() === 'snowman') {
       for (const it of items) if (it.state === 'free' && dist(sh.x, sh.y, it.x, it.y) < it.r + 2 * U) { collectItem(it); sh.life = 0; break; }
     } else if (SC() === 'free') {
+      irShard(sh);
       if (Math.random() < 0.25) { fctx.save(); fctx.globalAlpha = 0.35; drawFlake(fctx, sh.x, sh.y, rand(0.6, 1.3) * U, rand(0, 6), '#e8f7ff'); fctx.restore(); }
     } else if (SC() === 'hug') hgShard(sh);
     if (sh.x < -10 * U || sh.x > W + 10 * U || sh.y < -10 * U || sh.y > H + 10 * U) sh.life = 0;
@@ -1400,10 +1404,12 @@ function strokeFrost(x0, y0, x1, y1, speed) {
 }
 function addFlower(x, y, big) { flowers.push({ x, y, t: 0, R: (big ? rand(12, 18) : rand(7, 12)) * U, rot: rand(0, Math.PI) }); sfx.flower(); }
 function updateFree(dt) {
-  for (const h of hands.values()) {
+  const room = irOn(); irUpdate(dt);
+  for (const [hk, h] of hands) {
     if (h.fx === undefined) { h.fx = h.x; h.fy = h.y; }
     const d = dist(h.fx, h.fy, h.x, h.y);
-    if (d > 1.2 * U) { if (d < 25 * U) strokeFrost(h.fx, h.fy, h.x, h.y, h.speed); h.fx = h.x; h.fy = h.y; }
+    if (d > 1.2 * U) { if (d < 25 * U && !room) strokeFrost(h.fx, h.fy, h.x, h.y, h.speed); h.fx = h.x; h.fy = h.y; }
+    if (room) { if (h.speed < 22 * U && IR.st === 'grow' && irHandUp(hk, h)) { h.still += dt; if (h.still > 1.2) { addFlower(h.x, h.y); irSeed(h.x, h.y, 2.6, 1, 1); h.still = -4; } } else if (h.still > 0) h.still = 0; else h.still = Math.min(0, h.still + dt); continue; }   // in her frozen room a flower is a treat for holding really still, not something that covers the picture
     if (h.speed < 35 * U) { h.still += dt; if (h.still > 0.85) { addFlower(h.x, h.y); h.still = -1.4; } }
     else if (h.still > 0) h.still = 0; else h.still = Math.min(0, h.still + dt);
   }
@@ -1415,6 +1421,254 @@ function updateFree(dt) {
   frostFadeT += dt;
   if (frostFadeT > 0.5) { frostFadeT = 0; fctx.save(); fctx.globalCompositeOperation = 'destination-out'; fctx.fillStyle = 'rgba(0,0,0,0.012)'; fctx.fillRect(0, 0, W, H); fctx.restore(); }
   if (meltT > 0) { meltT -= dt; fctx.save(); fctx.globalCompositeOperation = 'destination-out'; fctx.fillStyle = 'rgba(0,0,0,0.12)'; fctx.fillRect(0, 0, W, H); fctx.restore(); }
+}
+
+// ======================================================================
+// ---- 冰封我家 (freeze my home): every other game freezes things the game drew — here she freezes the real room in the camera.
+// Where her hand goes the real picture turns to ice, and the ice creeps on by itself, fastest along the edges of the real furniture.
+// People stay warm and in colour. Needs the camera picture: with a mouse / on the TV this bubble is still plain frost painting.
+const IR = { gw: 64, gh: 36, pw: 320, ph: 180, lw: 0, lh: 0, key: '', a: null, p: null, nz: null, eg: null, ec: null, px: null, L: null,
+  st: 'grow', t: 0, cov: 0, covStar: 0, round: 0, shot: false, any: false, shCd: 0, icicles: [] };
+const IR_THEMES = [[118, 186, 255], [92, 226, 212], [198, 162, 255]];   // the ice changes colour every time the whole room is frozen
+const IR_DEC = 0.74;    // how much weaker the ice gets with every step away from her hand (bigger = one touch spreads further)
+const IR_RATE = 6;      // how fast it creeps
+const IR_BASE = 0.1;    // the ice never quite stops: it keeps creeping slowly by itself (faster the more of the room is frozen), so far corners freeze too. 0 = only where she reaches
+const IR_FULL = 0.82;   // this much of the room frozen = the rest finishes by itself
+function irOn() { return SC() === 'free' && videoShown(); }
+function irInit() {
+  const key = W + 'x' + H; if (IR.key === key && IR.a) return;
+  IR.key = key;
+  IR.gh = clamp(Math.round(IR.gw * H / W), 16, 128); IR.ph = clamp(Math.round(IR.pw * H / W), 80, 640);
+  const { gw, gh, pw, ph } = IR, n = gw * gh;
+  IR.a = new Float32Array(n); IR.p = new Float32Array(n); IR.nz = new Float32Array(n); IR.eg = new Float32Array(n).fill(0.25); IR.ec = new Float32Array(n);
+  IR.L = new Uint8Array(pw * ph); IR.as = new Float32Array(n); IR.tmp = new Float32Array(n);
+  const mk = (w, h, o) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d', o)]; };
+  [IR.vc, IR.vx] = mk(pw, ph, { willReadFrequently: true }); [IR.mc, IR.mx] = mk(pw, ph); [IR.gc, IR.gx] = mk(pw, ph);
+  IR.mimg = IR.mx.createImageData(pw, ph); IR.gimg = IR.gx.createImageData(pw, ph);
+  for (let j = 0; j < pw * ph * 4; j += 4) { IR.gimg.data[j] = 238; IR.gimg.data[j + 1] = 249; IR.gimg.data[j + 2] = 255; }
+  // where each small pixel sits in the ice grid (for smooth sampling) and which cell it belongs to
+  IR.sx0 = new Uint16Array(pw); IR.sfx = new Float32Array(pw); IR.cxx = new Uint16Array(pw); IR.sy0 = new Uint16Array(ph); IR.sfy = new Float32Array(ph); IR.cyy = new Uint16Array(ph);
+  for (let x = 0; x < pw; x++) { const g = clamp((x + 0.5) / pw * gw - 0.5, 0, gw - 1); IR.sx0[x] = g | 0; IR.sfx[x] = g - (g | 0); IR.cxx[x] = Math.min(gw - 1, (x / pw * gw) | 0); }
+  for (let y = 0; y < ph; y++) { const g = clamp((y + 0.5) / ph * gh - 0.5, 0, gh - 1); IR.sy0[y] = g | 0; IR.sfy[y] = g - (g | 0); IR.cyy[y] = Math.min(gh - 1, (y / ph * gh) | 0); }
+  IR.icicles = Array.from({ length: 34 }, (_, i) => ({ x: (i + rand(0.15, 0.85)) / 34, L: rand(3, 9) * (i % 5 === 2 ? 1.5 : 1), w: rand(1.5, 2.9), len: 0 }));
+  IR.q = IR.q || 1; irLayer(); irNoise(); irReset();
+}
+function irLayer() {   // the big layer the frozen picture is put together on (half size on a computer that turns out to be slow at it)
+  IR.lw = Math.round(Math.min(W, 1280) * IR.q); IR.lh = Math.max(2, Math.round(IR.lw * H / W)); IR.ms = 0; IR.slow = 0;
+  const mk = () => { const c = document.createElement('canvas'); c.width = IR.lw; c.height = IR.lh; return c; };
+  IR.layer = mk(); IR.lx = IR.layer.getContext('2d'); IR.tex = mk(); irTex();
+}
+function irReset() {
+  if (IR.a) { IR.a.fill(0); IR.p.fill(0); }
+  for (const ic of IR.icicles) ic.len = 0;
+  IR.st = 'grow'; IR.t = 0; IR.cov = 0; IR.covStar = 0; IR.shot = false; IR.any = false;
+}
+function irNoise() {
+  const { gw, gh, pw, ph } = IR;
+  for (let i = 0; i < gw * gh; i++) IR.nz[i] = rand(0.3, 1);
+  // folded lattice noise: the ice shows up along thin veins first and then fills in between them, so its edge looks like frost and not like a blob
+  const lat = (cw, rh) => { const g = new Float32Array((cw + 2) * (rh + 2)); for (let i = 0; i < g.length; i++) g[i] = Math.random(); return g; };
+  const samp = (g, cw, x, y) => { const xi = x | 0, yi = y | 0, fx = x - xi, fy = y - yi, sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy), i = yi * (cw + 2) + xi; const a = g[i], b = g[i + 1], c = g[i + cw + 2], d = g[i + cw + 3]; return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy; };
+  const c1 = 11, r1 = Math.ceil(c1 * ph / pw), c2 = 58, r2 = Math.ceil(c2 * ph / pw), g1 = lat(c1, r1), g2 = lat(c2, r2);
+  const px = IR.px = new Float32Array(pw * ph);
+  for (let y = 0; y < ph; y++) for (let x = 0; x < pw; x++) {
+    const v1 = Math.abs(2 * samp(g1, c1, x / pw * c1, y / ph * r1) - 1), v2 = Math.abs(2 * samp(g2, c2, x / pw * c2, y / ph * r2) - 1);
+    px[y * pw + x] = clamp(v1 * 0.42 + v2 * 0.46 + Math.random() * 0.12, 0, 0.999);
+  }
+}
+function irTex() {   // crisp frost feathers and crystals that sit on top of the frozen picture
+  const c = IR.tex.getContext('2d'), { lw, lh } = IR, u = Math.min(lh, lw * 1.1) / 100;
+  c.clearRect(0, 0, lw, lh); c.lineCap = 'round';
+  for (let k = 0; k < 80; k++) {
+    let x = rand(0, lw), y = rand(0, lh), ang = rand(0, 6.28); const len = rand(6, 16) * u, seg = 7;
+    c.strokeStyle = `rgba(255,255,255,${rand(0.35, 0.85).toFixed(2)})`; c.lineWidth = u * rand(0.12, 0.26);
+    c.beginPath();
+    for (let s = 0; s < seg; s++) {
+      const nx = x + Math.cos(ang) * len / seg, ny = y + Math.sin(ang) * len / seg, bl = len * 0.3 * (1 - s / seg);
+      c.moveTo(x, y); c.lineTo(nx, ny);
+      for (const sd of [-1, 1]) { c.moveTo(nx, ny); c.lineTo(nx + Math.cos(ang + sd) * bl, ny + Math.sin(ang + sd) * bl); }
+      x = nx; y = ny; ang += rand(-0.2, 0.2);
+    }
+    c.stroke();
+  }
+  const u0 = U; U = u; for (let k = 0; k < 48; k++) { c.globalAlpha = rand(0.3, 0.8); drawCrystal(c, rand(0, lw), rand(0, lh), rand(1.2, 4.4) * u, rand(0, 3), 1); } U = u0;
+  c.fillStyle = '#ffffff';
+  for (let k = 0; k < 520; k++) { c.globalAlpha = rand(0.2, 0.85); c.beginPath(); c.arc(rand(0, lw), rand(0, lh), rand(0.08, 0.3) * u, 0, 6.3); c.fill(); }
+  c.globalAlpha = 1;
+}
+// put ice down around a point on the screen: rad in grid cells, pw = how far it will creep from here (0–1), amt = how much ice right now
+function irSeed(x, y, rad, pw, amt) {
+  if (!IR.a || IR.st !== 'grow' || !irOn()) return;
+  const { gw, gh, a, p } = IR, gx = x / W * gw, gy = y / H * gh;
+  for (let yy = Math.max(0, Math.floor(gy - rad)); yy <= Math.min(gh - 1, Math.ceil(gy + rad)); yy++)
+    for (let xx = Math.max(0, Math.floor(gx - rad)); xx <= Math.min(gw - 1, Math.ceil(gx + rad)); xx++) {
+      const d = Math.hypot(xx + 0.5 - gx, yy + 0.5 - gy); if (d > rad) continue;
+      const i = yy * gw + xx; a[i] = Math.min(1, a[i] + amt * (1 - 0.5 * d / rad)); if (pw > p[i]) p[i] = pw;
+    }
+  IR.any = true;
+}
+function irFreeCell() {   // somewhere that is not frozen yet (screen coordinates), or null
+  const { gw, gh, a } = IR;
+  for (let k = 0; k < 40; k++) { const i = (Math.random() * gw * gh) | 0; if (a[i] < 0.3) return [((i % gw) + 0.5) / gw * W, (((i / gw) | 0) + 0.5) / gh * H]; }
+  return null;
+}
+function irBlizzard() { if (!irOn() || IR.st !== 'grow') return; for (let k = 0; k < 5; k++) setTimeout(() => { const q = IR.a && irFreeCell(); if (q) { irSeed(q[0], q[1], 2.2, 1, 1); burst(q[0], q[1], 10, { power: 0.6 }); } }, 250 + k * 170); }
+function irShard(sh) {   // a bolt from a fast wave freezes the spot where it lands — that is how she reaches the far corners
+  if (!irOn() || IR.st !== 'grow' || now < IR.shCd || (sh.life > 0.06 && sh.x > 0 && sh.x < W && sh.y > 0 && sh.y < H)) return;
+  IR.shCd = now + 0.45; const x = clamp(sh.x, 0, W), y = clamp(sh.y, 0, H); irSeed(x, y, 1.5, 0.55, 1); ring(x, y, 5 * U);
+}
+// a hand hanging at her side is not casting: it has to be lifted to about her waist, or be moving fast
+function irHandUp(key, h) {
+  if (h.ptr || key[0] !== 'p' || h.speed > 60 * U) return true;
+  const P = poseScr[+key[1]]; if (!P || now - poseT > 0.6) return true;
+  const w = key[2] === 'L' ? P.lw : P.rw, sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y), sy = (P.ls.y + P.rs.y) / 2;
+  return w.y < (P.lh.v && P.rh.v ? (P.lh.y + P.rh.y) / 2 : sy + sw * 1.5) - sw * 0.35;
+}
+function irUpdate(dt) {
+  if (!irOn()) return;
+  irInit(); IR.t += dt;
+  const { gw, gh, a, p, nz, eg } = IR, n = gw * gh;
+  if (IR.st === 'grow' || IR.st === 'fill') {
+    if (IR.st === 'grow') for (const [hk, h] of hands) { if (!irHandUp(hk, h)) continue; const sp = Math.min(1, h.speed / (90 * U)); irSeed(h.x, h.y, 1.7 + sp * 0.9, 1, dt * (2.4 + sp * 3.2)); }
+    let cnt = 0, grew = 0;
+    const fill = IR.st === 'fill', base = IR_BASE * (1 + 4 * IR.cov);
+    for (let y = 0; y < gh; y++) for (let x = 0; x < gw; x++) {
+      const i = y * gw + x; if (a[i] >= 1) { cnt++; continue; }
+      if (fill) { a[i] = Math.min(1, a[i] + dt * (0.5 + nz[i]) * 1.1); if (a[i] > 0.55) cnt++; continue; }
+      let m = 0, nb = false;
+      if (x > 0 && a[i - 1] > 0.55) { nb = true; if (p[i - 1] > m) m = p[i - 1]; }
+      if (x < gw - 1 && a[i + 1] > 0.55) { nb = true; if (p[i + 1] > m) m = p[i + 1]; }
+      if (y > 0 && a[i - gw] > 0.55) { nb = true; if (p[i - gw] > m) m = p[i - gw]; }
+      if (y < gh - 1 && a[i + gw] > 0.55) { nb = true; if (p[i + gw] > m) m = p[i + gw]; }
+      m *= IR_DEC;
+      if (m > 0.12) { const d = dt * IR_RATE * nz[i] * (0.45 + 1.5 * eg[i]) * m; a[i] = Math.min(1, a[i] + d); grew += d; if (m > p[i]) p[i] = m; }
+      else if (nb) a[i] = Math.min(1, a[i] + dt * base * nz[i] * (0.6 + eg[i]));
+      if (a[i] > 0.55) cnt++;
+    }
+    const cov = cnt / n;
+    if (cov > IR.cov + 0.004) PAL.prog = now;
+    IR.cov = cov; if (cnt) IR.any = true;
+    if (grew > 0.02 && Math.random() < 0.35) sfx.tick();
+    while (IR.st === 'grow' && cov >= IR.covStar + 0.08) { IR.covStar += 0.08; const q = irFreeCell() || [W / 2, H / 2]; addFlyStar(q[0], q[1]); }
+    if (IR.st === 'grow' && cov >= IR_FULL) { IR.st = 'fill'; IR.t = 0; }
+    else if (fill && (cnt >= n || IR.t > 2.5)) irDone();
+  } else if (IR.st === 'done') {
+    // it snows indoors, the ice glitters, and touching it rings
+    if (Math.random() < dt * 26) addParticle({ type: 'flake', x: rand(0, W), y: -3 * U, vx: rand(-4, 4) * U, vy: rand(12, 24) * U, g: 0, drag: 0, r: rand(0.7, 2) * U, rot: rand(0, 6), vr: rand(-2, 2), life: rand(3, 4.5), max: 4.5 });
+    if (Math.random() < dt * 14) addParticle({ type: 'spark', x: rand(0, W), y: rand(0, H), vx: 0, vy: 0, g: 0, drag: 0, r: rand(0.7, 1.7) * U, rot: 0, vr: 0, life: 0.7, max: 0.7, col: pick(['#ffffff', '#dff6ff', '#ffe680', '#ffc4f0']) });
+    for (const h of hands.values()) if (h.speed > 45 * U && Math.random() < dt * 9) { burst(h.x, h.y, 5, { power: 0.5 }); sfx.tick(); }
+    if (!IR.shot && IR.t > 1.7) { IR.shot = true; if (canPhoto() && !ntActive()) startPhoto(true, tr('irPhoto')); }
+    if (IR.t > 9 && photoT <= 0 && !topOverlay()) irMelt();
+  } else if (IR.st === 'melt') {
+    const line = IR.t / 2.3 * (gh + 8) - 4; let left = 0;
+    for (let y = 0; y < gh; y++) for (let x = 0; x < gw; x++) {
+      const i = y * gw + x; if (a[i] <= 0) continue;
+      if (y < line + nz[i] * 5) { a[i] = Math.max(0, a[i] - dt * 2.6); if (Math.random() < dt * 0.5) addParticle({ type: 'spark', x: (x + 0.5) / gw * W, y: (y + 0.5) / gh * H, vx: 0, vy: rand(6, 16) * U, g: 60 * U, drag: 0, r: rand(0.5, 1.1) * U, rot: 0, vr: 0, life: 0.9, max: 0.9, col: '#bfe9ff' }); }
+      if (a[i] > 0) left++;
+    }
+    IR.cov = left / n;
+    if (!left || IR.t > 4) { IR.round++; irNoise(); irReset(); }
+  }
+  for (const ic of IR.icicles) { const top = IR.st === 'melt' ? 0 : a[Math.min(gw - 1, (ic.x * gw) | 0)]; ic.len += (top - ic.len) * Math.min(1, dt * (top > ic.len ? 0.9 : 2.2)); }
+}
+function irDone() {
+  IR.a.fill(1); IR.st = 'done'; IR.t = 0; IR.shot = false; IR.cov = 1; IR.any = true;
+  flash = 1; addShake(1.5 * U); sfx.freeze(); celebrate(tr('irDone'));
+  for (let i = 0; i < 8; i++) setTimeout(() => { if (irOn()) addFlyStar(rand(0.15, 0.85) * W, rand(0.2, 0.8) * H); }, 400 + i * 150);
+}
+function irMelt() { if (IR.st === 'melt' || !IR.a) return; IR.st = 'melt'; IR.t = 0; IR.p.fill(0); meltT = 0.8; }
+// read the small camera picture: how much ice each pixel has, and where the real edges are (frost outlines them, and ice runs along them)
+function irPixels() {
+  const { pw, ph, gw, gh, px, vx, L, ec, eg } = IR, r = videoRect(), k = pw / W, a = IR.as, tm = IR.tmp, a0 = IR.a;
+  for (let y = 0; y < gh; y++) for (let x = 0, i = y * gw; x < gw; x++, i++) tm[i] = (a0[x > 0 ? i - 1 : i] + 2 * a0[i] + a0[x < gw - 1 ? i + 1 : i]) * 0.25;
+  for (let y = 0; y < gh; y++) for (let x = 0, i = y * gw; x < gw; x++, i++) { const v = (tm[y > 0 ? i - gw : i] + 2 * tm[i] + tm[y < gh - 1 ? i + gw : i]) * 0.25; a[i] = a0[i] >= 1 && v > 0.93 ? 1 : v; }
+  vx.save(); vx.translate(pw, 0); vx.scale(-1, 1); vx.drawImage(video, r.ox * k, r.oy * k, r.dw * k, r.dh * k); vx.restore();
+  let src; try { src = vx.getImageData(0, 0, pw, ph).data; } catch (e) { return false; }
+  const md = IR.mimg.data, gd = IR.gimg.data, sx0 = IR.sx0, sfx2 = IR.sfx, cxx = IR.cxx;
+  for (let i = 0, j = 0; i < pw * ph; i++, j += 4) L[i] = (src[j] * 77 + src[j + 1] * 150 + src[j + 2] * 29) >> 8;
+  ec.fill(0);
+  for (let y = 0; y < ph; y++) {
+    const y0 = IR.sy0[y], fy = IR.sfy[y], r0 = y0 * gw, r1 = (y0 + 1 < gh ? y0 + 1 : y0) * gw, cy = IR.cyy[y] * gw, inY = y > 0 && y < ph - 1;
+    for (let x = 0; x < pw; x++) {
+      const i = y * pw + x, j = i * 4 + 3, x0 = sx0[x], x1 = x0 + 1 < gw ? x0 + 1 : x0, fx = sfx2[x];
+      let e = 0;
+      if (inY && x > 0 && x < pw - 1) { e = (Math.abs(L[i + 1] - L[i - 1]) + Math.abs(L[i + pw] - L[i - pw])) / 64; if (e > 1) e = 1; }
+      ec[cy + cxx[x]] += e;
+      const v0 = a[r0 + x0] + (a[r0 + x1] - a[r0 + x0]) * fx, v1 = a[r1 + x0] + (a[r1 + x1] - a[r1 + x0]) * fx, v = v0 + (v1 - v0) * fy;
+      if (v <= 0.004) { md[j] = 0; gd[j] = 0; continue; }
+      let al = (v - px[i] * 0.8 * (1 - 0.55 * e)) / 0.2; al = al < 0 ? 0 : al > 1 ? 1 : al;
+      md[j] = al * 242;
+      let gl = e * 0.8 + 2.6 * al * (1 - al) + (v < 0.97 ? (1 - v) * 0.55 : 0); if (gl > 1) gl = 1;
+      gd[j] = gl * al * 255;
+    }
+  }
+  IR.mx.putImageData(IR.mimg, 0, 0); IR.gx.putImageData(IR.gimg, 0, 0);
+  // edges relative to this room and this camera (a noisy or very busy picture must not make all the ice run fast)
+  let em = 0; for (let c = 0; c < gw * gh; c++) em += ec[c]; em = em / (gw * gh) * 2.4 + 0.5;
+  for (let c = 0; c < gw * gh; c++) eg[c] += (Math.min(1, ec[c] / em) - eg[c]) * 0.15;
+  return true;
+}
+function irDraw() {
+  if (!irOn() || !IR.a) return;
+  const t0 = performance.now();
+  if (IR.any && ((IR.tick = (IR.tick | 0) + 1) & 1 ? irPixels() : IR.okPx)) {
+    IR.okPx = true;
+    const lx = IR.lx, { lw, lh } = IR, r = videoRect(), k = lw / W, th = IR_THEMES[IR.round % IR_THEMES.length];
+    lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalAlpha = 1; lx.shadowBlur = 0; lx.globalCompositeOperation = 'source-over'; lx.clearRect(0, 0, lw, lh);
+    // the real picture, sharp, turned into ice: its own light and dark, the colour of ice
+    lx.save(); lx.translate(lw, 0); lx.scale(-1, 1); lx.drawImage(video, r.ox * k, r.oy * k, r.dw * k, r.dh * k); lx.restore();
+    lx.globalCompositeOperation = 'color'; lx.fillStyle = `rgb(${th[0]},${th[1]},${th[2]})`; lx.fillRect(0, 0, lw, lh);
+    lx.globalCompositeOperation = 'screen'; lx.fillStyle = `rgba(${th[0]},${th[1]},${th[2]},0.36)`; lx.fillRect(0, 0, lw, lh);
+    lx.globalCompositeOperation = 'source-over'; lx.fillStyle = 'rgba(232,246,255,0.1)'; lx.fillRect(0, 0, lw, lh);
+    lx.globalAlpha = 0.5; lx.drawImage(IR.tex, 0, 0); lx.globalAlpha = 1;
+    lx.drawImage(IR.gc, 0, 0, lw, lh);
+    if (IR.st === 'done') {   // a band of light slides across the finished ice
+      const u = ((IR.t * 0.45) % 1.5) * (lw + lh) - lh; lx.globalCompositeOperation = 'lighter'; lx.fillStyle = 'rgba(255,255,255,0.22)';
+      for (const [o, wd] of [[0, lh * 0.16], [lh * 0.26, lh * 0.05]]) { lx.beginPath(); lx.moveTo(u + o, 0); lx.lineTo(u + o + wd, 0); lx.lineTo(u + o + wd - lh * 0.6, lh); lx.lineTo(u + o - lh * 0.6, lh); lx.closePath(); lx.fill(); }
+    }
+    lx.globalCompositeOperation = 'destination-in'; lx.drawImage(IR.mc, 0, 0, lw, lh);
+    // people are not frozen: cut them out of the ice with a soft edge
+    const pa = camState === 'on' ? clamp(1 - (now - poseT - 0.5) / 0.6, 0, 1) : 0;
+    if (pa > 0 && poseScr.length) {
+      lx.globalCompositeOperation = 'destination-out'; lx.globalAlpha = pa; lx.setTransform(k, 0, 0, k, 0, 0); lx.fillStyle = lx.strokeStyle = '#000000'; lx.shadowColor = '#000000';
+      for (const P of poseScr) { if (!P.ls.v || !P.rs.v) continue; const sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y); if (sw < 3 * U) continue; lx.shadowBlur = sw * 0.3 * k; dnBody(lx, P, sw, sw * 0.05); }
+      lx.shadowBlur = 0; lx.setTransform(1, 0, 0, 1, 0, 0); lx.globalAlpha = 1;
+    }
+    lx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(IR.layer, 0, 0, W, H);
+    IR.ms += (performance.now() - t0 - IR.ms) * 0.1;
+    if (IR.q === 1 && IR.ms > 10) { if (++IR.slow > 45) { IR.q = 0.5; irLayer(); } } else IR.slow = 0;
+  }
+  // icicles grow down from the top of the screen where the ceiling is frozen
+  for (const ic of IR.icicles) {
+    if (ic.len < 0.03) continue;
+    const x = ic.x * W, L = ic.L * U * ic.len, w = ic.w * U * (0.5 + 0.5 * ic.len);
+    const g = ctx.createLinearGradient(0, 0, 0, L); g.addColorStop(0, 'rgba(240,250,255,0.95)'); g.addColorStop(0.6, 'rgba(190,228,255,0.8)'); g.addColorStop(1, 'rgba(160,215,255,0.35)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x - w / 2, -1); ctx.lineTo(x + w / 2, -1); ctx.quadraticCurveTo(x + w * 0.12, L * 0.55, x, L); ctx.quadraticCurveTo(x - w * 0.12, L * 0.55, x - w / 2, -1); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = Math.max(1, U * 0.18); ctx.beginPath(); ctx.moveTo(x - w * 0.18, 0); ctx.lineTo(x - w * 0.03, L * 0.7); ctx.stroke();
+    if (IR.st === 'melt' && Math.random() < 0.03) addParticle({ type: 'spark', x, y: L, vx: 0, vy: 10 * U, g: 70 * U, drag: 0, r: 0.8 * U, rot: 0, vr: 0, life: 0.8, max: 0.8, col: '#bfe9ff' });
+  }
+  irMeter();
+}
+// a little house that fills with ice: how much of her home is frozen (she cannot read a number)
+function irMeter() {
+  if (IR.st === 'melt' || photoT > 0 || photoSnap) return;   // not in the photo
+  const kf = IR.st === 'grow' ? clamp(IR.cov / IR_FULL, 0, 1) * 0.94 : 1, s = 3.9 * U, th = IR_THEMES[IR.round % IR_THEMES.length];
+  const pulse = IR.st === 'done' ? 1 + 0.07 * Math.sin(now * 7) : 1;
+  ctx.save(); ctx.translate(8 * U, 22 * V); ctx.scale(pulse, pulse); ctx.lineJoin = 'round';
+  const path = () => { ctx.beginPath(); ctx.moveTo(-s, s); ctx.lineTo(-s, -s * 0.1); ctx.lineTo(-s * 1.3, -s * 0.1); ctx.lineTo(0, -s * 1.3); ctx.lineTo(s * 1.3, -s * 0.1); ctx.lineTo(s, -s * 0.1); ctx.lineTo(s, s); ctx.closePath(); };
+  path(); ctx.fillStyle = 'rgba(10,30,78,0.6)'; ctx.fill();
+  if (kf > 0) {
+    ctx.save(); path(); ctx.clip(); const top = s - kf * s * 2.3;
+    const g = ctx.createLinearGradient(0, -s * 1.3, 0, s); g.addColorStop(0, '#ffffff'); g.addColorStop(1, `rgb(${th[0]},${th[1]},${th[2]})`); ctx.fillStyle = g;
+    ctx.beginPath(); ctx.moveTo(-s * 1.4, s * 1.1); ctx.lineTo(-s * 1.4, top);
+    for (let i = 0; i <= 8; i++) ctx.lineTo(-s * 1.4 + i * s * 0.35, top + Math.sin(now * 3 + i * 1.3) * s * 0.07);
+    ctx.lineTo(s * 1.4, s * 1.1); ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  path(); ctx.strokeStyle = 'rgba(255,255,255,0.96)'; ctx.lineWidth = 0.5 * U; ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(-s * 0.22, s * 0.28, s * 0.44, s * 0.72);
+  if (IR.st !== 'grow') drawFlake(ctx, 0, -s * 0.2, s * 0.42, now, '#ffffff');
+  ctx.restore();
 }
 
 // ---- blizzard ----
@@ -1431,7 +1685,7 @@ function blizzard() {
   }
   else if (SC() === 'dance') { }
   else if (SC() === 'hug') hgBlizzard();
-  else for (let i = 0; i < 5; i++) setTimeout(() => addFlower(rand(0.1, 0.9) * W, rand(0.15, 0.85) * H, true), i * 180);
+  else { irBlizzard(); for (let i = 0; i < 5; i++) setTimeout(() => addFlower(rand(0.1, 0.9) * W, rand(0.15, 0.85) * H, true), i * 180); }
 }
 
 // ======================================================================
@@ -2047,12 +2301,12 @@ function addTotalStar() {
 }
 
 // ---- photo booth ----
-let photoT = 0, photoCb = null;
+let photoT = 0, photoCb = null, photoSnap = false;
 function canPhoto() { return S.mode !== 'menu' && camState === 'on' && S.showVideo; }
-function startPhoto(auto) {
+function startPhoto(auto, line) {
   if (photoT > 0 || !canPhoto()) return;
   ensureAudio(); photoT = 3.99;
-  say(auto ? tr('winPhoto') : tr('photoReady'), true);
+  say(line || (auto ? tr('winPhoto') : tr('photoReady')), true);
 }
 function updatePhoto(dt) {
   if (photoT <= 0) return;
@@ -2060,7 +2314,7 @@ function updatePhoto(dt) {
   photoT -= dt;
   const after = Math.ceil(photoT);
   if (after !== before && after > 0 && AC) tone(880, AC.currentTime, 0.15, 'sine', 0.12);
-  if (photoT <= 0) { photoT = 0; takePhoto(); }
+  if (photoT <= 0) { photoT = 0; photoSnap = true; }
 }
 function drawPhotoCountdown() {
   if (photoT <= 0) return;
@@ -2153,9 +2407,10 @@ function drawBackground() {
   if (videoShown()) {
     const r = videoRect();
     ctx.save(); ctx.translate(W, 0); ctx.scale(-1, 1); ctx.drawImage(video, r.ox, r.oy, r.dw, r.dh); ctx.restore();
-    ctx.fillStyle = 'rgba(15,40,95,0.38)'; ctx.fillRect(0, 0, W, H);
+    const room = irOn();
+    ctx.fillStyle = room ? 'rgba(15,40,95,0.12)' : 'rgba(15,40,95,0.38)'; ctx.fillRect(0, 0, W, H);
     const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.95);
-    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(10,25,70,0.55)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, room ? 'rgba(10,25,70,0.3)' : 'rgba(10,25,70,0.55)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
     if (!LITE && S.mode !== 'menu') { if (!frostCorners || frostCorners.width !== W || frostCorners.height !== H) buildFrostCorners(); ctx.save(); ctx.globalAlpha = 0.85; ctx.drawImage(frostCorners, 0, 0); ctx.restore(); }
     return;
   }
@@ -3523,7 +3778,7 @@ const palCv = $('#pal'), pcx = palCv.getContext('2d');
 const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init: false, g: 'idle', gt: 0, aL: [118 * D2R, 98 * D2R], aR: [62 * D2R, 82 * D2R], lean: 0, dx: 0, dy: 0, sq: 0, blink: 0, nextBlink: 2, look: [0, 0], coach: null, cheerT: 0, pokeT: -9, prog: 0, lastCoach: -9, seenFor: 0, demo: null, demoN: 0, idleT: 0, learned: false, side: 1, hallY: 0, hallCd: 0, back: 0, pa: 0, homeEl: null };
 try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
 // what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
-const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]] };
+const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3], ['up', 2.4]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]] };
 const PAL_DEMO = ['adventure', 'hug', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
 function palOn() { return S.pal !== false && !IS_TV; }
 function palCoach(seq) {
@@ -4804,7 +5059,7 @@ function updateDwell(dt) {
     DW.p.set(el, p); el.style.setProperty('--p', p.toFixed(3));
   }
 }
-let hallText = '', soundTipOn = null, hallTitle = '';
+let hallText = '', soundTipOn = null, hallTitle = '', hallFree = '';
 function updateHall() {
   let k = 'hallTap';
   if (S.input === 'camera' && !IS_TV) {
@@ -4814,6 +5069,7 @@ function updateHall() {
     else k = 'hallTapCam';
   }
   if (ntActive()) k = NT.ph === 'tuck' ? 'ntTuck' : NT.ph === 'sleep' ? 'ntSleep' : k === 'hallCam' ? 'ntSky' : 'ntSkyPtr';
+  const fk = (S.input === 'camera' && !IS_TV && S.showVideo ? 'm3r' : 'm3'); if (fk + S.lang !== hallFree) { hallFree = fk + S.lang; const l = $('.m-free .lbl'); l.dataset.t = fk; l.textContent = tr(fk); }
   const ttl = ntActive() ? tr('ntTitle') : '❄️ 冰雪魔法 ❄️'; if (ttl !== hallTitle) { hallTitle = ttl; $('#menu h1').textContent = ttl; }
   const t = tr(k) + S.lang; if (t !== hallText) { hallText = t; $('#hallHint').innerHTML = tr(k); }
   if (k === 'hallCam' && !DW.said && !topOverlay()) { DW.said = true; say(tr('hallSay'), true); }
@@ -4997,6 +5253,7 @@ function frame(tms) {
 
   // draw
   drawBackground();
+  if (SC() === 'free') irDraw();
   drawDress();
   if (SC() === 'dance') drawDanceBack();
   if (SC() === 'hug') drawHugBack();
@@ -5033,6 +5290,7 @@ function frame(tms) {
   }
   if (S.mode !== 'menu') drawNightOver();
   drawTitle(dt);
+  if (photoSnap) { photoSnap = false; takePhoto(); }
   drawPhotoCountdown();
   requestAnimationFrame(frame);
 }
@@ -5057,18 +5315,18 @@ function startMode(m) {
   if (m === 'snowman') { snow.n = 0; snow.doneT = 0; snow.built = []; }
   if (m === 'snowman') { showHint(tr('hintSnow') + '   ' + tr(S.input !== 'camera' ? 'hintBlizPtr' : 'hintBliz'), 9); palIntro(); setTimeout(() => say(tr('introSnow'), true), 300); return; }
   if (m === 'town') genTown();
-  if (m === 'free') { fctx.clearRect(0, 0, W, H); }
+  if (m === 'free') { fctx.clearRect(0, 0, W, H); irReset(); }
   $('#btnMelt') && ($('#btnMelt').style.display = m === 'free' ? '' : 'none');
-  const intro = { sprites: 'introSprites', town: 'introTown', free: 'introFree' }[m];
-  const hint = { sprites: 'hintSprites', town: 'hintTown', free: 'hintFree' }[m];
-  const ptr = S.input !== 'camera';
+  const ptr = S.input !== 'camera', room = m === 'free' && !ptr && !IS_TV && S.showVideo;
+  const intro = { sprites: 'introSprites', town: 'introTown', free: room ? 'introRoom' : 'introFree' }[m];
+  const hint = { sprites: 'hintSprites', town: 'hintTown', free: room ? 'hintRoom' : 'hintFree' }[m];
   showHint(tr(ptr && m === 'town' ? 'hintTownPtr' : hint) + '   ' + tr(ptr ? 'hintBlizPtr' : 'hintBliz'), 9); palIntro();
   setTimeout(() => say(tr(intro), true), 300);
   if (S.input === 'camera' && camState !== 'on' && camState !== 'loading') startCamera($('#camSel').value || undefined);
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', goMenu);
@@ -5094,7 +5352,7 @@ if (!(document.fullscreenEnabled || document.documentElement.requestFullscreen))
 $('#btnFull').addEventListener('click', () => { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (e) {} });
 // melt button for free mode
 const melt = document.createElement('button'); melt.className = 'iconBtn'; melt.id = 'btnMelt'; melt.title = '融化 / clear'; melt.textContent = '🧽'; melt.style.display = 'none';
-melt.addEventListener('click', () => { meltT = 0.8; }); $('#topBtns').prepend(melt);
+melt.addEventListener('click', () => { meltT = 0.8; if (irOn() && IR.st !== 'melt' && IR.any) irMelt(); }); $('#topBtns').prepend(melt);
 
 function segBind(id, key, after) {
   const el = $(id);
@@ -5155,7 +5413,7 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

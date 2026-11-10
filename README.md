@@ -24,9 +24,20 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 | 🔥 冻住小火怪 | Endless fire-imp freezing (watch for golden ones!) |
 | 🏘️ 冰封小镇 | Turn the town into ice |
 | ⛄ 堆雪人 | Catch snowflakes to build snowmen |
-| ❄️ 画冰花 | Paint frost; hold still to grow ice flowers |
+| ❄️ 冰封我家 Freeze Home | **Freeze the real room in the camera.** Where her hand goes, the real sofa, wall and shelves turn to ice, and the ice creeps on along their edges. People stay warm. Whole room frozen = indoor snow and a photo. (Mouse / TV: this bubble is 画冰花 — paint frost, hold still to grow ice flowers.) |
 
 Towns come in three themes (village, harbor with a freezing sea, forest with mushroom houses).
+
+## Freeze my home / 冰封我家
+
+Every other game freezes things the game drew. This one freezes **her real living room** — the thing she already pretends to do.
+
+- **Wave = ice.** Where her hand goes, the real picture from the camera turns to ice: it keeps its own shapes, light and dark, so the frozen sofa is still her sofa. Frost outlines the real edges, and the ice **creeps on by itself**, fastest along the edges of the furniture.
+- **People are not frozen.** She (and anyone the camera recognises) stays warm and in colour inside the frozen room. A hand hanging at her side does nothing — she has to lift it or wave.
+- **Far corners**: a fast wave throws an ice bolt that freezes the spot where it lands; both hands up = a blizzard that starts ice in several new places; holding a hand still grows an ice flower and a big bloom of ice. And once a patch is frozen the ice never quite stops — it finishes the room by itself in about 80 s even if she only watches.
+- **Icicles** grow down from the top of the screen where the ceiling is frozen; a little house in the top-left corner fills with ice to show how much of her home is done (no numbers to read).
+- **Whole room frozen** → it snows indoors, a band of light slides over the ice, 3-2-1 and a photo of her in her frozen home goes into 📷 相册. Then the ice melts from the top and the next round freezes in a new colour (blue → teal → violet). 🧽 melts it right away.
+- Needs the camera picture ("🪞 显示我自己" on). On a computer that turns out to be slow at it, the ice is drawn at half resolution automatically.
 
 ## Freeze hug / 冰冻抱抱
 
