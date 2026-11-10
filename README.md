@@ -9,9 +9,22 @@ A wave-to-freeze motion game for little kids. Play it at **https://b1uesky.githu
 - **Camera (best)** — open in Chrome on a laptop/tablet with a camera, choose 📷, stand 1.5–3 m away, and cast the screen to the TV (HDMI or AirPlay).
   - Wave over things to freeze them · fast wave = ice shards · **both hands up = blizzard** · **clap = ice shockwave**
   - Two people can play together
+  - **The mirror finds her** — the laptop does not have to be aimed: the picture re-frames itself around the child (centred, and big enough that her arms reach every bubble and the 🏠), see below.
   - **Kids drive it themselves** — the home screen is a hall of eight floating bubbles: hold a hand on a bubble for a moment to enter that game; in a game, hold a hand on the 🏠 in the top-right corner for 2 s to come back. Wardrobe, photo “continue” and “done” buttons work the same way. If the camera was allowed before, it opens as soon as the page loads. Settings live behind ⚙️ 家长设置.
 - **Mouse / touch** — move to freeze, click/tap = homing ice magic, double-click = blizzard
 - **TV browser (LG webOS etc.)** — arrow keys + OK = homing ice magic, color keys = blizzard
+
+## The mirror finds her / 🔍 自动对准她
+
+The camera sees a whole room; a small child is a small part of it — off to one side, low in the picture (a laptop looks *up* at her), far away. But everything she can touch is laid out for the screen. So the picture is re-framed around her.
+
+- **Centred and sized for her arms.** Her shoulders become about 10 % of the screen width in games (arms then span almost half the screen from one spot; a raised hand reaches the 🏠, a lowered one the rooftops). Zoom is at most 2.2×, and nothing changes if she is already well placed.
+- **Each scene has its own framing.** In the hall her face sits in the free band under the bubbles and she stands in her kingdom; freeze dance / freeze hug / freeze my home leave more room around her; when the wardrobe or a photo is up she slides down so the “done / continue” button is at her waist.
+- **Few, slow moves.** The picture moves when it first finds her, when the scene changes, when someone walks into / out of the picture, or when she has really moved away for a couple of seconds — a step to the side to reach a bubble is not followed. It never moves while she is choosing something, during a photo countdown, or while she holds still as an ice statue; once the real room has ice on it, it only moves to keep her from dropping out of the picture.
+- **Everybody stays in.** With two people the picture widens to hold both (it waits a few seconds before tightening again — a hug looks like someone leaving). Nobody for 6 s → the whole room again.
+- **In the hall her own buttons move beside her** (👗 left · 📷 🎬 right, at arm height) instead of bottom-centre, where idle hands hang. And a hand hanging by her side no longer chooses anything: it has to be lifted to about her waist or held out to the side.
+- The run's little camera window follows her too. A clap is now measured against her own body, not the camera picture, so it also works from far away.
+- ⚙️ 家长设置 → “🔍 自动对准她” turns it off (everything is then exactly as before). `__ice.FR.log` in the console lists when and why the picture moved. Tunables: `FR_GAME` / `FR_ROOM` / `FR_HALL` = [size, height], `FR_MAX`, `FR_HOLD`.
 
 ## Modes / 模式
 

@@ -62,7 +62,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0b1a3a;font-family:
 .wand i{position:absolute;left:-6vmin;top:-6vmin;width:12vmin;height:12vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,230,255,.55) 34%,rgba(90,170,255,0) 70%);display:flex;align-items:center;justify-content:center;font-size:5vmin;font-style:normal}
 @media (min-aspect-ratio: 8/5) {
   /* eight bubbles in one arc: four small + four big (1.2x) always fill the width, whatever the screen shape */
-  .modes{flex-wrap:nowrap;max-width:none;--bw:min(24vmin,calc((100vw - 19vmin) / 8.8))}
+  #menu{--bw:min(24vmin,calc((100vw - 19vmin) / 8.8))}
+  .modes{flex-wrap:nowrap;max-width:none}
+  body.hands #hallBottom{left:0;right:0;bottom:auto;top:calc(var(--bw) + 39.2vmin);transform:none;align-items:stretch}
+  body.hands #hallBottom .opts{max-width:none;justify-content:flex-end;padding:0 1vmin}
+  body.hands #btnWardrobe{margin-right:auto}
   .mode{width:var(--bw);margin:1vmin .8vmin}
   .orb{width:calc(var(--bw) - 2vmin);height:calc(var(--bw) - 2vmin);font-size:calc(var(--bw) / 2 - 1vmin)}
   .mode.big{width:calc(var(--bw) * 1.2)}
@@ -232,6 +236,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
       <button data-v="pointer">🖱️ 鼠标 / 触屏</button>
     </div>
     <button class="tog on" id="togVideo">🪞 显示我自己</button>
+    <button class="tog on" id="togFrame"><span data-t="frT">🔍 自动对准她</span></button>
     <button class="tog on" id="togDress"><span data-t="dressT">👑 变身</span></button>
     <button class="tog on" id="togPal"><span data-t="palT">🤍 雪团团</span></button>
     <button class="tog on" id="togMovie"><span data-t="mvT">🎬 魔法电影</span></button>
@@ -255,7 +260,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     <span id="voiceRow" style="display:none;align-items:center;gap:1vh">🗣️ <select id="voiceSel"></select> <button class="tog" id="voiceTest">▶️ 试听</button></span></div>
   <div class="tips" id="tips">
     用 Chrome 打开，把电脑接到电视（HDMI 或投屏），摄像头放在电视上方或下方。<br>
-    让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<br>
+    让孩子站在离摄像头 1.5～3 米的地方，摄像头能看到她的上半身就行。<b>电脑不用摆得很准：画面会自己对准她，把她放到中间、放大到伸手够得着</b>（“🔍 自动对准她”）。<br>
     <b>孩子可以自己选游戏：把手放在泡泡上停一下就进去；游戏里把手放在右上角 🏠 上停 2 秒 = 回大厅</b><br>
     <b>🤍 雪团团</b>是会学她动作的小伙伴：大厅里跟在她身边、她举手它也举手；它会把手放在泡泡上示范怎么选游戏，游戏里用动作示范怎么玩（挥手 / 原地跑 / 跳 / 歪身体 / 接雪花），她停下来不知道做什么时会再示范一次——不用识字，也不说话<br>
     <b>大厅下面是她自己的冰雪王国</b>：建好的城堡、冻住的小镇、堆的雪人、救出的小动物都会搬进来，星星越多水晶树越多；用手摸一摸它们会动、会响<br>
@@ -292,11 +297,11 @@ let now = 0;
 
 const S = {
   mode: 'menu', stars: 0, input: 'camera',
-  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara', pal: true, playMin: '0', movie: true,
+  showVideo: true, music: true, voice: true, lang: 'zh', dress: true, stage: '', cape: 'ice', crown: 'tiara', pal: true, playMin: '0', movie: true, frame: true,
 };
 try { const saved = JSON.parse(localStorage.getItem('iceMagicPrefs') || '{}'); Object.assign(S, saved, { mode: 'menu', stars: 0 }); } catch (e) {}
 if (IS_TV) { S.input = 'pointer'; S.showVideo = false; }
-function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown, pal: S.pal, playMin: S.playMin, movie: S.movie })); } catch (e) {} }
+function savePrefs() { try { localStorage.setItem('iceMagicPrefs', JSON.stringify({ input: S.input, showVideo: S.showVideo, music: S.music, voice: S.voice, lang: S.lang, voiceName: S.voiceName || '', dress: S.dress, cape: S.cape, crown: S.crown, pal: S.pal, playMin: S.playMin, movie: S.movie, frame: S.frame })); } catch (e) {} }
 
 // ---------- text ----------
 const T = {
@@ -349,7 +354,7 @@ const T = {
     m7: '冰冻抱抱', introHug: '挥挥手，把小动物冻住！再抱一抱它，冰就化啦！爸爸妈妈也可以冻住哦！', hugSay: '冻住啦！快抱一抱，冰就化啦！', hugDone: '抱抱最温暖！',
     hintHug: '❄️ 挥手 / 伸手指着 = 冻住小动物，还有身边的人！ · 🤗 抱一抱 = 冰化啦', hintHugPtr: '👆 点两下小动物（或在它身上晃一晃）= 冻住 · 再点一下 = 抱抱，冰化啦',
     m6: '冰雕舞会', introDance: '音乐响起来，就跳舞！音乐一停，马上不动，变成冰雕！', hintDance: '💃 音乐响 = 跳舞 · 🧊 音乐一停 = 不动，变成冰雕！', hintDancePtr: '💃 音乐响 = 动动鼠标 / 手指 · 🧊 音乐一停 = 不动！', danceDone: '冰雕舞会！', stripT: '冰雕舞会', danceStop: '音乐停啦！不要动，变成冰雕！',
-    palT: '🤍 雪团团', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
+    palT: '🤍 雪团团', frT: '🔍 自动对准她', hallSay: '把手放在泡泡上，停一下，就能进去玩！', homeHint: '🏠 想换游戏？把手放在右上角的小房子上，停一下',
     ntTitle: '🌙 晚安，冰雪王国', ntTuck: '<b>✋</b>天黑啦！摸一摸亮着的小灯，哄大家睡觉', ntSky: '<b>🙌</b>大家都睡着啦！举起双手，点亮极光', ntSkyPtr: '<b>👆</b>大家都睡着啦！点一下天空，点亮极光', ntSleep: '🌙 晚安！明天再来玩',
     ntSay: '天黑啦！摸一摸亮着的小灯，哄大家睡觉吧。', ntSkySay: '大家都睡着啦！举起双手，点亮极光！', ntSkySayPtr: '大家都睡着啦！点一下天空，点亮极光！', ntBye: '晚安，冰雪王国！明天再来玩！',
     ntRise: '🌙 月亮出来啦，再玩一小会儿就说晚安', ntRiseSay: '月亮出来啦！再玩一小会儿，就要说晚安啦。',
@@ -405,7 +410,7 @@ const T = {
     m7: 'Freeze Hug', introHug: 'Wave to freeze your animal friends! Then give them a hug, and the ice melts! You can freeze Mum and Dad too!', hugSay: 'Frozen! Quick, a hug melts the ice!', hugDone: 'Hugs are the warmest!',
     hintHug: '❄️ Wave or point = freeze the animals — and the people next to you! · 🤗 A hug = the ice melts', hintHugPtr: '👆 Tap an animal twice (or wiggle over it) = freeze · tap again = a hug, the ice melts',
     m6: 'Freeze Dance', introDance: 'When the music plays, dance! When it stops, freeze like an ice statue!', hintDance: '💃 Music = dance · 🧊 Music stops = hold still and turn into an ice statue!', hintDancePtr: '💃 Music = move the mouse / finger · 🧊 Music stops = hold still!', danceDone: 'Ice statue party!', stripT: 'Freeze Dance', danceStop: 'The music stopped! Freeze like a statue!',
-    palT: '🤍 Snowy', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
+    palT: '🤍 Snowy', frT: '🔍 Auto-frame', hallSay: 'Hold your hand on a bubble to go in!', homeHint: '🏠 Want another game? Hold your hand on the little house up in the corner',
     ntTitle: '🌙 Good night, Ice Kingdom', ntTuck: '<b>✋</b>It is dark! Touch the little lights to tuck everyone in', ntSky: '<b>🙌</b>Everyone is asleep! Both hands up to light the aurora', ntSkyPtr: '<b>👆</b>Everyone is asleep! Tap the sky to light the aurora', ntSleep: '🌙 Good night! See you tomorrow',
     ntSay: 'It is dark! Touch the little lights and tuck everyone in.', ntSkySay: 'Everyone is asleep! Put both hands up and light the aurora!', ntSkySayPtr: 'Everyone is asleep! Tap the sky and light the aurora!', ntBye: 'Good night, Ice Kingdom! See you tomorrow!',
     ntRise: '🌙 The moon is up — a little more play, then good night', ntRiseSay: 'The moon is up! A little more play, and then it is time to say good night.',
@@ -3526,18 +3531,17 @@ function drawRunPip() {
   if (RUN.auto || !videoShown()) return;
   const w = Math.min(W * 0.24, H * 0.3 * 4 / 3), h = w * 3 / 4, x = 2 * U, y = H - h - 2 * U;
   ctx.save(); rrect(ctx, x, y, w, h, 2 * U); ctx.clip();
-  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, s2 = Math.max(w / vw, h / vh);
-  ctx.translate(x + w, y); ctx.scale(-1, 1); ctx.drawImage(video, (w - vw * s2) / 2, (h - vh * s2) / 2, vw * s2, vh * s2);
+  const fr = fitRect(w, h);
+  ctx.translate(x + w, y); ctx.scale(-1, 1); ctx.drawImage(video, fr.ox, fr.oy, fr.dw, fr.dh);
   ctx.restore();
   ctx.save(); rrect(ctx, x, y, w, h, 2 * U); ctx.lineWidth = U * 0.5; ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.stroke();
   if (RUN.nP === 2) {
     ctx.save(); rrect(ctx, x, y, w, h, 2 * U); ctx.clip();
-    const ox = (w - vw * s2) / 2, oy = (h - vh * s2) / 2;
     for (const P of RUN.players) {
       const lm = P.raw; if (!lm || now - P.rawT > 0.6) continue;
       const nx = vis(lm[0]) > 0.5 ? lm[0].x : (lm[11].x + lm[12].x) / 2, ny = vis(lm[0]) > 0.5 ? lm[0].y : (lm[11].y + lm[12].y) / 2 - 0.05;
-      const X = x + w - (ox + nx * vw * s2), Y = y + oy + ny * vh * s2;
-      const r = Math.max(2.2 * U, Math.hypot(lm[11].x - lm[12].x, lm[11].y - lm[12].y) * vw * s2 * 0.65);
+      const X = x + w - (fr.ox + nx * fr.dw), Y = y + fr.oy + ny * fr.dh;
+      const r = Math.max(2.2 * U, Math.hypot(lm[11].x - lm[12].x, lm[11].y - lm[12].y) * fr.dw * 0.65);
       const col = heroLook(P).badge;
       ctx.lineWidth = U * 0.55; ctx.strokeStyle = col; ctx.beginPath(); ctx.arc(X, Y, r, 0, Math.PI * 2); ctx.stroke();
       heartPath(ctx, X, Y - r - 1.6 * U, 3.2 * U); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = U * 0.3; ctx.strokeStyle = '#ffffff'; ctx.stroke();
@@ -5224,7 +5228,7 @@ function mvExport(btn) {
 function feedHand(key, x, y) {
   let h = hands.get(key);
   const t = performance.now() / 1000;
-  if (!h) { h = { x, y, vx: 0, vy: 0, speed: 0, seen: t, lastS: t, still: 0, cd: 0, trail: [], ptr: key[0] === 'm' }; hands.set(key, h); return; }
+  if (!h) { h = { k: key, x, y, vx: 0, vy: 0, speed: 0, seen: t, lastS: t, still: 0, cd: 0, trail: [], ptr: key[0] === 'm' }; hands.set(key, h); return; }
   const dt = Math.max(1 / 120, t - h.lastS);
   const jump = dist(x, y, h.x, h.y);
   if (!h.ptr && jump > 30 * U) { h.x = x; h.y = y; h.vx = h.vy = h.speed = 0; h.lastS = h.seen = t; h.fx = undefined; return; }
@@ -5275,6 +5279,15 @@ function dwellTargets() {
   if (SC() === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return [];   // she is holding still on purpose
   return [$('#btnHome')];
 }
+// a hand hanging by her side is not choosing anything: it has to be lifted to about her waist, or held out to the side
+// (now that she stands in the middle of the picture, hanging hands would otherwise rest on whatever is at the bottom)
+function dwellHandUp(h) {
+  const k = h.k; if (!k || k[0] !== 'p') return true;
+  const P = poseScr[+k[1]]; if (!P || now - poseT > 0.6 || !P.ls.v || !P.rs.v) return true;
+  const w = k[2] === 'L' ? P.lw : P.rw, sw = dist(P.ls.x, P.ls.y, P.rs.x, P.rs.y), sx = (P.ls.x + P.rs.x) / 2, sy = (P.ls.y + P.rs.y) / 2;
+  if (sw < 2 * U) return true;
+  return w.y < (P.lh.v && P.rh.v ? (P.lh.y + P.rh.y) / 2 : sy + sw * 1.45) - sw * 0.3 || Math.abs(h.x - sx) > sw * 1.35;
+}
 function dwellClear() { for (const el of DW.p.keys()) { el.classList.remove('aim'); el.style.removeProperty('--p'); } DW.p.clear(); }
 function dwellFire(el) {
   dwellClear(); DW.cool = 1.6;
@@ -5293,6 +5306,7 @@ function updateDwell(dt) {
   if (camHands.length && DW.cool <= 0 && photoT <= 0) {
     const els = dwellTargets(), vm = Math.min(innerWidth, innerHeight) / 100;
     for (const h of camHands) {
+      if (!dwellHandUp(h)) continue;
       const x = h.x / DPR, y = h.y / DPR; let best = null, bd = 1e9;
       for (const el of els) {
         const r = el.getBoundingClientRect(); if (!r.width) continue;
@@ -5313,9 +5327,10 @@ function updateDwell(dt) {
     DW.p.set(el, p); el.style.setProperty('--p', p.toFixed(3));
   }
 }
-let hallText = '', soundTipOn = null, hallTitle = '', hallFree = '';
+let hallText = '', soundTipOn = null, hallTitle = '', hallFree = '', hallHands = null;
 function updateHall() {
   let k = 'hallTap';
+  const hd = S.input === 'camera' && !IS_TV && camState === 'on' && S.frame; if (hd !== hallHands) { hallHands = hd; document.body.classList.toggle('hands', hd); }   // her buttons move beside her (see body.hands)
   if (S.input === 'camera' && !IS_TV) {
     if (camState === 'on') k = now - lastPoseSeen < 1.2 && lastPoseSeen ? 'hallCam' : 'hallLook';
     else if (camState === 'loading') k = 'hallWait';
@@ -5381,11 +5396,116 @@ async function listCameras() {
 }
 $('#camSel').addEventListener('change', e => { camState = 'off'; startCamera(e.target.value); });
 function vis(p) { return p.visibility == null ? 1 : p.visibility; }
-function videoRect() {
-  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720;
-  const sc = Math.max(W / vw, H / vh), dw = vw * sc, dh = vh * sc;
-  return { ox: (W - dw) / 2, oy: (H - dh) / 2, dw, dh };
+// ======================================================================
+// ---- 🪞 魔法镜子自己对准她 (the mirror finds her): the camera sees a whole room, and the child is a small part of it —
+//      off to one side, low in the picture (a laptop looks UP at a small child), far away. But everything she can touch
+//      is laid out for the screen, not for where she happens to stand: bubbles from edge to edge, the 🏠 in the top corner.
+//      So the picture is re-framed around her: she is in the middle, and big enough that her arms reach all of it,
+//      wherever the laptop was put down. Every hand, crown and ice follows, because they all go through videoRect().
+//      Moves are few, slow, and never while she is choosing something or holding still on purpose. ----
+const FR = { z: 1, cx: 0.5, cy: 0.5, a: null, b: null, t: 0, dur: 0, ideal: null, bad: 0, why: '', seen: -9, framed: false, force: false, n: 0, nT: -9, log: [] };   // (log: when and why the picture moved — __ice.FR.log in the console)
+const FR_MAX = 2.2;       // never closer than this (the picture gets soft)
+// per scene: [how big — her shoulders as a share of the screen width, where — her shoulders as a share of the screen height]
+const FR_GAME = [0.10, 0.42];    // games: her arms span almost half the screen from one spot; a raised hand reaches the 🏠, a lowered one the rooftops
+const FR_ROOM = [0.08, 0.40];    // games that want more room around her (freeze dance: feet in view · freeze & hug · freeze my home)
+const FR_HALL = [0.085, 0.65];   // the hall: her face in the free band under the bubbles, her body standing in her kingdom;
+                                 // also the wardrobe / a photo: the "done" button is then at the height of her waist
+const FR_HOLD = { find: 0.5, scene: 0, wide: 0.6, tight: 2.5, side: 2, height: 2 };   // how long a reason must last before the picture moves
+function frBox() { return SC() === 'runner' ? [4, 3] : [W, H]; }   // (the run shows her in a small 4:3 window)
+function frKey() { return topOverlay() ? 'panel' : S.mode === 'menu' ? 'hall' : SC(); }
+function frScene() {
+  const s = frKey();
+  if (s === 'panel') return FR_HALL;
+  if (s === 'hall') return W / H >= 1.6 ? FR_HALL : [FR_HALL[0], 0.45];   // (4:3 / phone: the bubbles are in two or three rows, there is no free band)
+  return s === 'dance' || s === 'hug' || s === 'free' ? FR_ROOM : FR_GAME;
 }
+function frWin(z) {   // how much of the camera picture is on screen at zoom z (as fractions of its width / height)
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, [bw, bh] = frBox(), sc = Math.max(bw / vw, bh / vh) * z;
+  return [bw / (sc * vw), bh / (sc * vh)];
+}
+function fitRect(w, h) {   // where the camera picture is drawn in a w×h box (cover), framed around the players
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720;
+  const sc = Math.max(w / vw, h / vh) * FR.z, dw = vw * sc, dh = vh * sc;
+  return { ox: clamp(w / 2 - FR.cx * dw, w - dw, 0), oy: clamp(h / 2 - FR.cy * dh, h - dh, 0), dw, dh };
+}
+function frReset() { FR.z = 1; FR.cx = FR.cy = 0.5; FR.a = FR.b = FR.ideal = null; FR.bad = 0; FR.framed = false; FR.why = ''; }
+function frLocked() {   // 2 = the picture must not move at all · 1 = only to keep someone from dropping out of it
+  if (photoT > 0) return 2;                                           // 3-2-1: hold the picture
+  for (const p of DW.p.values()) if (p > 0.15) return 2;              // she is choosing something: her hand must stay where it is
+  const s = SC();
+  if (s === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return 2;   // she is holding still on purpose
+  if (s === 'free' && irOn() && IR.any && !topOverlay()) return 1;    // the ice sits on the real room: moving the picture would slide the room out from under it
+                                                                      // (not while her photo is up: the "continue" button has to come within reach)
+  return 0;
+}
+// the best framing for the people the camera sees ({x, y}: middle of the shoulders, u: body size in camera pixels)
+function frIdeal(pp) {
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, [bw, bh] = frBox(), sc0 = Math.max(bw / vw, bh / vh);
+  const kid = pp.reduce((a, b) => b.u < a.u ? b : a), [size, ys] = frScene();
+  let z = size * Math.min(bw, bh * 16 / 9) / (kid.u * sc0);
+  let x0 = 1, x1 = 0, y0 = 1, y1 = 0;
+  for (const p of pp) { const ux = p.u / vw, uy = p.u / vh; x0 = Math.min(x0, p.x - 1.4 * ux); x1 = Math.max(x1, p.x + 1.4 * ux); y0 = Math.min(y0, p.y - 1.9 * uy); y1 = Math.max(y1, p.y + 1.6 * uy); }
+  if (pp.length > 1) z = Math.min(z, bw / (sc0 * vw) / (x1 - x0 + 0.04), bh / (sc0 * vh) / (y1 - y0 + 0.02));   // everybody stays in the picture
+  z = clamp(z, 1, FR_MAX);
+  // low in the picture: come closer until there is room to slide down to her, so a raised hand reaches what it should
+  if (pp.length === 1) z = clamp(Math.max(z, bh / (sc0 * vh) * (0.93 - ys) / Math.max(0.05, 1 - kid.y)), 1, FR_MAX);
+  // a panel is open and she is high in the picture: come closer until there is room to slide up, so the "done" button is at her waist, not below her reach
+  if (pp.length === 1 && frKey() === 'panel') z = clamp(Math.max(z, Math.min(1.5 * z, bh / (sc0 * vh) * (ys - 0.07) / Math.max(0.05, kid.y))), 1, FR_MAX);
+  const [ww, wh] = frWin(z);
+  let cx = (x0 + x1) / 2, cy = kid.y + (0.5 - ys) * wh;
+  if (pp.length > 1) cy = Math.min(cy, y0 + wh / 2 - 0.01);            // the tallest head stays in
+  return { z, cx: clamp(cx, ww / 2, 1 - ww / 2), cy: clamp(cy, wh / 2, 1 - wh / 2), ys };
+}
+function frGo(to, dur, why) { FR.a = { z: FR.z, cx: FR.cx, cy: FR.cy }; FR.b = { z: to.z, cx: to.cx, cy: to.cy }; FR.t = 0; FR.dur = dur; FR.bad = 0; FR.log.push([+now.toFixed(1), why, +to.z.toFixed(2)]); if (FR.log.length > 60) FR.log.shift(); }
+// called for every camera frame with the people in it
+function frObserve(lms, fdt) {
+  if (!S.frame || IS_TV) return;
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720;
+  const pp = lms.map(lm => {
+    const ls = lm[11], rs = lm[12], lh = lm[23], rh = lm[24], x = (ls.x + rs.x) / 2, y = (ls.y + rs.y) / 2;
+    let u = Math.hypot((ls.x - rs.x) * vw, (ls.y - rs.y) * vh);
+    if (vis(lh) > 0.6 && vis(rh) > 0.6) u = Math.max(u, Math.hypot(((lh.x + rh.x) / 2 - x) * vw, ((lh.y + rh.y) / 2 - y) * vh) * 0.66);   // turned sideways: shoulders look narrow, the back does not
+    return { x, y, u: Math.max(u, vw * 0.03) };
+  });
+  if (!pp.length) return;
+  FR.seen = now;
+  if (pp.length !== FR.n) { FR.n = pp.length; FR.nT = now; FR.ideal = null; }
+  const key = frKey(); if (key !== FR.key) { FR.key = key; FR.force = true; }
+  if (FR.force) FR.ideal = null;                                        // a new scene wants its own framing right away, not a blend
+  const I = frIdeal(pp), k = FR.ideal ? Math.min(1, fdt / 0.35) : 1;
+  if (!FR.ideal) FR.ideal = I; else { const J = FR.ideal; J.z += (I.z - J.z) * k; J.cx += (I.cx - J.cx) * k; J.cy += (I.cy - J.cy) * k; J.ys = I.ys; }
+  const lk = frLocked(); if (lk === 2) { FR.bad = 0; return; }
+  const J = FR.ideal, C = FR.b || FR, [ww, wh] = frWin(C.z), kid = pp.reduce((a, b) => b.u < a.u ? b : a);
+  const sx = 0.5 + (kid.x - C.cx) / ww, sy = 0.5 + (kid.y - C.cy) / wh, r = J.z / C.z;
+  let why = '';
+  if (!FR.framed) why = 'find';
+  else if (FR.force) why = 'scene';
+  else if (r < 0.85 || pp.some(p => Math.abs((p.x - C.cx) / ww) > 0.44)) why = 'wide';     // someone is (nearly) out of the picture
+  else if (r > 1.18) why = now - FR.nT > 4 ? 'tight' : '';                                  // (someone just left: wait, they may come back — a hug looks like that too)
+  else if (Math.abs(sx - 0.5) > 0.32) why = 'side';                                          // a step to the side to reach a bubble is fine; walking off is not
+  else if (sy > J.ys + 0.13 || sy < J.ys - 0.15) why = 'height';                             // sat down / stood up (a jump is over too soon to count)
+  if (why && Math.abs(J.cx - C.cx) / ww < 0.04 && Math.abs(J.cy - C.cy) / wh < 0.04 && Math.abs(r - 1) < 0.06) { why = ''; if (!FR.framed) FR.framed = true; FR.force = false; }   // nothing to gain
+  if (lk && why !== 'wide') why = '';
+  if (why !== FR.why) { FR.why = why; FR.bad = 0; }
+  if (!why) return;
+  FR.bad += fdt;
+  if (FR.bad >= (lk ? 3 : FR_HOLD[why])) {
+    const mag = Math.max(Math.abs(J.cx - C.cx) / ww, Math.abs(J.cy - C.cy) / wh, Math.abs(Math.log(r)));
+    frGo(J, why === 'scene' ? clamp(0.6 + 1.6 * mag, 0.7, 1.1) : clamp(0.7 + 1.6 * mag, 0.9, 1.7), why); FR.framed = true; FR.force = false; FR.why = '';
+  }
+}
+// every drawn frame: glide to the framing that was chosen
+function frUpdate(dt) {
+  if (!S.frame || IS_TV || (camState !== 'on' && camState !== 'loading')) { if (FR.z !== 1 || FR.cx !== 0.5 || FR.cy !== 0.5 || FR.framed) frReset(); return; }
+  const lk = frLocked(); if (lk === 2) { FR.b = null; return; }         // stop right where it is
+  if (FR.framed && !FR.b && !lk && camState === 'on' && now - FR.seen > 6) { frGo({ z: 1, cx: 0.5, cy: 0.5 }, 2.2, 'gone'); FR.framed = false; FR.ideal = null; FR.n = 0; }   // nobody there: show the whole room again
+  if (!FR.b) return;
+  FR.t += dt; const q = clamp(FR.t / FR.dur, 0, 1), k = q * q * (3 - 2 * q), a = FR.a, b = FR.b;
+  FR.z = a.z * Math.pow(b.z / a.z, k); FR.cx = a.cx + (b.cx - a.cx) * k; FR.cy = a.cy + (b.cy - a.cy) * k;
+  if (q >= 1) FR.b = null;
+}
+
+function videoRect() { return fitRect(W, H); }
 function mapPt(nx, ny) { const r = videoRect(); return [W - (r.ox + nx * r.dw), r.oy + ny * r.dh]; }
 // a real person: head and both shoulders clearly visible, head above the shoulders, sensible body size
 let poseOkFrames = 0;
@@ -5408,10 +5528,14 @@ function detectPose() {
   const tms = performance.now();
   let res; try { res = landmarker.detectForVideo(video, tms); } catch (e) { return; }
   const fdt = lastDetect ? (tms - lastDetect) / 1000 : 0.033; lastDetect = tms;
-  const lms = ((res && res.landmarks) || []).filter(plausiblePose);
+  onPoses((res && res.landmarks) || [], fdt);
+}
+function onPoses(all, fdt) {
+  const lms = all.filter(plausiblePose);
   poseOkFrames = lms.length ? poseOkFrames + 1 : 0;
   if (poseOkFrames < 5) { lms.length = 0; }
   if (lms.length) lastPoseSeen = now;
+  frObserve(lms, fdt);
   if (lms.length) {
     poseT = now;
     poseScr = lms.map(lm => { const g = k => { const q = mapPt(lm[k].x, lm[k].y); return { x: q[0], y: q[1], v: vis(lm[k]) > 0.5 }; }; return { nose: g(0), le: g(2), re: g(5), ls: g(11), rs: g(12), le2: g(13), re2: g(14), lw: g(15), rw: g(16), lh: g(23), rh: g(24) }; });
@@ -5421,9 +5545,10 @@ function detectPose() {
     // clap = ice shockwave
     const lw0 = lm[15], rw0 = lm[16];
     if (vis(lw0) > 0.65 && vis(rw0) > 0.65) {
-      const dw = Math.hypot(lw0.x - rw0.x, lw0.y - rw0.y);
-      if (dw > 0.22) clapArm[i] = now;
-      else if (dw < 0.08 && now - (clapArm[i] || -9) < 0.7 && now - (clapCd[i] || -9) > 1.2) {
+      const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, bu = Math.max(0.03 * vw, Math.hypot((lm[11].x - lm[12].x) * vw, (lm[11].y - lm[12].y) * vh));
+      const dw = Math.hypot((lw0.x - rw0.x) * vw, (lw0.y - rw0.y) * vh) / bu;   // in shoulder widths
+      if (dw > 2.1) clapArm[i] = now;
+      else if (dw < 0.8 && now - (clapArm[i] || -9) < 0.7 && now - (clapCd[i] || -9) > 1.2) {
         clapCd[i] = now; clapArm[i] = -9;
         const q = mapPt((lw0.x + rw0.x) / 2, (lw0.y + rw0.y) / 2);
         iceBlast(q[0], q[1], true); floatText(q[0], q[1] - 8 * U, '💥', '#ffffff', 7 * U);
@@ -5475,7 +5600,7 @@ function drawParticles() {
 let lastT = performance.now(), foundAt = 0, lastPhBtn = null;
 function frame(tms) {
   const dt = Math.min(0.05, Math.max(0, (tms - lastT) / 1000)); lastT = tms; now += dt;
-  detectPose();
+  detectPose(); frUpdate(dt);
   updateHands(dt); updateParticles(dt); updateDwell(dt); updateNight(dt);
   const sc = SC();
   if (sc === 'sprites' || sc === 'boss') updateSprites(dt);
@@ -5554,7 +5679,7 @@ function frame(tms) {
 // ---------- mode control ----------
 function startMode(m) {
   if (ntActive()) return;   // everyone is asleep
-  mvKill(); MV.gameT0 = now; MV.gameN = 0;
+  mvKill(); MV.gameT0 = now; MV.gameN = 0; FR.force = true;
   NT.started = true;
   ensureAudio(); dwellClear(); DW.cool = 1.5; $('#btnHome').style.display = '';
   if (S.input === 'camera' && !IS_TV && !DW.homeTip) { DW.homeTip = true; setTimeout(() => { if (S.mode !== 'menu' && camState === 'on') { showHint(tr('homeHint'), 7); palCoach([['home', 5]]); } }, 12000); }
@@ -5583,7 +5708,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { FR.force = true; $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', () => { if (MV.play && S.mode === 'menu') mvClose(); else goMenu(); });
@@ -5632,7 +5757,7 @@ function applyLang() {
 segBind('#inputSeg', 'input', () => { if (S.input === 'camera') { ensureAudio(); startCamera(); } });
 segBind('#langSeg', 'lang', () => { S.voiceName = ''; savePrefs(); applyLang(); fillVoiceSel(); });
 segBind('#napSeg', 'playMin', () => { NT.bonus = false; });
-togBind('#togVideo', 'showVideo'); togBind('#togDress', 'dress'); togBind('#togMusic', 'music'); togBind('#togPal', 'pal'); togBind('#togVoice', 'voice'); togBind('#togMovie', 'movie', () => { if (!S.movie) mvClear(); });
+togBind('#togVideo', 'showVideo'); togBind('#togFrame', 'frame', () => { FR.force = true; }); togBind('#togDress', 'dress'); togBind('#togMusic', 'music'); togBind('#togPal', 'pal'); togBind('#togVoice', 'voice'); togBind('#togMovie', 'movie', () => { if (!S.movie) mvClear(); });
 applyLang();
 if (IS_TV) {
   $('#inputSeg').style.display = 'none'; $('#togVideo').style.display = 'none'; $('#togDress').style.display = 'none'; $('#btnWardrobe').style.display = 'none';
@@ -5671,11 +5796,11 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 
 // camera already allowed on an earlier visit: open it right away so the child can pick a game with her hands
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
-if (IS_TV) $('#togMovie').style.display = 'none';
+if (IS_TV) { $('#togMovie').style.display = 'none'; $('#togFrame').style.display = 'none'; }
 mvLoad();
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { FR, frReset, frIdeal, fitRect, videoRect, onPoses, MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>
