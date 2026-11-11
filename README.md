@@ -127,6 +127,16 @@ Everything she does in the games happens once and is gone. This keeps it — and
 - **For grown-ups: "💾 保存视频"** (bottom left while the movie plays, or "🎬 保存今天的电影" under the sleeping kingdom) saves it as a 1280×720 video file (MP4 where the browser can, otherwise WebM) to send to family.
 - **Private**: the clips live only in this browser (IndexedDB), nothing is uploaded, only the latest day is kept, and "🎬 魔法电影" in ⚙️ 家长设置 switches it off and deletes them. Camera mode only — nothing is recorded with mouse / touch / TV.
 
+## The play report & the helping hand / 📋 试玩报告 · 🪄 帮一把
+
+Every feature above was built and checked in a headless browser with a pretend camera — never with the real camera, the real TV and real children. So the game now **measures real play itself**.
+
+- **It counts, while they play**: can she choose a bubble with her hand (chosen / "nearly" / helped), who starts the games and who goes back to the hall (her hand, or a grown-up's click), frames per second, how often the pose model looks, how much of the time it sees someone, how big she is in the picture and where she ends up on the screen after the picture has framed her, how much the tracked points tremble, how close a hand ever comes to the 🏠, and per game: time, stars, how often Snowy had to come back because she had stopped; freeze dance (how long until a statue, how often the 10 s limit was needed, how much she "moves" while holding still), freeze hug (hugs recognised vs. ice that thawed alone), freeze my home, drawings (taken automatically vs. by the grown-up's 📸), the movie, the framing moves, good night. And any error the page hit.
+- **Numbers only** — counts and averages, no pictures, no sound. They stay in this browser (`localStorage` `iceMagicReport`, the last 4 sittings) and go nowhere by themselves.
+- **⚙️ 家长设置 → 📋 试玩报告** (also on the sleeping screen after good night): a few plain lines of what stands out (✅ / ⚠️ — "maybe", not a verdict), the full report as text, **Copy** (paste it to Claude, who uses it in the next round instead of guessing), **Share** where the browser has it, and **QR to my phone**: the whole report is packed into the page's own address (`#r=…`, deflate + base64) and shown as a QR code; the phone opens the same page, which shows the report with Copy / Share. Nothing passes through a server.
+- **🪄 The helping hand**: when the ring on a bubble / button / 🏠 got well on its way (35 %) and her hand slipped off, that is a near miss. Two near misses on the same thing in a row and it **helps**: it grows and glows gold, reaches twice as far for her hand, fills 30 % faster and forgives a wobble (the ring drains three times slower). It goes back to normal when she has chosen it, or about 12 s after she stops trying. A hand just passing by is never a near miss.
+- Code: `RP` / `rp(key)` / `rpV(key, value)` (the counters, sprinkled through the code), `rpFrame` / `rpPose` (per frame / per look of the pose model), `rpText` / `rpNotes` (the report), `qrMake` (QR encoder, byte mode, level L — checked bit for bit against a reference library), `rpPack` / `rpUnpack`; the helping hand lives in `updateDwell` (`DW_NEAR`, `DW_MEM`, `DW_HELP`, `.help`).
+
 ## Extras
 
 - 👑 **Dress-up** — with the camera on, she wears an ice crown and a cape that flows *behind* her
