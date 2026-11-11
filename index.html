@@ -84,7 +84,7 @@ body.asleep #btnReportN{display:inline-block}
   .modes{flex-wrap:nowrap;max-width:none}
   body.hands #hallBottom{left:0;right:0;bottom:auto;top:calc(var(--bw) + 39.2vmin);transform:none;align-items:stretch}
   body.hands #hallBottom .opts{max-width:none;justify-content:flex-end;padding:0 1vmin}
-  body.hands #btnDraw{margin-right:auto}
+  body.hands #btnHunt{margin-right:auto}
   .mode{width:var(--bw);margin:1vmin .8vmin}
   .orb{width:calc(var(--bw) - 2vmin);height:calc(var(--bw) - 2vmin);font-size:calc(var(--bw) / 2 - 1vmin)}
   .mode.big{width:calc(var(--bw) * 1.2)}
@@ -152,6 +152,8 @@ body.asleep #nightSum:not(:empty){display:block}
 body.drawing.drawptr #drawBox{display:flex}
 #btnPick{display:none}
 body.drawing #btnPick{display:inline-block}
+#btnSkip{display:none}
+body.hunting #btnSkip{display:inline-block}
 #drList{display:inline-flex;flex-wrap:wrap;gap:1vmin;margin-left:1.2vmin}
 .drChip{position:relative;width:9vmin;height:9vmin;border-radius:1.6vmin;border:.25vmin solid rgba(255,255,255,.5);background:rgba(20,50,110,.55);cursor:pointer;padding:.5vmin}
 .drChip img{width:100%;height:100%;object-fit:contain}
@@ -225,6 +227,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
 </div></div>
 <div class="hud" id="hint" style="opacity:0"></div>
 <div class="hud" id="topBtns">
+  <button class="iconBtn" id="btnSkip" title="换一个颜色 / another colour (X)">⏭️</button>
   <button class="iconBtn" id="btnPhoto" title="拍照" style="display:none">📸</button>
   <button class="iconBtn" id="btnNight" title="晚安 Good night (N)" style="display:none">🌙</button>
   <button class="iconBtn" id="btnFull" title="全屏">⛶</button>
@@ -251,6 +254,7 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     <div class="opts">
       <button class="tog kid" id="btnWardrobe" data-dwell>👗 衣橱</button>
       <button class="tog kid" id="btnDraw" data-dwell>🎨 <span data-t="drBtn">画画</span></button>
+      <button class="tog kid" id="btnHunt" data-dwell style="display:none">🌈 <span data-t="huBtn">寻宝</span></button>
       <button class="tog kid" id="btnGallery" data-dwell style="display:none"><span data-t="galT">📷 相册</span></button>
       <button class="tog kid" id="btnMovie" data-dwell style="display:none">🎬 电影</button>
     </div>
@@ -305,9 +309,10 @@ body.asleep #btnMovieSaveN.has{display:inline-block}
     <b>🌙 晚安</b>：该休息时点右上角 🌙（或按 N）——月亮先升起来提醒她，然后大厅变成夜晚：她摸一摸亮着的小灯，哄王国里的大家睡觉，再举起双手点亮极光。选了“玩多久”，到时间月亮会自己升起。想再玩：按住“☀️ 再玩一会儿”或再按 N<br>
     <b>🎬 魔法电影</b>：开着摄像头玩的时候，游戏会悄悄留下精彩瞬间（暴风雪、变成冰雕、抱抱、整个家冻住、过关…），自动剪成一部约半分钟的小电影。说晚安、点亮极光之后，它会在夜空里放映；平时在大厅把手放在“🎬 电影”上也能看（把手放在右上角 🏠 上 = 关掉）。“💾 保存视频”可以把它存成视频文件发给家人。画面只存在这台电脑的浏览器里，不会上传；只留最近一天的；不想录就关掉“🎬 魔法电影”（已有的片段会一起删掉）<br>
     <b>🎨 画画（把画变活）</b>：让孩子在纸上画一个小伙伴（白纸、粗一点的彩笔最清楚），在大厅选“🎨 画画”，把画举到电脑摄像头前面一两步远——画的四周亮起来，3-2-1，它就从纸上下来、活了，住进她的冰雪王国，还会来冰雕舞会和冰冻抱抱。屏幕会一直等她画完；两个孩子可以一人一张，同一张画只收一次。没认出来时，大人点右上角 📸（或按空格）拍下框里的东西，或点 🖼️ 选一张照片。画只存在这台电脑的浏览器里，最多留 8 个；不想要的在上面“🎨 画的小伙伴”那一行点一下就送回家<br>
+    <b>🌈 彩虹寻宝（离开屏幕去找东西）</b>：在大厅选“🌈 寻宝”。游戏先看一眼房间，然后要一种房间里没有的颜色——孩子去家里找一个那种颜色的东西（玩具、杯子、袜子都行），举到电脑摄像头前面一两步远，它就被冻成一颗冰宝石，彩虹亮起一道；别的还缺的颜色拿来也算。找齐 = 一道彩虹 + 一张照片，彩虹搬进王国。没认出来时：大人点右上角 📸（或空格）= 算她找到了；家里没有这种颜色：点 ⏭️（或 X）换一个。颜色鲜艳、巴掌大以上的东西最好认；橙色 / 棕色 / 肤色不在游戏里（家里到处都是）<br>
     <b>📋 试玩报告</b>：游戏会自己记下真实试玩的情况——孩子能不能用手选中泡泡、够不够得到 🏠、画面流不流畅、站得多远、哪个游戏里她停住了、抱抱有没有被认出来……玩完后点上面的“📋 试玩报告”（说了晚安之后屏幕底部也有），把它<b>复制给 Claude</b>（或扫码带到手机上再发），下一轮就能按真实情况来改。只有次数和平均数，没有画面和声音，只存在这台电脑的浏览器里<br>
     <b>🪄 帮一把</b>：她在同一个泡泡 / 按钮上连续两次“差一点就选中”，它会变大、发金光——伸手范围加倍、进度走得更快、手晃一下也不会清零；选中或约 12 秒后恢复原样<br>
-    快捷键：空格 = 暴风雪（画画时 = 拍下画），P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单，N = 晚安
+    快捷键：空格 = 暴风雪（画画时 = 拍下画，寻宝时 = 算她找到了），P = 拍照，M = 显示/隐藏摄像头画面，Esc = 回菜单，N = 晚安，寻宝时 X = 换一个颜色
   </div>
   <button class="bigbtn" id="parentClose"><span data-t="wDone">✨ 好了</span></button>
 </div></div>
@@ -412,6 +417,8 @@ const T = {
     hallCam: '<b>✋</b>把手放在泡泡上，停一下，就能进去玩！', hallLook: '<b>🙋</b>站到摄像头前面，让我看到你！', hallWait: '⏳ 正在打开魔法眼睛（摄像头）…',
     hallTap: '<b>👆</b>点一个泡泡开始玩', hallTapCam: '<b>👆</b>点一个泡泡开始 · 之后用手就能自己选',
     kdFirst: '✨ 这是你的冰雪王国！', kdGrow: '✨ 你的冰雪王国变大啦！',
+    huBtn: '寻宝', huC: ['红色', '黄色', '绿色', '蓝色', '紫色', '粉色'], introHunt: n => `雪团团想做一道彩虹！找一个${n}的东西，举起来给它看！`, huSay: n => `现在找${n}！`, huLook: '👀 雪团团在看看你的家…',
+    hintHunt: n => `🌈 找一个【${n}】的东西，举到电脑前面！（大人：📸 算找到 · ⏭️ 换颜色）`, huNear: '👀 看到一点点了，再拿近一点！', huGot: n => `${n}！`, huDone: '🌈 彩虹做好啦！', huPhoto: '彩虹做好啦！拍一张！三，二，一！', kdRainbow: '🌈 你的彩虹搬进冰雪王国啦！',
     drBtn: '画画', drPick: '选一张画的照片', drRowT: '🎨 画的小伙伴（点一下 = 送它回家）', drAlive: '✨ 活啦！', introDraw: '画一个小伙伴，把画举到电脑前面，它就会活过来！',
     hintDraw: '🎨 把画举到电脑摄像头前面，它就活了（大人可点 📸 / 🖼️）', hintDrawPtr: '🖼️ 选一张画的照片（手机上可以直接拍），它就活了',
     drSmall: '👀 把画再拿近一点', drClose: '↔️ 太近啦，往后退一点点', drBlank: '🤔 没看清上面的画，再举一次',
@@ -475,6 +482,8 @@ const T = {
     hallCam: '<b>✋</b>Hold your hand on a bubble to go in!', hallLook: '<b>🙋</b>Stand in front of the camera!', hallWait: '⏳ Opening the magic eye (camera)…',
     hallTap: '<b>👆</b>Tap a bubble to play', hallTapCam: '<b>👆</b>Tap a bubble to start · then pick with your hands',
     kdFirst: '✨ This is your ice kingdom!', kdGrow: '✨ Your ice kingdom grew!',
+    huBtn: 'Colours', huC: ['Red', 'Yellow', 'Green', 'Blue', 'Purple', 'Pink'], introHunt: n => `Snowy wants to make a rainbow! Find something ${n.toLowerCase()}, and hold it up!`, huSay: n => `Now find ${n.toLowerCase()}!`, huLook: '👀 Snowy is looking at your home…',
+    hintHunt: n => `🌈 Find something ${n.toUpperCase()} and hold it up! (grown-ups: 📸 found · ⏭️ skip)`, huNear: '👀 I can see a bit of it — closer!', huGot: n => `${n}!`, huDone: '🌈 You made a rainbow!', huPhoto: 'You made a rainbow! Photo time! Three, two, one!', kdRainbow: '🌈 Your rainbow has moved into your kingdom!',
     drBtn: 'Draw', drPick: 'Choose a photo of a drawing', drRowT: '🎨 Drawn friends (tap one = send it home)', drAlive: '✨ It is alive!', introDraw: 'Draw a friend, hold your drawing up to the computer, and it will come alive!',
     hintDraw: '🎨 Hold your drawing up to the camera — it comes alive (grown-ups: 📸 / 🖼️)', hintDrawPtr: '🖼️ Tap to choose a photo of a drawing (on a phone: take one) — it comes alive',
     drSmall: '👀 Bring the drawing a little closer', drClose: '↔️ Too close — one small step back', drBlank: '🤔 I could not see the drawing — try again',
@@ -2501,10 +2510,10 @@ function drawHills() {
 function drawBackground() {
   const sc = SC();
   if (sc === 'runner') { drawRunSky(); return; }
-  if (videoShown() || (sc === 'draw' && drCam())) {   // (the easel always shows the mirror: she has to see where her sheet is)
+  if (videoShown() || ((sc === 'draw' || sc === 'hunt') && drCam())) {   // (the easel always shows the mirror: she has to see where her sheet is)
     const r = videoRect();
     ctx.save(); ctx.translate(W, 0); ctx.scale(-1, 1); ctx.drawImage(video, r.ox, r.oy, r.dw, r.dh); ctx.restore();
-    const room = irOn() || sc === 'draw';
+    const room = irOn() || sc === 'draw' || sc === 'hunt';
     ctx.fillStyle = room ? 'rgba(15,40,95,0.12)' : 'rgba(15,40,95,0.38)'; ctx.fillRect(0, 0, W, H);
     const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.95);
     vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, room ? 'rgba(10,25,70,0.3)' : 'rgba(10,25,70,0.55)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
@@ -3855,6 +3864,7 @@ function kdGhost(e) {
 }
 function drawKingdom() {
   const u = KD.u;
+  drawKingdomRainbow();
   // snow bank across the bottom of the hall
   ctx.fillStyle = 'rgba(190,218,246,0.9)'; ctx.beginPath(); ctx.moveTo(0, H);
   for (let x = 0; x <= W + 1; x += W / 36) ctx.lineTo(x, H - 18.5 * u - Math.sin(x / W * 7 + 1) * 1.5 * u);
@@ -4353,6 +4363,356 @@ function drawDrawFront() {
 }
 
 // ======================================================================
+// ---- 🌈 彩虹寻宝 (the rainbow hunt): the game names a COLOUR, and she goes and finds something of that colour — anywhere in her home —
+//      and holds it up. The thing is frozen into an ice gem, its colour shoots up into a band of a rainbow over her room.
+//      All the colours found = a rainbow: a photo under it, and the rainbow moves into her kingdom.
+//      It needs no pose at all (the little sister can carry a toy to the screen as well as anybody), it sends them AWAY from the screen,
+//      and it cannot be lost. How it sees: before it asks, it looks at the room and notes which colours are already there and where
+//      (and what the children are wearing); it only asks for colours that are missing, and "found" = a NEW patch of that colour. ----
+const HU_W = 160, HU_H = 90;           // the finder looks at the camera picture this small, eight times a second
+// the six colours it knows: hue range in degrees (red wraps round 0), least saturation, least brightness. The warm band 9°–42°
+// (orange, brown, skin, wood, lamplight) is left out on purpose: everything in a home is that colour.
+const HU_COL = [
+  { k: 'red', rgb: [240, 68, 68], h0: 347, h1: 8, s: 0.58, v: 0.33, eg: ['🍎', '🍓', '🚒'] },
+  { k: 'yellow', rgb: [255, 212, 60], h0: 43, h1: 68, s: 0.5, v: 0.5, eg: ['🍌', '⭐', '🐥'] },
+  { k: 'green', rgb: [80, 204, 108], h0: 78, h1: 165, s: 0.32, v: 0.2, eg: ['🐸', '🥦', '🍀'] },
+  { k: 'blue', rgb: [76, 148, 255], h0: 192, h1: 250, s: 0.4, v: 0.25, eg: ['🐳', '💧', '🧢'] },
+  { k: 'purple', rgb: [166, 108, 240], h0: 256, h1: 294, s: 0.28, v: 0.25, eg: ['🍇', '🔮', '☂️'] },
+  { k: 'pink', rgb: [255, 128, 194], h0: 302, h1: 343, s: 0.28, v: 0.42, eg: ['🌸', '🐷', '🎀'] }];
+const HU_MIN = 45;        // a new patch this big (cells of the 160×90 picture) is "she is showing me something" — about a 12 cm toy at 1.5 m
+const HU_NEAR = 16;       // …this big: "I can see it — closer!"
+const HU_HOLD = 0.34;     // it has to be there this long (three looks)
+const HU_SHOW = 3.0;      // how long "found!" takes
+const HU_MAXN = 5;        // at most this many colours in one rainbow
+// which of the six colours is this pixel? (-1 = none)   — pure pixel functions, no game state
+function huHue(r, g, b) {   // [hue 0..360, saturation 0..1, value 0..1]
+  const mx = r > g ? (r > b ? r : b) : (g > b ? g : b), mn = r < g ? (r < b ? r : b) : (g < b ? g : b), df = mx - mn;
+  if (!df) return [0, 0, mx / 255];
+  let h = mx === r ? ((g - b) / df) % 6 : mx === g ? (b - r) / df + 2 : (r - g) / df + 4; h *= 60; if (h < 0) h += 360;
+  return [h, df / mx, mx / 255];
+}
+function huClass(d, n, out) {
+  for (let i = 0, j = 0; i < n; i++, j += 4) {
+    const [h, s, v] = huHue(d[j], d[j + 1], d[j + 2]); let c = -1;
+    if (s > 0.2) for (let k = 0; k < 6; k++) { const C = HU_COL[k]; if ((C.h0 > C.h1 ? h >= C.h0 || h <= C.h1 : h >= C.h0 && h <= C.h1) && s >= C.s && v >= C.v) { c = k; break; } }
+    out[i] = c;
+  }
+  return out;
+}
+// "is there anything even NEARLY this colour here already?" — one bit per colour, with looser limits (hue ±8°, saturation −0.12, brightness −0.08),
+// so that a wall which is almost blue never becomes "a new blue thing" when the camera's white balance wanders. Bits are OR-ed into `bits`.
+function huMask(d, n, bits) {
+  for (let i = 0, j = 0; i < n; i++, j += 4) {
+    const [h, s, v] = huHue(d[j], d[j + 1], d[j + 2]); if (s <= 0.12) continue; let m = 0;
+    for (let k = 0; k < 6; k++) { const C = HU_COL[k], h0 = (C.h0 + 352) % 360, h1 = (C.h1 + 8) % 360; if ((h0 > h1 ? h >= h0 || h <= h1 : h >= h0 && h <= h1) && s >= C.s - 0.12 && v >= C.v - 0.08) m |= 1 << k; }
+    bits[i] |= m;
+  }
+  return bits;
+}
+function huGrow(bits, w, h, r) {   // every bit spreads r cells in each direction (the room is remembered a little fatter than it is)
+  const n = w * h, t = new Uint8Array(n), o = new Uint8Array(n);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { let m = 0; for (let k = Math.max(0, x - r), e = Math.min(w - 1, x + r); k <= e; k++) m |= bits[y * w + k]; t[y * w + x] = m; }
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { let m = 0; for (let k = Math.max(0, y - r), e = Math.min(h - 1, y + r); k <= e; k++) m |= t[k * w + x]; o[y * w + x] = m; }
+  return o;
+}
+// for each colour: the biggest NEW patch (cells of that colour where the room had nothing like it). A patterned thing counts as one patch
+// (cells one apart are joined). → [{ a: cells, x0, y0, x1, y1 (cells, inclusive), cx, cy }] × 6
+function huBlobs(cls, ref, w, h) {
+  const n = w * h, out = [], m = new Uint8Array(n), mm = new Uint8Array(n), st = new Int32Array(n);
+  for (let k = 0; k < 6; k++) {
+    const bit = 1 << k; let any = 0, best = { a: 0, x0: 0, y0: 0, x1: 0, y1: 0, cx: 0, cy: 0 };
+    for (let i = 0; i < n; i++) { const v = cls[i] === k && !(ref[i] & bit) ? 1 : 0; m[i] = v; any += v; }
+    if (any >= 4) {
+      mm.fill(0);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (m[y * w + x]) for (let yy = Math.max(0, y - 1), ye = Math.min(h - 1, y + 1); yy <= ye; yy++) for (let xx = Math.max(0, x - 1), xe = Math.min(w - 1, x + 1); xx <= xe; xx++) mm[yy * w + xx] = 1;
+      for (let s0 = 0; s0 < n; s0++) {
+        if (mm[s0] !== 1) continue;
+        let sp = 0, a = 0, x0 = w, y0 = h, x1 = -1, y1 = -1, sx = 0, sy = 0; st[sp++] = s0; mm[s0] = 2;
+        while (sp) {
+          const i = st[--sp], x = i % w, y = (i / w) | 0;
+          if (m[i]) { a++; sx += x; sy += y; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+          for (let yy = Math.max(0, y - 1), ye = Math.min(h - 1, y + 1); yy <= ye; yy++) for (let xx = Math.max(0, x - 1), xe = Math.min(w - 1, x + 1); xx <= xe; xx++) { const j = yy * w + xx; if (mm[j] === 1) { mm[j] = 2; st[sp++] = j; } }
+        }
+        if (a > best.a) best = { a, x0, y0, x1, y1, cx: sx / a, cy: sy / a };
+      }
+    }
+    out.push(best);
+  }
+  return out;
+}
+const HU = { want: [], frost: null, ph: 'off', t: 0, scanT: 0, n: 0, bits: null, ref: null, cls: new Int8Array(HU_W * HU_H), worn: [0, 0, 0, 0, 0, 0], list: [], order: [], found: [], cur: -1, curT: 0, asked: 0, blobs: null, seen: [0, 0, 0, 0, 0, 0], latch: [0, 0, 0, 0, 0, 0], away: [0, 0, 0, 0, 0, 0], fill: [0, 0, 0, 0, 0, 0], twk: [-9, -9, -9, -9, -9, -9], near: null, nearT: 0, nearSaid: -9, got: null, doneT: 0, shot: false, modal: false, rb: [], rbN: 0, rbNew: false, rbT0: 0 };
+const huSc = document.createElement('canvas'); huSc.width = HU_W; huSc.height = HU_H; const huSx = huSc.getContext('2d', { willReadFrequently: true });
+try { const d = JSON.parse(localStorage.getItem('iceMagicRainbow') || 'null'); if (d && Array.isArray(d.rb)) { HU.rb = d.rb.filter(k => k >= 0 && k < 6).slice(0, HU_MAXN); HU.rbN = d.n | 0; } } catch (e) {}
+function huSave() { try { localStorage.setItem('iceMagicRainbow', JSON.stringify({ rb: HU.rb, n: HU.rbN })); } catch (e) {} }
+function huCan() { return S.input === 'camera' && !IS_TV; }   // the hunt needs the camera (there is no mouse / TV version)
+function huName(i) { return tr('huC')[i]; }
+function huRgb(i, a) { const c = HU_COL[i].rgb; return a == null ? `rgb(${c[0]},${c[1]},${c[2]})` : `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+function huLeft() { return HU.order.filter(k => !HU.found.some(f => f.ci === k)); }
+function startHunt() {
+  Object.assign(HU, { ph: 'look', t: 0, scanT: 0.5, n: 0, bits: new Uint8Array(HU_W * HU_H), ref: null, worn: [0, 0, 0, 0, 0, 0], list: [], order: [], found: [], cur: -1, curT: 0, asked: 0, blobs: null, seen: [0, 0, 0, 0, 0, 0], latch: [0, 0, 0, 0, 0, 0], away: [0, 0, 0, 0, 0, 0], fill: [0, 0, 0, 0, 0, 0], twk: [-9, -9, -9, -9, -9, -9], near: null, nearT: 0, nearSaid: -9, got: null, doneT: 0, shot: false, modal: false });
+  HU.skipOn = false; rp('hu.start');
+}
+function huOff() { if (HU.ph === 'off') return; HU.ph = 'off'; HU.got = null; HU.near = null; HU.found = []; HU.blobs = null; HU.bits = HU.ref = null; document.body.classList.remove('hunting'); }
+function huGrab() { try { huSx.drawImage(video, 0, 0, HU_W, HU_H); return huSx.getImageData(0, 0, HU_W, HU_H).data; } catch (e) { return null; } }
+// the people the pose model can see, in cells of the small picture: where the nose is, how wide the shoulders, and the box the body fills
+function huPeople() {
+  if (now - poseT > 0.5) return [];
+  const r = videoRect(), f = q => [(W - q.x - r.ox) / r.dw * HU_W, (q.y - r.oy) / r.dh * HU_H], out = [];
+  for (const P of poseScr) {
+    if (!P.ls.v || !P.rs.v) continue;
+    const a = f(P.ls), b = f(P.rs), nz = f(P.nose), sw = Math.max(3, Math.hypot(a[0] - b[0], a[1] - b[1])), mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+    out.push({ nx: nz[0], ny: nz[1], sw, x0: mx - sw * 0.7, x1: mx + sw * 0.7, y0: my - sw * 0.15, y1: Math.min(HU_H, P.lh.v && P.rh.v ? Math.max(f(P.lh)[1], f(P.rh)[1]) + sw * 2.2 : my + sw * 3.7) });
+  }
+  return out;
+}
+// first it looks at the room for two seconds: which colours are here already, and where? what are the children wearing?
+function huLook(d) {
+  const n = HU_W * HU_H, one = huMask(d, n, new Uint8Array(n)), B = HU.bits;
+  for (let i = 0; i < n; i++) B[i] |= one[i];
+  for (const p of huPeople()) {   // (their clothes move when they do — a colour somebody is wearing is never asked for)
+    const c = [0, 0, 0, 0, 0, 0];
+    for (let y = Math.max(0, p.y0 | 0), ye = Math.min(HU_H - 1, p.y1 | 0); y <= ye; y++) for (let x = Math.max(0, p.x0 | 0), xe = Math.min(HU_W - 1, p.x1 | 0); x <= xe; x++) { const m = one[y * HU_W + x]; if (m) for (let k = 0; k < 6; k++) if (m & (1 << k)) c[k]++; }
+    const need = Math.max(12, (p.x1 - p.x0) * (p.y1 - p.y0) * 0.05);   // (a real piece of clothing, not a speck)
+    for (let k = 0; k < 6; k++) if (c[k] >= need) HU.worn[k] = 1;
+  }
+  HU.n++;
+}
+// …then it chooses what to ask for: the colours this room has least of (never one that somebody is wearing, if there are two others)
+function huChoose() {
+  const n = HU_W * HU_H, have = [0, 0, 0, 0, 0, 0];
+  for (let i = 0; i < n; i++) { const m = HU.bits[i]; if (m) for (let k = 0; k < 6; k++) if (m & (1 << k)) have[k]++; }
+  HU.ref = huGrow(HU.bits, HU_W, HU_H, 2);
+  const key = have.map(v => v + Math.random() * 12), all = [0, 1, 2, 3, 4, 5].sort((a, b) => key[a] - key[b]);
+  const clean = all.filter(k => !HU.worn[k] && have[k] < 30);
+  let list = clean.length >= 3 ? clean : all.filter(k => !HU.worn[k] && have[k] < n * 0.12);
+  if (list.length < 2) for (const k of all) { if (list.length >= 3) break; if (!list.includes(k)) list.push(k); }   // (dressed in every colour there is: then it has to ask for one of those — a little rainbow of two is fine otherwise)
+  list = list.slice(0, HU_MAXN);
+  HU.order = list.slice(); HU.list = list.slice().sort((a, b) => a - b);
+  rpV('hu.n', list.length); rpV('hu.worn', HU.worn.filter(v => v).length); rpV('hu.free', clean.length); HU.have = have;
+  huNext();
+}
+function huNext() {
+  const left = huLeft();
+  if (!left.length) { huDone(); return; }
+  HU.cur = left[0]; HU.curT = 0; HU.ph = 'seek'; HU.nearT = 0; HU.near = null; HU.scanT = 0.25;
+  const nm = huName(HU.cur);
+  showHint(tr('hintHunt')(nm), 9); say(tr(HU.asked++ ? 'huSay' : 'introHunt')(nm), true);
+  if (AC) { const t = AC.currentTime; tone(659.25, t, 0.14, 'sine', 0.08); tone(987.77, t + 0.11, 0.22, 'sine', 0.08); }
+}
+// eight times a second: is somebody holding up something of a colour we still need?
+function huScan(sdt) {
+  const d = huGrab(); if (!d) return;
+  const n = HU_W * HU_H, B = huBlobs(huClass(d, n, HU.cls), HU.ref, HU_W, HU_H), ppl = huPeople();
+  HU.blobs = B; let hit = -1, dup = -1;
+  for (let k = 0; k < 6; k++) {
+    const b = B[k], bw = b.x1 - b.x0 + 1, bh = b.y1 - b.y0 + 1;
+    // not a face (lamplight makes cheeks "red"), and not a thin smear across the picture
+    b.ok = b.a >= HU_MIN && b.a >= bw * bh * 0.18 && !ppl.some(p => Math.hypot(b.cx - p.nx, b.cy - p.ny) < p.sw * 0.7 && bw < p.sw * 1.7 && bh < p.sw * 1.9);
+    if (!HU.list.includes(k)) continue;
+    if (b.a >= HU_NEAR) PAL.prog = now;
+    if (HU.latch[k]) { HU.away[k] = b.a < HU_NEAR ? HU.away[k] + sdt : 0; if (HU.away[k] > 0.8) HU.latch[k] = 0; HU.seen[k] = 0; continue; }   // (the thing that was just counted has to go away first: one toy with two colours is not two finds)
+    HU.seen[k] = b.ok ? HU.seen[k] + sdt : 0;
+    if (HU.seen[k] >= HU_HOLD) { if (HU.found.some(f => f.ci === k)) dup = k; else if (hit < 0 || k === HU.cur) hit = k; }
+  }
+  if (hit >= 0) { huGot(hit, B[hit], false); return; }   // (any colour the rainbow still needs counts — the little one may bring whatever she likes)
+  if (dup >= 0 && now - HU.twk[dup] > 3) { HU.twk[dup] = now; HU.latch[dup] = 1; HU.away[dup] = 0; rp('hu.dup'); if (AC) tone(1568, AC.currentTime, 0.18, 'sine', 0.07); }   // "we have that one already": its band twinkles
+  const c = B[HU.cur];
+  if (c && c.a >= HU_NEAR && !c.ok && !HU.latch[HU.cur]) {   // I can see a little of it — closer!
+    HU.nearT += sdt; HU.near = c;
+    if (HU.nearT > 1.4 && now - HU.nearSaid > 6) { HU.nearSaid = now; rp('hu.near'); showHint(tr('huNear'), 4); }
+  } else { HU.nearT = 0; HU.near = null; }
+}
+function huCrop(cxp, cyp, hp) {   // a square of the camera picture, as she sees it on the screen (mirrored)
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, N = 200, c = document.createElement('canvas'); c.width = c.height = N; const x = c.getContext('2d');
+  hp = clamp(hp, 24, Math.min(vw, vh) / 2); cxp = clamp(cxp, hp, vw - hp); cyp = clamp(cyp, hp, vh - hp);
+  try { x.translate(N, 0); x.scale(-1, 1); x.drawImage(video, cxp - hp, cyp - hp, hp * 2, hp * 2, 0, 0, N, N); } catch (e) {}
+  return c;
+}
+function huSlot(i) { const s = Math.min(10.5 * U, W * 0.085); return [W * 0.5 + (i - (Math.max(1, HU.list.length) - 1) / 2) * s * 1.02, H - 10.5 * U - s * 0.6, s]; }   // where the gems wait: a row along the bottom, above the hint line
+function huGot(ci, b, manual) {
+  const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, cx = (b.x0 + b.x1 + 1) / 2, cy = (b.y0 + b.y1 + 1) / 2;
+  const hp = Math.max((b.x1 - b.x0 + 1) / HU_W * vw, (b.y1 - b.y0 + 1) / HU_H * vh) * 0.72;
+  const f = { ci, cv: huCrop(cx / HU_W * vw, cy / HU_H * vh, hp), t: now, slot: HU.found.length };
+  const p = mapPt(cx / HU_W, cy / HU_H), r = videoRect(), x = clamp(p[0], 8 * U, W - 8 * U), y = clamp(p[1], 8 * U, H - 8 * U), s = clamp(hp * 2 / vw * r.dw, 10 * U, 34 * U);
+  HU.found.push(f); HU.got = { f, t: 0, x, y, s, pop: false }; HU.ph = 'got'; HU.near = null; HU.nearT = 0;
+  for (let k = 0; k < 6; k++) { if (k === ci || (HU.blobs && HU.blobs[k].a >= HU_NEAR)) { HU.latch[k] = 1; HU.away[k] = 0; } HU.seen[k] = 0; }
+  rp(manual ? 'hu.manual' : ci === HU.cur ? 'hu.got' : 'hu.other'); rpV('hu.t', HU.curT); rp('hu.c.' + HU_COL[ci].k);
+  sfx.freeze(); flash = Math.max(flash, 0.45); ring(x, y, s * 0.8); PAL.prog = now; PAL.cheerT = 2.4; PAL.coach = null; hintEl.style.opacity = 0; mvMark('hunt', 2, 2.8);
+  const col = huRgb(ci);
+  for (let i = 0; i < 46; i++) { const a = rand(0, Math.PI * 2), sp = rand(18, 70) * U; addParticle({ type: Math.random() < 0.5 ? 'flake' : 'spark', x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 12 * U, g: 26 * U, drag: 1.5, r: rand(0.6, 1.8) * U, rot: rand(0, 6), vr: rand(-3, 3), life: rand(0.8, 1.6), max: 1.6, col: Math.random() < 0.6 ? col : '#ffffff' }); }
+}
+function huDone() {
+  HU.ph = 'done'; HU.doneT = 0; HU.shot = false; HU.modal = false; HU.cur = -1; HU.near = null;
+  rp('hu.done'); rpV('hu.all', HU.t); celebrate(tr('huDone'));
+  for (let i = 0; i < 8; i++) setTimeout(() => { if (SC() === 'hunt') addFlyStar(rand(0.15, 0.85) * W, rand(0.2, 0.7) * H); }, 500 + i * 150);
+  HU.rb = HU.list.slice(); HU.rbN++; HU.rbNew = true; HU.rbT0 = 0; huSave();
+}
+// a grown-up says "that counts" (📸, the space bar or P): the patch it half-saw — or whatever is in the middle of the screen — becomes the gem
+function huManual() {
+  if (HU.ph !== 'seek' || HU.cur < 0 || !drCam()) return;
+  const b0 = HU.blobs && HU.blobs[HU.cur], r = videoRect(), mx = (W / 2 - r.ox) / r.dw * HU_W, my = (H * 0.5 - r.oy) / r.dh * HU_H, hw = Math.max(6, HU_W * 0.11 * W / r.dw);
+  huGot(HU.cur, b0 && b0.a >= HU_NEAR ? b0 : { a: 0, x0: Math.round(mx - hw), x1: Math.round(mx + hw), y0: Math.round(my - hw), y1: Math.round(my + hw), cx: mx, cy: my }, true);
+}
+function huSkip() {   // a grown-up: "we have nothing in that colour" — ask for another one first (it comes back at the end; alone at the end, it is let go)
+  if (HU.ph !== 'seek' || HU.cur < 0) return;
+  const left = huLeft(); rp('hu.skip');
+  if (left.length < 2) { if (HU.found.length) { HU.list = HU.list.filter(k => k !== HU.cur); HU.order = HU.order.filter(k => k !== HU.cur); HU.found.forEach((f, i) => { f.slot = i; }); huNext(); } return; }
+  HU.order = HU.order.filter(k => k !== HU.cur).concat(HU.cur); huNext();
+}
+function updateHunt(dt) {
+  HU.t += dt; const cam = drCam(), sk = HU.ph === 'seek';
+  if (sk !== HU.skipOn) { HU.skipOn = sk; document.body.classList.toggle('hunting', sk); }
+  for (const f of HU.found) if (now - f.t > 1.25) HU.fill[f.ci] = Math.min(1, HU.fill[f.ci] + dt / 0.9);
+  if (HU.ph === 'look') {
+    PAL.prog = now; if (!cam) return;
+    HU.scanT -= dt; if (HU.scanT <= 0) { HU.scanT = 0.12; const d = huGrab(); if (d) huLook(d); }
+    if (HU.n >= 15) huChoose();
+  } else if (HU.ph === 'seek') {
+    HU.curT += dt; if (!cam) return;
+    HU.scanT -= dt; if (HU.scanT <= 0) { HU.scanT = 0.12; huScan(0.12); }
+  } else if (HU.ph === 'got') {
+    const G = HU.got; G.t += dt; PAL.prog = now;
+    if (!G.pop && G.t > 1.25) { G.pop = true; if (AC) { const t = AC.currentTime, f0 = KD_NOTES[G.f.slot % KD_NOTES.length]; tone(f0, t, 0.5, 'triangle', 0.13); tone(f0 * 1.5, t + 0.09, 0.6, 'triangle', 0.1); tone(f0 * 2, t + 0.18, 0.8, 'sine', 0.09); } for (let i = 0; i < 3; i++) addFlyStar(W / 2 + rand(-10, 10) * U, H * 0.5 + rand(-6, 6) * U); }
+    if (G.t >= HU_SHOW) { HU.got = null; huNext(); }
+  } else if (HU.ph === 'done') {
+    HU.doneT += dt; PAL.prog = now;
+    if (Math.random() < dt * 22) { const ci = pick(HU.list); addParticle({ type: 'spark', x: rand(0, W), y: -2 * U, vx: rand(-4, 4) * U, vy: rand(14, 30) * U, g: 8 * U, drag: 0.3, r: rand(0.6, 1.5) * U, rot: 0, vr: 0, life: rand(2, 3.4), max: 3.4, col: huRgb(ci) }); }
+    if (!HU.shot && HU.doneT > 2.6) { HU.shot = true; startPhoto(true, tr('huPhoto')); }
+    if (topOverlay()) HU.modal = true;
+    if ((HU.modal && !topOverlay() && photoT <= 0) || (HU.doneT > 9 && photoT <= 0 && !HU.modal) || HU.doneT > 22) goMenu();   // her photo has been looked at (or there was none): home, where the rainbow moves in
+  }
+}
+function huArc() { const R = Math.min(H * 1.0, W * 0.6), bt = Math.min(H, W * 0.75) * 0.03; return { cx: W / 2, cy: H * 0.04 + R, R, bt }; }
+function huBand(A, i, a0, a1, c = ctx) { const r1 = A.R - i * A.bt, r0 = r1 - A.bt * 0.93; c.beginPath(); c.arc(A.cx, A.cy, r1, a0, a1); c.arc(A.cx, A.cy, r0, a1, a0, true); c.closePath(); }
+function huGemPath(c, s) { const w = s * 0.84; c.beginPath(); c.moveTo(0, -s / 2); c.lineTo(w / 2, -s * 0.2); c.lineTo(w / 2, s * 0.2); c.lineTo(0, s / 2); c.lineTo(-w / 2, s * 0.2); c.lineTo(-w / 2, -s * 0.2); c.closePath(); }
+// a thing she found, frozen into an ice gem of its colour (cv: the picture of the thing; none = an empty gem of that colour).
+// Painted once at a fixed size (the glow is slow to paint), then copied: hold = the object that keeps the copy
+function huGem(c, x, y, s, ci, cv, hold) {
+  if (hold) {
+    const px = Math.round(Math.min(H * 0.4, 420));
+    if (!hold.g || hold.gpx !== px) { const k = document.createElement('canvas'); k.width = k.height = Math.round(px * 1.5); huGemPaint(k.getContext('2d'), k.width / 2, k.height / 2, px, ci, cv); hold.g = k; hold.gpx = px; }
+    c.drawImage(hold.g, x - s * 0.75, y - s * 0.75, s * 1.5, s * 1.5); return;
+  }
+  huGemPaint(c, x, y, s, ci, cv);
+}
+function huGemPaint(c, x, y, s, ci, cv) {
+  const w = s * 0.84;
+  c.save(); c.translate(x, y); c.lineJoin = 'round';
+  if (!LITE) { c.shadowColor = huRgb(ci, 0.95); c.shadowBlur = s * 0.2; } huGemPath(c, s); c.fillStyle = cv ? '#dff3ff' : huRgb(ci); c.fill(); c.shadowBlur = 0; c.shadowColor = 'transparent';
+  c.save(); huGemPath(c, s); c.clip(); if (cv) c.drawImage(cv, -s / 2, -s / 2, s, s);
+  const g = c.createLinearGradient(-w / 2, -s / 2, w / 2, s / 2); g.addColorStop(0, 'rgba(255,255,255,0.55)'); g.addColorStop(0.36, huRgb(ci, cv ? 0.06 : 0)); g.addColorStop(1, cv ? huRgb(ci, 0.4) : 'rgba(20,30,90,0.3)'); c.fillStyle = g; c.fillRect(-s, -s, 2 * s, 2 * s);
+  c.strokeStyle = 'rgba(255,255,255,0.4)'; c.lineWidth = Math.max(1, s * 0.012); c.beginPath();
+  for (const sd of [-1, 1]) { c.moveTo(0, -s / 2); c.lineTo(sd * w * 0.2, -s * 0.2); c.lineTo(sd * w * 0.2, s * 0.2); c.lineTo(0, s / 2); }
+  c.moveTo(-w / 2, -s * 0.2); c.lineTo(w / 2, -s * 0.2); c.moveTo(-w / 2, s * 0.2); c.lineTo(w / 2, s * 0.2); c.stroke();
+  c.restore();
+  huGemPath(c, s); c.lineWidth = Math.max(1.5, s * 0.05); c.strokeStyle = '#ffffff'; c.stroke(); c.lineWidth = Math.max(1, s * 0.02); c.strokeStyle = huRgb(ci); c.stroke();
+  c.restore();
+}
+// a rainbow of the colours in `list`, the outermost first; fill[ci] = how much of that band is painted (it grows from the top down both sides)
+function huRainbow(A, list, fill, cur) {
+  const PI = Math.PI, n = list.length || HU_MAXN, key = [W, H, n, list.map(k => fill[k] >= 1 ? 1 : 0).join('')].join();
+  if (!HU.frost || HU.frost.key !== key) {   // the bands not found yet: frosted glass with a dashed edge (painted once, copied every frame)
+    const k = HU.frost && HU.frost.cv || document.createElement('canvas'), fh = Math.ceil(Math.min(H, A.cy + 2)); k.width = W; k.height = fh; const x = k.getContext('2d');
+    for (let i = 0; i < n; i++) { if (list.length && fill[list[i]] >= 1) continue; huBand(A, i, PI, 2 * PI, x); x.fillStyle = 'rgba(232,245,255,0.14)'; x.fill(); x.lineWidth = Math.max(1, 0.2 * U); x.strokeStyle = 'rgba(255,255,255,0.5)'; x.setLineDash([1.6 * U, 1.3 * U]); x.stroke(); x.setLineDash([]); }
+    HU.frost = { key, cv: k };
+  }
+  ctx.save(); ctx.lineJoin = 'round'; ctx.drawImage(HU.frost.cv, 0, 0);
+  for (let i = 0; i < n; i++) {
+    const ci = list.length ? list[i] : -1, p = ci >= 0 ? fill[ci] : 0;
+    if (ci >= 0 && ci === cur) {   // the one we are looking for: it glows in its colour, and sparkles run along it
+      const pa = 0.34 + 0.22 * Math.sin(now * 4.2); huBand(A, i, PI, 2 * PI); ctx.fillStyle = huRgb(ci, pa); ctx.fill(); ctx.lineWidth = A.bt * 0.5; ctx.strokeStyle = huRgb(ci, pa * 0.35); ctx.stroke();
+      for (let j = 0; j < 4; j++) { const a = PI + ((now * 0.16 + j / 4) % 1) * PI, r = A.R - (i + 0.47) * A.bt; drawStar(ctx, A.cx + Math.cos(a) * r, A.cy + Math.sin(a) * r, 1.1 * U * (1 + 0.3 * Math.sin(now * 9 + j)), now * 3 + j); }
+    }
+    if (p > 0) {
+      const e = p * p * (3 - 2 * p), h = e * PI / 2, tw = clamp(1 - (now - HU.twk[ci]) / 0.9, 0, 1);
+      huBand(A, i, 1.5 * PI - h, 1.5 * PI + h); ctx.fillStyle = huRgb(ci, 0.92); ctx.fill();
+      ctx.beginPath(); ctx.arc(A.cx, A.cy, A.R - i * A.bt - A.bt * 0.26, 1.5 * PI - h, 1.5 * PI + h); ctx.strokeStyle = `rgba(255,255,255,${0.34 + 0.5 * tw})`; ctx.lineWidth = A.bt * (0.16 + 0.5 * tw); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+// under the sparkles: the rainbow over her room, what we are looking for, the gems she has, "closer!"
+function drawHuntBack() {
+  if (HU.ph === 'off') return;
+  const A = huArc(), PI = Math.PI, sm = v => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
+  if (HU.ph === 'look') {   // the buddy is looking at her room: a band of light sweeps across it
+    const k = (HU.t * 0.5) % 1, x = W * (k * 1.4 - 0.2), g = ctx.createLinearGradient(x - W * 0.14, 0, x + W * 0.14, 0);
+    g.addColorStop(0, 'rgba(200,240,255,0)'); g.addColorStop(0.5, 'rgba(200,240,255,0.3)'); g.addColorStop(1, 'rgba(200,240,255,0)');
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  const ci = HU.ph === 'seek' ? HU.cur : -1;
+  if (ci >= 0 && !LITE) {   // the whole screen is edged in the colour we want
+    const a = 0.3 + 0.14 * Math.sin(now * 4.2), e = 5 * U;
+    for (const [x0, y0, x1, y1, rx, ry, rw, rh] of [[0, 0, 0, e, 0, 0, W, e], [0, H, 0, H - e, 0, H - e, W, e], [0, 0, e, 0, 0, 0, e, H], [W, 0, W - e, 0, W - e, 0, e, H]]) { const g = ctx.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, huRgb(ci, a)); g.addColorStop(1, huRgb(ci, 0)); ctx.fillStyle = g; ctx.fillRect(rx, ry, rw, rh); }
+  }
+  huRainbow(A, HU.list, HU.fill, ci);
+  if (HU.ph === 'done') {   // finished: a light runs over the whole rainbow
+    const n = HU.list.length, a = PI + ((HU.doneT * 0.45) % 1) * PI * 1.3 - 0.15 * PI;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.beginPath(); for (const [w, al] of [[0.16, 0.1], [0.09, 0.12], [0.04, 0.14]]) { const a0 = Math.max(PI, a - w), a1 = Math.min(2 * PI, a + w); if (a1 <= a0) continue; ctx.beginPath(); ctx.arc(A.cx, A.cy, A.R, a0, a1); ctx.arc(A.cx, A.cy, A.R - n * A.bt, a1, a0, true); ctx.closePath(); ctx.fillStyle = `rgba(255,255,255,${al})`; ctx.fill(); } ctx.restore();
+  }
+  // the gems she has, in a row along the bottom (an empty place for each colour still missing)
+  HU.list.forEach((k, i) => { const [x, y, s] = huSlot(i); ctx.save(); ctx.globalAlpha = 0.5; ctx.setLineDash([0.9 * U, 0.8 * U]); ctx.translate(x, y); huGemPath(ctx, s * 0.86); ctx.fillStyle = 'rgba(10,30,80,0.3)'; ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = Math.max(1, 0.25 * U); ctx.stroke(); ctx.restore(); });
+  for (const f of HU.found) { if (HU.got && HU.got.f === f) continue; const [x, y, s] = huSlot(f.slot), b = HU.ph === 'done' ? Math.abs(Math.sin(HU.doneT * 4 + f.slot)) * 0.8 * U : 0; huGem(ctx, x, y - b, s * 0.86 * sm((now - f.t - HU_SHOW + 0.3) / 0.3 + 1), f.ci, f.cv, f); }
+  if (ci >= 0) {   // what we are looking for: a big empty gem of that colour, with things of that colour drifting through it (she cannot read "red")
+    const C = HU_COL[ci], tall = H > W, x = W * (tall ? 0.78 : 0.87), y = H * (tall ? 0.72 : 0.6), s = Math.min(22 * U, W * 0.2) * (1 + 0.04 * Math.sin(now * 4.2)), q = sm(HU.curT / 0.5);
+    ctx.save(); ctx.globalAlpha = q;
+    const g = ctx.createRadialGradient(x, y, s * 0.1, x, y, s * 0.95); g.addColorStop(0, huRgb(ci, 0.5)); g.addColorStop(1, huRgb(ci, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s * 0.95, 0, PI * 2); ctx.fill();
+    huGem(ctx, x, y, s * (0.7 + 0.3 * q), ci, null, HU.want[ci] || (HU.want[ci] = {}));
+    const e = Math.floor(now / 1.5) % C.eg.length, ek = (now / 1.5) % 1, ea = Math.min(1, ek * 5, (1 - ek) * 5);
+    ctx.globalAlpha = q * 0.9; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x, y, s * 0.25, 0, PI * 2); ctx.fill();
+    ctx.globalAlpha = q * ea; ctx.font = `${s * 0.33}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(C.eg[e], x, y + s * 0.02);
+    ctx.globalAlpha = q; const nm = huName(ci); ctx.font = `800 ${4.4 * U}px "PingFang SC","Microsoft YaHei",sans-serif`; ctx.lineWidth = U * 0.9; ctx.strokeStyle = 'rgba(16,36,96,0.85)'; ctx.strokeText(nm, x, y + s * 0.66); ctx.fillStyle = '#ffffff'; ctx.fillText(nm, x, y + s * 0.66);
+    ctx.restore();
+  }
+  if (HU.near && HU.ph === 'seek') {   // "I can see a little of it — bring it closer!"
+    const b = HU.near, p = mapPt(b.x0 / HU_W, b.y0 / HU_H), q = mapPt((b.x1 + 1) / HU_W, (b.y1 + 1) / HU_H), x = Math.min(p[0], q[0]) - U, y = p[1] - U, w = Math.abs(p[0] - q[0]) + 2 * U, h = q[1] - p[1] + 2 * U, k = (now * 0.9) % 1;
+    ctx.save(); ctx.lineJoin = 'round'; ctx.lineWidth = 0.7 * U; ctx.strokeStyle = huRgb(HU.cur); rrect(ctx, x, y, w, h, 1.4 * U); ctx.stroke();
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 0.35 * U; ctx.globalAlpha = 1 - k; rrect(ctx, x - w * 0.6 * k, y - h * 0.6 * k, w * (1 + 1.2 * k), h * (1 + 1.2 * k), (1.4 + 2 * k) * U); ctx.stroke(); ctx.restore();
+  }
+}
+// on top of everything: the thing she found freezes into a gem, comes to the middle, its colour shoots up into the rainbow, and the gem joins the row
+function drawHuntFront() {
+  const G = HU.got; if (!G) return;
+  const t = G.t, f = G.f, ci = f.ci, A = huArc(), sm = v => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
+  const k1 = sm(t / 0.4), k2 = sm((t - 0.4) / 0.75), out = sm((t - (HU_SHOW - 0.75)) / 0.75), dim = sm(t / 0.4) * (1 - out), [gx, gy, gs] = huSlot(f.slot);
+  ctx.fillStyle = `rgba(8,20,62,${0.5 * dim})`; ctx.fillRect(0, 0, W, H);
+  let x = G.x + (W / 2 - G.x) * k2, y = G.y + (H * 0.55 - G.y) * k2, s = G.s + (Math.min(H * 0.36, W * 0.32) - G.s) * k2;
+  x += (gx - x) * out; y += (gy - y) * out; s += (gs * 0.86 - s) * out;
+  if (dim > 0.05) {   // a halo of its colour, with slow rays
+    ctx.save(); ctx.translate(x, y); ctx.globalAlpha = dim * k2; ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(0, 0, s * 0.1, 0, 0, s * 1.1); g.addColorStop(0, huRgb(ci, 0.7)); g.addColorStop(0.5, huRgb(ci, 0.25)); g.addColorStop(1, huRgb(ci, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, s * 1.1, 0, Math.PI * 2); ctx.fill();
+    ctx.rotate(now * 0.35); ctx.fillStyle = huRgb(ci, 0.13); for (let i = 0; i < 10; i++) { ctx.rotate(Math.PI / 5); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-s * 0.12, -s * 1.25); ctx.lineTo(s * 0.12, -s * 1.25); ctx.closePath(); ctx.fill(); }
+    ctx.restore();
+  }
+  const bk = clamp((t - 1.25) / 0.3, 0, 1), bo = clamp(1 - (t - 1.7) / 0.5, 0, 1);
+  if (bk > 0 && bo > 0) {   // its colour shoots up into its band
+    const i = HU.list.indexOf(ci), ty = A.cy - (A.R - (i + 0.47) * A.bt), y0 = y - s * 0.5;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round'; ctx.strokeStyle = huRgb(ci, 0.85 * bo); ctx.lineWidth = s * 0.16; if (!LITE) { ctx.shadowColor = huRgb(ci); ctx.shadowBlur = 3 * U; }
+    ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x + (A.cx - x) * bk, y0 + (ty - y0) * bk); ctx.stroke(); ctx.strokeStyle = `rgba(255,255,255,${0.8 * bo})`; ctx.lineWidth = s * 0.05; ctx.stroke(); ctx.restore();
+  }
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 5) * 0.05 * (1 - out)); const pop = t < 0.4 ? 0.6 + 0.4 * kdBack(clamp(t / 0.4, 0, 1)) : 1; ctx.scale(pop, pop); huGem(ctx, 0, 0, s, ci, f.cv, f); ctx.restore();
+  if (t > 0.5 && t < HU_SHOW - 0.6) {
+    const q = t - 0.5, sc = q < 0.35 ? q / 0.35 * 1.15 : 1 + 0.05 * Math.sin(q * 6), txt = tr('huGot')(huName(ci));
+    ctx.save(); ctx.globalAlpha = clamp((HU_SHOW - 0.6 - t) / 0.4, 0, 1); ctx.translate(W / 2, H * 0.2); ctx.scale(sc, sc);
+    fitFont(ctx, txt, 800, 11 * U, W * 0.8); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.lineWidth = U * 1.5; ctx.strokeStyle = 'rgba(30,50,130,0.9)'; ctx.strokeText(txt, 0, 0); ctx.fillStyle = '#ffffff'; ctx.shadowColor = huRgb(ci); ctx.shadowBlur = 4 * U; ctx.fillText(txt, 0, 0);
+    ctx.restore();
+  }
+}
+// the rainbow she made last time stands over the castle hill in her kingdom (drawn behind the snow)
+function drawKingdomRainbow() {
+  if (!HU.rb.length || NT.alt > 0.6) return;
+  const u = KD.u, wide = W / u > 135, n = HU.rb.length, A = { cx: W * (wide ? 0.8 : 0.78), cy: H - 12.5 * u, R: (wide ? 30 : 22) * u, bt: (wide ? 1.25 : 1) * u };
+  if (HU.rbNew && S.mode === 'menu' && !topOverlay()) { if (!HU.rbT0) { HU.rbT0 = now + 0.9; setTimeout(() => { if (S.mode === 'menu') { kdToast(tr('kdRainbow')); ntChime([523.25, 659.25, 783.99, 1046.5, 1318.5], 0.11, 0.09, 0.9); } }, 900); } if (now - HU.rbT0 > 2) HU.rbNew = false; }
+  const p = HU.rbNew ? clamp((now - HU.rbT0) / 1.6, 0, 1) : 1, fill = [0, 0, 0, 0, 0, 0]; for (const k of HU.rb) fill[k] = p;
+  if (p <= 0) return;
+  ctx.save(); ctx.globalAlpha = (S.mode === 'menu' && videoShown() ? 0.6 : 0.72) * (1 - clamp(NT.alt / 0.6, 0, 1));
+  const PI = Math.PI, e = p * p * (3 - 2 * p), h = e * PI / 2;
+  HU.rb.forEach((ci, i) => { const r1 = A.R - i * A.bt; ctx.beginPath(); ctx.arc(A.cx, A.cy, r1, 1.5 * PI - h, 1.5 * PI + h); ctx.arc(A.cx, A.cy, r1 - A.bt, 1.5 * PI + h, 1.5 * PI - h, true); ctx.closePath(); ctx.fillStyle = huRgb(ci); ctx.fill(); });
+  ctx.restore();
+}
+
+// ======================================================================
 // ---- 雪团团 (Snowy), a snow buddy — she cannot read the hints, so the buddy SHOWS her instead of telling her:
 //      in the hall it floats beside her and copies her arms; it puts its own hand on a bubble to show how choosing works;
 //      in the games it acts out the move she needs (wave / run / jump / lean / catch) and comes back when she is stuck. It never talks. ----
@@ -4361,7 +4721,7 @@ const palCv = $('#pal'), pcx = palCv.getContext('2d');
 const PAL = { x: 0, y: 0, vx: 0, vy: 0, s: 0.05, tx: 0, ty: 0, vis: false, init: false, g: 'idle', gt: 0, aL: [118 * D2R, 98 * D2R], aR: [62 * D2R, 82 * D2R], lean: 0, dx: 0, dy: 0, sq: 0, blink: 0, nextBlink: 2, look: [0, 0], coach: null, cheerT: 0, pokeT: -9, prog: 0, lastCoach: -9, seenFor: 0, demo: null, demoN: 0, idleT: 0, learned: false, side: 1, hallY: 0, hallCd: 0, back: 0, pa: 0, homeEl: null };
 try { PAL.learned = localStorage.getItem('iceMagicPal') === '1'; } catch (e) {}
 // what the buddy acts out when a game (or an adventure level) starts: [move, seconds]
-const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3], ['up', 2.4]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]], draw: [['show', 6.4]] };
+const PAL_INTRO = { sprites: [['wave', 4], ['up', 2.6]], town: [['touch', 4.2], ['up', 2.4]], boss: [['wave', 4.5]], castle: [['catch', 4.5]], snowman: [['catch', 4.5], ['up', 2.4]], free: [['paint', 6.3], ['up', 2.4]], runner: [['run', 3.2], ['waveL', 2.2], ['waveR', 2.2], ['jump', 3]], hug: [['wave', 3.2], ['hug', 4.4]], draw: [['show', 6.4]], hunt: [['bring', 6.4]] };
 const PAL_DEMO = ['adventure', 'hug', 'dance', 'runner', 'snowman', 'town', 'sprites', 'free'];
 function palOn() { return S.pal !== false && !IS_TV; }
 function palCoach(seq) {
@@ -4412,6 +4772,10 @@ function palGesture(g, t) {
   else if (g === 'show') {   // it holds a little drawing out towards her — nearer, nearer — and the drawing sparkles
     const u = t % 3.2, k = u < 0.5 ? 0 : u < 1.2 ? (u - 0.5) / 0.7 : u < 2.7 ? 1 : 1 - (u - 2.7) / 0.5, e = k * k * (3 - 2 * k), L = (a, b) => a + (b - a) * e;
     o.R = [L(60, 70), L(215, 10)]; o.L = [L(120, 110), L(-35, 170)]; o.mouth = 1; o.fx = 'paper'; o.hk = e; o.dy = -0.05 * e;
+  }
+  else if (g === 'bring') {   // it holds a ball of the colour we want out towards her
+    const u = t % 3.2, k = u < 0.5 ? 0 : u < 1.2 ? (u - 0.5) / 0.7 : u < 2.7 ? 1 : 1 - (u - 2.7) / 0.5, e = k * k * (3 - 2 * k), L = (a, b) => a + (b - a) * e;
+    o.R = [L(60, 70), L(215, 10)]; o.L = [L(120, 110), L(-35, 170)]; o.mouth = 1; o.fx = 'ball'; o.hk = e; o.dy = -0.05 * e;
   }
   else if (g === 'point') { if (Math.cos(PAL.pa * D2R) < 0) o.L = [PAL.pa, PAL.pa]; else o.R = [PAL.pa, PAL.pa]; o.mouth = 1; }
   return o;
@@ -4596,6 +4960,15 @@ function drawPal(o) {
     const k = o.hk || 0, by = 0.5 * R, bs = 0.86 * R;
     if (k < 1) { c.save(); c.globalAlpha = 1 - k; rrect(c, -bs / 2, by - bs / 2, bs, bs, bs * 0.18); const ig = c.createLinearGradient(-bs / 2, by - bs / 2, bs / 2, by + bs / 2); ig.addColorStop(0, 'rgba(240,251,255,0.95)'); ig.addColorStop(1, 'rgba(120,190,250,0.9)'); c.fillStyle = ig; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.stroke(); drawFlake(c, 0, by, bs * 0.26, 0.3, '#ffffff'); c.restore(); }
     if (k > 0) { c.save(); c.globalAlpha = k; const hs = 0.95 * R * (0.7 + 0.3 * k) * (1 + 0.08 * Math.sin(now * 9)); heartPath(c, 0, by, hs); c.fillStyle = '#ff5e94'; c.fill(); c.strokeStyle = '#ffffff'; c.lineWidth = R * 0.06; c.lineJoin = 'round'; c.stroke(); c.restore(); }
+  }
+  if (o.fx === 'ball') {   // a ball of the colour we are looking for (all the colours in turn while it is still looking at the room)
+    const hp = (sd, A) => { const ex = sd * 0.84 * R + Math.cos(A[0]) * 0.6 * R, ey = 0.2 * R + Math.sin(A[0]) * 0.6 * R; return [ex + Math.cos(A[1]) * 0.68 * R, ey + Math.sin(A[1]) * 0.68 * R]; };
+    const a = hp(-1, PAL.aL), b = hp(1, PAL.aR), k = o.hk || 0, r = R * (0.4 + 0.22 * k), ci = HU.cur >= 0 ? HU.cur : Math.floor(now / 0.8) % 6, col = HU_COL[ci].rgb;
+    c.save(); c.translate((a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + 0.12 * R);
+    const g = c.createRadialGradient(-r * 0.32, -r * 0.36, r * 0.08, 0, 0, r); g.addColorStop(0, '#ffffff'); g.addColorStop(0.3, `rgb(${col})`); g.addColorStop(1, `rgb(${col.map(v => Math.round(v * 0.62))})`);
+    c.shadowColor = `rgba(${col},0.9)`; c.shadowBlur = R * 0.3; c.fillStyle = g; c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fill(); c.shadowBlur = 0; c.shadowColor = 'transparent'; c.lineWidth = R * 0.05; c.strokeStyle = '#ffffff'; c.stroke();
+    if (k > 0.85) for (let i = 0; i < 6; i++) { const an = i / 6 * TAU + now * 1.6, rr = r * (1.5 + 0.12 * Math.sin(now * 5 + i)); c.globalAlpha = 0.6 + 0.4 * Math.sin(now * 7 + i * 2); drawStar(c, Math.cos(an) * rr, Math.sin(an) * rr, R * 0.13, now + i); }
+    c.globalAlpha = 1; c.restore();
   }
   if (o.fx === 'paper') {   // the drawing it holds: a sheet with a little crayon friend on it, growing as it is held out
     const hp = (sd, A) => { const ex = sd * 0.84 * R + Math.cos(A[0]) * 0.6 * R, ey = 0.2 * R + Math.sin(A[0]) * 0.6 * R; return [ex + Math.cos(A[1]) * 0.68 * R, ey + Math.sin(A[1]) * 0.68 * R]; };
@@ -5587,7 +5960,7 @@ function hgCard() {
 //      It can also be watched from the hall (🎬), and a grown-up can save it as a video file. Everything stays in this browser. ----
 const MV = { clips: [], ring: [], cap: null, cc: null, lastCap: -9, fps: 12, cw: 640, cost: 0, pend: null, lastEnd: -99, gameT0: 0, gameN: 0, play: null, a: 0, fresh: false, dbp: null, btnKey: '', exp: null, ids: 0, last: null };
 const MV_PRE = 3, MV_LEN = 4.8, MV_MAX = 12, MV_SHOW = 6, MV_HEAD = 2.4, MV_TAIL = 3.4;
-const MV_ICON = { draw: '🎨', sprites: '🔥', town: '🏘️', boss: '🌋', castle: '🏰', snowman: '⛄', free: '❄️', runner: '🏃‍♀️', dance: '💃', hug: '🤗' };
+const MV_ICON = { hunt: '🌈', draw: '🎨', sprites: '🔥', town: '🏘️', boss: '🌋', castle: '🏰', snowman: '⛄', free: '❄️', runner: '🏃‍♀️', dance: '💃', hug: '🤗' };
 const MV_FONT = (px, wt) => `${wt || 800} ${px}px "PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif`;
 function mvOn() { return S.movie !== false && !IS_TV; }
 function mvHas() { return mvOn() && MV.clips.length > 0; }
@@ -5949,7 +6322,7 @@ function updateDwell(dt) {
     if (!A.help && !DW.p.has(el) && now - A.last > DW_MEM) DW.a.delete(el);
   }
 }
-let hallText = '', soundTipOn = null, hallTitle = '', hallFree = '', hallHands = null;
+let hallText = '', soundTipOn = null, hallTitle = '', hallFree = '', hallHands = null, hallHunt = null;
 function updateHall() {
   let k = 'hallTap';
   const hd = S.input === 'camera' && !IS_TV && camState === 'on' && S.frame; if (hd !== hallHands) { hallHands = hd; document.body.classList.toggle('hands', hd); }   // her buttons move beside her (see body.hands)
@@ -5961,6 +6334,7 @@ function updateHall() {
   }
   if (ntActive()) k = NT.ph === 'tuck' ? 'ntTuck' : NT.ph === 'sleep' || NT.mv ? 'ntSleep' : k === 'hallCam' ? 'ntSky' : 'ntSkyPtr';
   mvBtn();
+  const hb = huCan(); if (hb !== hallHunt) { hallHunt = hb; $('#btnHunt').style.display = hb ? '' : 'none'; }
   const fk = (S.input === 'camera' && !IS_TV && S.showVideo ? 'm3r' : 'm3'); if (fk + S.lang !== hallFree) { hallFree = fk + S.lang; const l = $('.m-free .lbl'); l.dataset.t = fk; l.textContent = tr(fk); }
   const ttl = ntActive() ? tr('ntTitle') : MV.play && !MV.play.closing ? tr('mvT') : '❄️ 冰雪魔法 ❄️'; if (ttl !== hallTitle) { hallTitle = ttl; $('#menu h1').textContent = ttl; }
   const t = tr(k) + S.lang; if (t !== hallText) { hallText = t; $('#hallHint').innerHTML = tr(k); }
@@ -6040,7 +6414,7 @@ function frScene() {
   const s = frKey();
   if (s === 'panel') return FR_PANEL;
   if (s === 'hall') return W / H >= 1.6 ? FR_HALL : [FR_HALL[0], 0.45];   // (4:3 / phone: the bubbles are in two or three rows, there is no free band)
-  return s === 'dance' || s === 'hug' || s === 'free' || s === 'draw' ? FR_ROOM : FR_GAME;
+  return s === 'dance' || s === 'hug' || s === 'free' || s === 'draw' || s === 'hunt' ? FR_ROOM : FR_GAME;
 }
 function frWin(z) {   // how much of the camera picture is on screen at zoom z (as fractions of its width / height)
   const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, [bw, bh] = frBox(), sc = Math.max(bw / vw, bh / vh) * z;
@@ -6057,6 +6431,7 @@ function frLocked() {   // 2 = the picture must not move at all · 1 = only to k
   for (const p of DW.p.values()) if (p > 0.15) return 2;              // she is choosing something: her hand must stay where it is
   const s = SC();
   if (s === 'dance' && (DN.ph === 'stop' || DN.ph === 'frozen')) return 2;   // she is holding still on purpose
+  if (s === 'hunt' && HU.ph === 'got') return 2;                             // her find is turning into a gem where she holds it: hold the picture
   if (s === 'draw' && (DR.ph === 'count' || DR.ph === 'alive')) return 2;    // three, two, one — her drawing is being taken: hold the picture
   if (s === 'free' && irOn() && IR.any && !topOverlay()) return 1;    // the ice sits on the real room: moving the picture would slide the room out from under it
                                                                       // (not while her photo is up: the "continue" button has to come within reach)
@@ -6197,7 +6572,7 @@ function onPoses(all, fdt) {
     const nose = lm[0], lw = lm[15], rw = lm[16];
     const up = vis(lw) > 0.6 && vis(rw) > 0.6 && lw.y < nose.y - 0.02 && rw.y < nose.y - 0.02;
     armsUp[i] = up ? (armsUp[i] || 0) + fdt : 0;
-    if (armsUp[i] > 0.3) { if (ntActive()) { ntArmsUp(); armsUp[i] = -2; } else if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if ((SC() === 'dance' && DN.ph !== 'dance') || SC() === 'draw') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }   // (holding a drawing up high is not a blizzard)
+    if (armsUp[i] > 0.3) { if (ntActive()) { ntArmsUp(); armsUp[i] = -2; } else if (SC() === 'runner') { const r = runPoseRank(i); if (r >= 0) runJump(r); armsUp[i] = -1; } else if ((SC() === 'dance' && DN.ph !== 'dance') || SC() === 'draw' || SC() === 'hunt') armsUp[i] = 0; else { blizzard(); armsUp[i] = -3; } }   // (holding a drawing up high is not a blizzard)
   });
 }
 
@@ -6244,6 +6619,7 @@ function frame(tms) {
   else if (sc === 'dance') updateDance(dt);
   else if (sc === 'hug') updateHug(dt);
   else if (sc === 'draw') updateDraw(dt);
+  else if (sc === 'hunt') updateHunt(dt);
   else if (sc === 'castle' || sc === 'snowman') updateItems(dt);
   if (S.mode === 'adventure') updateAdventure(dt);
   updatePhoto(dt);
@@ -6254,7 +6630,7 @@ function frame(tms) {
   updateShards(dt); updateFlyStars(dt);
   musicTick();
   // status
-  if (S.mode === 'draw' && camState !== 'loading') setStatus('');   // (close up with a sheet in front of her nobody is "found", and that is fine)
+  if ((S.mode === 'draw' || S.mode === 'hunt') && camState !== 'loading') setStatus('');   // (close up with a sheet in front of her nobody is "found", and that is fine)
   else if (S.mode !== 'menu' && S.input === 'camera') {
     if (camState === 'loading') setStatus(tr('camLoading'));
     else if (camState === 'on') {
@@ -6273,6 +6649,7 @@ function frame(tms) {
   if (SC() === 'dance') drawDanceBack();
   if (SC() === 'hug') drawHugBack();
   if (SC() === 'draw') drawDrawBack();
+  if (SC() === 'hunt') drawHuntBack();
   if (S.mode === 'menu') { drawNightSky(); drawKingdom(); mvDraw(dt); }
   if (SC() === 'runner') drawRunner();
   ctx.save();
@@ -6295,6 +6672,7 @@ function frame(tms) {
   if (SC() === 'dance') { if (DN.snap) dnSnap(); drawDanceHud(); }
   if (SC() === 'hug') { drawHugHud(); if (HG.snapAt && now >= HG.snapAt) hgSnap(); }
   if (SC() === 'draw') drawDrawFront();
+  if (SC() === 'hunt') drawHuntFront();
   if (flash > 0) { ctx.fillStyle = `rgba(220,240,255,${flash * 0.55})`; ctx.fillRect(0, 0, W, H); flash = Math.max(0, flash - dt * 1.6); }
   if (celebrateT > 0) {
     celebrateT -= dt; const k = 2.8 - celebrateT;
@@ -6329,6 +6707,7 @@ function startMode(m) {
   $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none';
   if (m === 'runner') { S.mode = 'runner'; S.stage = ''; clearScene(); startRunner(); runBarText = ''; $('#runBar').style.display = 'flex'; showHint(tr(S.input !== 'camera' ? 'hintRunPtr' : 'hintRun'), 10); palIntro(); setTimeout(() => say(tr('introRun'), true), 300); return; }
   if (m === 'draw') { S.mode = 'draw'; S.stage = ''; clearScene(); startDraw(); showHint(tr(S.input !== 'camera' ? 'hintDrawPtr' : 'hintDraw'), 14); palIntro(); setTimeout(() => say(tr('introDraw'), true), 300); return; }
+  if (m === 'hunt') { S.mode = 'hunt'; S.stage = ''; clearScene(); startHunt(); showHint(tr('huLook'), 4); palIntro(); return; }
   if (m === 'hug') { S.mode = 'hug'; S.stage = ''; clearScene(); startHug(); showHint(tr(S.input !== 'camera' ? 'hintHugPtr' : 'hintHug'), 10); palIntro(); setTimeout(() => say(tr('introHug'), true), 300); return; }
   if (m === 'dance') { S.mode = 'dance'; S.stage = ''; clearScene(); startDance(); showHint(tr(S.input !== 'camera' ? 'hintDancePtr' : 'hintDance'), 9); setTimeout(() => say(tr('introDance'), true), 300); return; }
   S.mode = m; S.stage = '';
@@ -6347,7 +6726,7 @@ function startMode(m) {
   if (S.input !== 'camera') setStatus('');
 }
 function menuLine() { return [totalStars ? tr('total')(totalStars) : '', tr('castles')(castlesBuilt)].filter(Boolean).join('    '); }
-function goMenu() { if (S.mode !== 'menu') rp('home.all'); FR.force = true; $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); drOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
+function goMenu() { if (S.mode !== 'menu') rp('home.all'); FR.force = true; $('#btnMelt') && ($('#btnMelt').style.display = 'none'); dnOff(); hgOff(); drOff(); huOff(); dwellClear(); DW.cool = 1.5; KD.cd = 0; PAL.coach = null; PAL.idleT = 0; PAL.cheerT = 0; $('#btnHome').style.display = 'none'; ADV.token++; $('#advBar').style.display = 'none'; $('#runBar').style.display = 'none'; if (S.mode === 'runner') saveRunBest(); titleT = 0; photoT = 0; $('#castleLine').textContent = menuLine(); updateWardrobeBadge(); updateGalleryBtn(); S.mode = 'menu'; $('#menu').classList.remove('hide'); setStatus(''); hintEl.style.opacity = 0; try { speechSynthesis.cancel(); } catch (e) {} }
 
 document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => startMode(b.dataset.mode)));
 $('#btnHome').addEventListener('click', () => { if (MV.play && S.mode === 'menu') mvClose(); else { if (S.mode !== 'menu') rp(RP.hand ? 'home.hand' : 'home.tap'); goMenu(); } });
@@ -6368,8 +6747,10 @@ $('#btnParent').addEventListener('click', () => { drRow(); $('#parentPanel').sty
 $('#parentClose').addEventListener('click', () => { $('#parentPanel').style.display = 'none'; });
 document.addEventListener('pointerdown', ensureAudio, true);
 $('#wDone').addEventListener('click', closeWardrobe);
-$('#btnPhoto').addEventListener('click', () => { if (SC() === 'draw') drManual(); else startPhoto(false); });   // (at the easel 📸 takes the drawing)
+$('#btnPhoto').addEventListener('click', () => { if (SC() === 'draw') drManual(); else if (SC() === 'hunt' && HU.ph !== 'done') huManual(); else startPhoto(false); });   // (at the easel 📸 takes the drawing)
 $('#btnDraw').addEventListener('click', () => startMode('draw'));
+$('#btnHunt').addEventListener('click', () => startMode('hunt'));
+$('#btnSkip').addEventListener('click', () => huSkip());
 $('#btnPickBig').addEventListener('click', () => $('#drFile').click());
 $('#drFile').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; drFile(f); });
 { const b = document.createElement('button'); b.className = 'iconBtn'; b.id = 'btnPick'; b.title = '选一张画的照片 / choose a photo of a drawing'; b.textContent = '🖼️'; b.addEventListener('click', () => { if (DR.ph === 'scan') $('#drFile').click(); }); $('#topBtns').prepend(b); }
@@ -6427,8 +6808,10 @@ window.addEventListener('keydown', e => {
   }
   if (e.key === 'n' || e.key === 'N') { if (ntActive()) ntWake(); else ntAsk(); return; }
   if (e.key === 'Escape') { if (MV.play && S.mode === 'menu' && !ntActive()) mvClose(); else { if (S.mode !== 'menu') rp('home.key'); goMenu(); } }
-  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else if (SC() === 'draw') drManual(); else blizzard(); }
-  else if (e.key === 'p' || e.key === 'P') { if (SC() === 'draw') drManual(); else startPhoto(false); }
+  else if (e.key === ' ') { e.preventDefault(); ensureAudio(); if (ntActive()) ntArmsUp(); else if (SC() === 'draw') drManual(); else if (SC() === 'hunt') huManual(); else blizzard(); }
+  else if (e.key === 'p' || e.key === 'P') { if (SC() === 'draw') drManual(); else if (SC() === 'hunt' && HU.ph !== 'done') huManual(); else startPhoto(false); }
+  else if ((e.key === 'x' || e.key === 'X') && SC() === 'hunt') huSkip();
+  else if (e.key === '0' && S.mode === 'menu' && huCan()) startMode('hunt');
   else if (e.key === 'm' || e.key === 'M') { S.showVideo = !S.showVideo; $('#togVideo').classList.toggle('on', S.showVideo); savePrefs(); }
   else if (S.mode === 'menu' && ['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && !(e.key === '9' && IS_TV)) startMode(['adventure', 'runner', 'sprites', 'town', 'snowman', 'free', 'dance', 'hug', 'draw'][+e.key - 1]);
 });
@@ -6444,8 +6827,8 @@ $('#voiceTest').addEventListener('click', () => say(S.lang === 'zh' ? '小火怪
 // Nothing but counts and averages is kept (no pictures, no sound); they stay in this browser ('iceMagicReport', the last few sittings)
 // until a grown-up opens ⚙️ → 📋 and copies the report out — or scans the QR code to carry it to a phone.
 const RP_KEY = 'iceMagicReport', RP_KEEP = 4;
-const RP_GAMES = ['adventure', 'sprites', 'town', 'snowman', 'room', 'frost', 'runner', 'dance', 'hug', 'draw'];
-const RP_NAME = { adventure: ['大冒险', 'Adventure'], sprites: ['小火怪', 'Fire imps'], town: ['冰封小镇', 'Town'], snowman: ['堆雪人', 'Snowman'], room: ['冰封我家', 'Freeze my home'], frost: ['画冰花', 'Ice painting'], runner: ['奔跑', 'Run'], dance: ['冰雕舞会', 'Dance'], hug: ['冰冻抱抱', 'Hug'], draw: ['画画', 'Drawing'] };
+const RP_GAMES = ['adventure', 'sprites', 'town', 'snowman', 'room', 'frost', 'runner', 'dance', 'hug', 'draw', 'hunt'];
+const RP_NAME = { adventure: ['大冒险', 'Adventure'], sprites: ['小火怪', 'Fire imps'], town: ['冰封小镇', 'Town'], snowman: ['堆雪人', 'Snowman'], room: ['冰封我家', 'Freeze my home'], frost: ['画冰花', 'Ice painting'], runner: ['奔跑', 'Run'], dance: ['冰雕舞会', 'Dance'], hug: ['冰冻抱抱', 'Hug'], draw: ['画画', 'Drawing'], hunt: ['彩虹寻宝', 'Rainbow hunt'] };
 const LZ = (zh, en) => S.lang === 'zh' ? zh : en;
 function rpErr(msg) { rp('err'); if (RP.err.length < 5) RP.err.push(String(msg).slice(0, 140)); }
 window.addEventListener('error', e => rpErr((e.message || 'error') + (e.lineno ? ' @' + e.lineno : '')));
@@ -6463,7 +6846,7 @@ function rpFrame(tms) {
   if (game) { rp('f.n'); rp('f.ms', raw); if (raw > 40) rp('f.slow'); if (raw > 100) rp('f.jank'); }
   if (camState === 'on') {
     const seen = !!lastPoseSeen && now - lastPoseSeen < 1.2, two = seen && poseScr.length > 1 && now - poseT < 0.6;
-    if (game) { rp('t.camG', s); if (seen) rp('t.seenG', s); if (two) rp('t.twoG', s); }
+    if (game && sc !== 'hunt') { rp('t.camG', s); if (seen) rp('t.seenG', s); if (two) rp('t.twoG', s); }   // (in the rainbow hunt they are SUPPOSED to run off)
     else if (!RP.firstSeen && seen) RP.firstSeen = now;
     if (seen && now - RP.sampT > 0.5 && now - poseT < 0.3 && poseScr[0]) {   // twice a second: where she ends up on the SCREEN once the picture has framed her
       RP.sampT = now; const P = poseScr[0], g = game ? 'g' : 'm';
@@ -6526,7 +6909,7 @@ function rpText(s) {
   const sumK = re => { let t = 0; for (const k in s.c) if (re.test(k)) t += s.c[k]; return t; };
   const med = (k, u = '') => d(k) ? `${d(k)[4]}${u}` : '–', rng = (k, u = '') => d(k) ? `${d(k)[4]}${u}（${d(k)[2]}–${d(k)[3]}）` : '–';
   const e = s.env || {}, out = [], gameT = rpGameT(s), cam = e.in === 'camera' && c('p.n') > 0;
-  let open = 0; for (const k in s.c) if (/^t\.(menu|adventure|sprites|town|snowman|room|frost|runner|dance|hug|draw)$/.test(k)) open += s.c[k];
+  let open = 0; for (const k in s.c) if (/^t\.(menu|adventure|sprites|town|snowman|room|frost|runner|dance|hug|draw|hunt)$/.test(k)) open += s.c[k];
   out.push(LZ(`【Frozy 试玩报告 v1】${rpWhen(s.t0)} · 页面开了 ${mn(open)} 分钟 · 游戏里 ${mn(gameT)} 分钟`, `[Frozy play report v1] ${rpWhen(s.t0)} · page open ${mn(open)} min · in games ${mn(gameT)} min`));
   out.push(LZ('设备：', 'Device: ') + `${e.os} ${e.br} · ${e.w}×${e.h}@${e.dpr}x · ${LZ('摄像头', 'camera')} ${e.cam || LZ('无', 'none')} · ${e.in}${e.hc ? ' · ' + e.hc + ' cores' : ''}${e.off ? LZ(' · 关掉了 ', ' · off: ') + e.off : ''}`);
   if (c('f.n') > 0) out.push(LZ('流畅度：', 'Smoothness: ') + LZ(`游戏里平均 ${Math.round(1000 * c('f.n') / c('f.ms'))} 帧/秒 · 慢帧(>40ms) ${pc(c('f.slow'), c('f.n'))}% · 卡顿(>100ms) ${c('f.jank')} 次`, `${Math.round(1000 * c('f.n') / c('f.ms'))} fps in games · slow frames(>40ms) ${pc(c('f.slow'), c('f.n'))}% · hitches(>100ms) ${c('f.jank')}`)
@@ -6546,6 +6929,7 @@ function rpText(s) {
   if (c('hg.p.frz') + c('hg.f.frz')) out.push(LZ('冰冻抱抱：', 'Freeze hug: ') + LZ(`冻住人 ${c('hg.p.frz')} 次 → 抱化 ${c('hg.p.hug')}（肩膀重叠 ${c('hg.near')} / 两人被认成一个 ${c('hg.merge')}）· 没人抱自己化 ${c('hg.p.auto')}；小伙伴：冻 ${c('hg.f.frz')} · 抱化 ${c('hg.f.hug')} · 自己化 ${c('hg.f.auto')} · 集满爱心 ${c('hg.done')} 局`, `people frozen ${c('hg.p.frz')} → hugged ${c('hg.p.hug')} (shoulders overlap ${c('hg.near')} / seen as one ${c('hg.merge')}) · thawed alone ${c('hg.p.auto')}; friends: frozen ${c('hg.f.frz')} · hugged ${c('hg.f.hug')} · alone ${c('hg.f.auto')} · finished ${c('hg.done')}`));
   if (c('t.room') > 3) out.push(LZ('冰封我家：', 'Freeze my home: ') + LZ(`冻完 ${c('ir.done')} 轮 · 每轮 ${rng('ir.t', '秒')} · ${c('ir.half') ? '降到了半分辨率' : '全分辨率'}`, `rounds ${c('ir.done')} · each ${rng('ir.t', 's')} · ${c('ir.half') ? 'dropped to half resolution' : 'full resolution'}`));
   if (c('t.draw') > 3) out.push(LZ('画画：', 'Drawings: ') + LZ(`自动收 ${c('dr.auto')} · 大人按📸 ${c('dr.manual')} · 选照片 ${c('dr.file')} · 没收成 ${c('dr.fail') + c('dr.failM')} · 提示：太远 ${c('dr.h.drSmall')} 太近 ${c('dr.h.drClose')} 没看清 ${c('dr.h.drBlank')}`, `auto ${c('dr.auto')} · 📸 ${c('dr.manual')} · file ${c('dr.file')} · failed ${c('dr.fail') + c('dr.failM')} · hints: far ${c('dr.h.drSmall')} near ${c('dr.h.drClose')} blank ${c('dr.h.drBlank')}`));
+  if (c('hu.start')) out.push(LZ('彩虹寻宝：', 'Rainbow hunt: ') + LZ(`开始 ${c('hu.start')} 局 · 做成彩虹 ${c('hu.done')} · 每局问 ${med('hu.n')} 种颜色（房间里完全没有的 ${med('hu.free')} 种 · 她们穿着的 ${med('hu.worn')} 种）· 认出：问的那个 ${c('hu.got')} / 别的颜色 ${c('hu.other')} · 大人按📸 ${c('hu.manual')} · 换颜色 ${c('hu.skip')} · 每个颜色用时 ${rng('hu.t', '秒')} · “拿近一点” ${c('hu.near')} · 已有的颜色又拿来 ${c('hu.dup')}`, `started ${c('hu.start')} · rainbows ${c('hu.done')} · colours asked per round ${med('hu.n')} (absent from the room ${med('hu.free')} · worn ${med('hu.worn')}) · recognised: the one asked ${c('hu.got')} / another ${c('hu.other')} · grown-up 📸 ${c('hu.manual')} · skipped ${c('hu.skip')} · per colour ${rng('hu.t', 's')} · "closer" ${c('hu.near')} · a colour we had ${c('hu.dup')}`));
   if (c('mv.clip') + c('mv.play') + c('mv.night')) out.push(LZ('魔法电影：', 'Movie: ') + LZ(`片段 ${c('mv.clip')} · 大厅放映 ${c('mv.play')} · 夜里放映 ${c('mv.night')} · 保存 ${c('mv.save')}${c('mv.lite') ? ' · 录制拖慢了电脑，已降级' : ''}`, `clips ${c('mv.clip')} · played ${c('mv.play')} · at night ${c('mv.night')} · saved ${c('mv.save')}${c('mv.lite') ? ' · recording was downgraded' : ''}`));
   const fr = Object.keys(s.c).filter(k => k.startsWith('fr.')).map(k => `${k.slice(3)} ${s.c[k]}`);
   if (fr.length) out.push(LZ('自动对准：', 'Framing: ') + LZ(`画面移动 ${sumK(/^fr\./)} 次（${fr.join(' · ')}）· 放大 中位 ${med('fr.z', '×')} 最大 ${d('fr.z') ? d('fr.z')[3] : '–'}×`, `moved ${sumK(/^fr\./)}× (${fr.join(' · ')}) · zoom median ${med('fr.z', '×')} max ${d('fr.z') ? d('fr.z')[3] : '–'}×`));
@@ -6571,6 +6955,7 @@ function rpNotes(s) {
   { let worst = '', n = 0, tot = 0; for (const k in s.c) if (k.startsWith('stuck.')) { tot += s.c[k]; if (s.c[k] > n) { n = s.c[k]; worst = k.slice(6); } } if (tot >= 3) { const nm = RP_NAME[worst === 'free' ? 'room' : worst] || [worst, worst]; w(LZ(`雪团团因为“她停住了”回来示范了 ${tot} 次，最多的是「${nm[0]}」（${n} 次）`, `Snowy came back to coach ${tot}× — most in "${nm[1]}" (${n}×)`)); } }
   if (c('dn.stop') >= 3) { if (c('dn.force') * 2 >= c('dn.stop')) w(LZ(`冰雕舞会：${c('dn.stop')} 次里有 ${c('dn.force')} 次等满 10 秒才成型——“不动”的门槛对她可能太严`, `Freeze dance: ${c('dn.force')} of ${c('dn.stop')} statues only formed after the 10 s limit — "still" may be too strict for her`)); else if (d('dn.t')) g(LZ(`冰雕舞会：不动约 ${d('dn.t')[4]} 秒就变成冰雕`, `Freeze dance: a statue after about ${d('dn.t')[4]} s of holding still`)); }
   if (c('hg.p.frz') >= 2) { if (c('hg.p.auto') > c('hg.p.hug')) w(LZ(`冰冻抱抱：冻住人 ${c('hg.p.frz')} 次，抱化 ${c('hg.p.hug')} 次，等它自己化 ${c('hg.p.auto')} 次——抱抱可能没被认出来`, `Freeze hug: ${c('hg.p.frz')} people frozen, ${c('hg.p.hug')} hugged free, ${c('hg.p.auto')} thawed alone — hugs may not be recognised`)); else g(LZ(`冰冻抱抱：${c('hg.p.hug')} 个抱抱被认出来了`, `Freeze hug: ${c('hg.p.hug')} hugs recognised`)); }
+  if (c('t.hunt') > 20) { const a = c('hu.got') + c('hu.other'), o = c('hu.manual') + c('hu.skip'); if (a > o) g(LZ(`彩虹寻宝：自动认出 ${a} 个颜色`, `Rainbow hunt: ${a} colours recognised`)); else if (o || c('t.hunt') > 90) w(LZ(`彩虹寻宝：大多要大人帮（自动认出 ${a} · 大人按📸 / 换颜色 ${o}）`, `Rainbow hunt: mostly needed a grown-up (recognised ${a} · 📸 / skipped ${o})`)); }
   if (c('t.draw') > 10) { const a = c('dr.auto'), o = c('dr.manual') + c('dr.fail') + c('dr.failM') + c('dr.h.drSmall') + c('dr.h.drClose') + c('dr.h.drBlank'); if (a) g(LZ(`画画：自动认出 ${a} 张`, `Drawings: ${a} recognised automatically`)); else if (o) w(LZ('画画：没有一张是自动认出来的', 'Drawings: none was recognised automatically')); }
   if (c('ir.half')) w(LZ('冰封我家：电脑画得慢，已自动降到半分辨率', 'Freeze my home: the computer was slow, dropped to half resolution'));
   if (c('mv.lite')) w(LZ('魔法电影：录制拖慢了电脑，已自动降级', 'Movie: recording slowed the computer and was downgraded'));
@@ -6705,12 +7090,12 @@ if (/^#r=./.test(location.hash)) rpUnpack(location.hash.slice(3)).then(s => { RP
 
 // camera already allowed on an earlier visit: open it right away so the child can pick a game with her hands
 if (!IS_TV && S.input === 'camera' && navigator.permissions && navigator.permissions.query) { try { navigator.permissions.query({ name: 'camera' }).then(p => { if (p.state === 'granted' && camState === 'off' && S.input === 'camera') startCamera(); }).catch(() => {}); } catch (e) {} }
-if (IS_TV) { $('#togMovie').style.display = 'none'; $('#togFrame').style.display = 'none'; $('#btnDraw').style.display = 'none'; }
+if (IS_TV) { $('#togMovie').style.display = 'none'; $('#togFrame').style.display = 'none'; $('#btnDraw').style.display = 'none'; $('#btnHunt').style.display = 'none'; }
 drRow();
 mvLoad();
 resize(); initAmbient(); bumpStars(); updateGalleryBtn(); $('#castleLine').textContent = menuLine(); updateWardrobeBadge();
 requestAnimationFrame(frame);
-window.__ice = { RP, RPUI, rp, rpV, rpSum, rpSave, rpLoad, rpText, rpNotes, rpOpen, rpPack, rpUnpack, qrMake, rpGameT, DR, drFindPaper, drCut, drSame, drTake, drAlive, drAdd, drRemove, drManual, drFile, drScan, drGuideCam, FR, frReset, frIdeal, fitRect, videoRect, onPoses, MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
+window.__ice = { HU, HU_COL, huClass, huMask, huGrow, huBlobs, huManual, huSkip, huCan, RP, RPUI, rp, rpV, rpSum, rpSave, rpLoad, rpText, rpNotes, rpOpen, rpPack, rpUnpack, qrMake, rpGameT, DR, drFindPaper, drCut, drSame, drTake, drAlive, drAdd, drRemove, drManual, drFile, drScan, drGuideCam, FR, frReset, frIdeal, fitRect, videoRect, onPoses, MV, mvMark, mvCut, mvPick, mvOpen, mvClose, mvKill, mvExport, mvClear, mvLoad, mvRect, IR, irSeed, irDone, irMelt, irOn, get now() { return now; }, HG, hgFreezeFriend, hgCard, NT, ntAsk, ntBegin, ntWake, ntRise, ntArmsUp, DN, dnStop, dnStrip, dnBox, PAL, palCoach, palGesture, KD, kdBuild, kdPoke, kdAddAnimal, kdAddSnowman, kdAddHouse, DW, updateDwell, goMenu, get camState() { return camState; }, setCam(v) { camState = v; lastPoseSeen = now; }, RUN, runJump, runWave, runnerPose, runnerFreezeAll, runRankPoses, runPoseRank, sledRange, advance(t) { now += t; }, feedHand2(k, x, y) { feedHand(k, x, y); }, fakePose(arr) { poseScr = arr; poseT = now; camState = 'on'; }, fakeCam(s) { camStream = s; }, genTown, takePhoto, openWardrobe, get totalStars() { return totalStars; }, setTotal(n) { totalStars = n; }, S, ADV, enterStage, castle, snow, iceBlast, get boss() { return boss; }, get items() { return items; }, startMode, pickVoice, blizzard, feedHand, hands, get sprites() { return sprites; }, get buildings() { return buildings; } };
 </script>
 </body>
 </html>

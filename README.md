@@ -105,6 +105,19 @@ Everything else in the game was drawn by the game. Here the child draws a friend
 - Works best with white paper and thick markers / crayons. Not on TV browsers (no camera, no files).
 - Tunables: `DR_BIG` (how much of the picture the sheet must fill), `DR_NEW` (how different from the remembered room), `DR_INK`, `DR_SAT`, `DR_KEEP` (8), `DR_SHOW` (length of the “alive” moment). Code: `drFindPaper` / `drCut` (pure pixel functions), `drScan`, `drTake`, `drAlive`, `updateDraw`, `drawDrawBack` / `drawDrawFront`, `drFriendDraw`.
 
+## The rainbow hunt / 🌈 彩虹寻宝
+
+Every other game keeps the children in front of the screen. This one sends them away from it.
+
+- In the hall, choose **🌈 寻宝** (next to 🎨; key `0`). Snowy looks at the room for two seconds, then asks for a **colour** — a big gem of that colour (things of that colour drift through it, for children who cannot read "red"), the edge of the screen glows in it, and one band of an empty rainbow over the room lights up.
+- The children go and find **something of that colour** anywhere at home — a toy, a cup, a sock — and hold it up a step or two from the camera. It is frozen into an **ice gem** (a little picture of the real thing inside), its colour shoots up into the rainbow, 3 stars. Any colour the rainbow still needs counts, not only the one asked for — the little sister may bring whatever she likes.
+- All the colours (3 to 5) = **a rainbow**: a photo under it goes into the album, and the rainbow moves into the kingdom, over the castle hill.
+- It never times out (they may be gone for minutes) and nothing can be lost. It needs **no pose at all** — carrying a thing to the screen is something a two-year-old can do — and it works the same for one child or two.
+- **How it sees**: eight times a second it looks at a 160×90 copy of the camera picture for six colours (red, yellow, green, blue, purple, pink — the warm band of orange / brown / skin / wood is left out on purpose). Before it asks, it notes which colours the room already has and where, and what the children are wearing; it asks for colours the room does not have, and "found" = a **new** patch of that colour, big enough (about a 12 cm toy at 1.5 m), for a third of a second. A face is never a find.
+- **Grown-ups**: **📸** (or the space bar) = "that counts" — whatever is in the middle of the screen becomes the gem; **⏭️** (or `X`) = "we have nothing in that colour, ask for another". Bright, solid-coloured things about the size of a hand or bigger are found best.
+- Only with the camera (there is no mouse or TV version). The gems are not kept; the photo is (in this browser, like every photo).
+- Checked on **real photographs** this time, not only drawn pictures: 70 real living rooms and 56 real coloured objects from the COCO photo set, with the camera's exposure and white balance wandering — see the project notes for the numbers. Still **not** checked with the real camera, the real room and the real children.
+
 ## Good night, Ice Kingdom / 晚安，冰雪王国
 
 Games are built to keep a child playing. This part helps her **stop** — and makes stopping something she does herself, not something that is done to her.
